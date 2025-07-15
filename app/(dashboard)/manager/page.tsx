@@ -1,4 +1,4 @@
-import { WelcomeMessageContainer } from "@/components/common/welcome-message-container";
+import { WelcomeMessageContainer } from "@/components/feature-specific/dashboard/welcome-message-container";
 
 export default function ManagerDashboard() {
     return (
