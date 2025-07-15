@@ -27,7 +27,7 @@ export default function RatingSelector({
           key={option.value}
           onClick={() => onSelect(option.value)}
           className={cn(
-            "cursor-pointer border flex flex-col items-center justify-center text-center",
+            "cursor-pointer border px-2 flex flex-col items-center justify-center text-center rounded-lg py-2 space-y-2",
             selected === option.value 
               ? cn(
                   "ring-2",
@@ -40,9 +40,10 @@ export default function RatingSelector({
               : "border-gray-300"
           )}
         >
+          <div className="flex flex-col items-center justify-center mb-2">
           <div
             className={cn(
-              "w-10 h-10 rounded-full mb-2",
+              "w-7 h-7 rounded-full mb-1 ",
               option.color === "red" && "bg-destructive",
               option.color === "orange" && "bg-orange",
               option.color === "yellow" && "bg-chart-4",
@@ -53,6 +54,8 @@ export default function RatingSelector({
           <div className="text-xl font-bold">{option.value}</div>
           <div className="font-semibold">{option.title}</div>
           <div className="text-xs text-muted-foreground">{option.desc}</div>
+
+          </div>
         </Card>
       ))}
     </div>
