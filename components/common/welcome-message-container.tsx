@@ -6,14 +6,16 @@ export const WelcomeMessageContainer = () => {
     const { fullName, last_updated } = welcomeData;
 
     return (
-        <section className="p-6 bg-gradient-to-r from-primary/10 to-white/10 rounded-md">
-            <article>
-                <p>Welcome back, {fullName}! 👋</p>
-                <p>Here's your comprehensive talent readiness overview</p>
+        <section
+            className="p-6 bg-gradient-to-r from-primary/5 to-background rounded-md border-input border-[1px] shadow-xs flex justify-between"
+        >
+            <article className="space-y-4">
+                <p className="font-bold text-3xl">Welcome back, {fullName}! 👋</p>
+                <p className="text-foreground/70">Here's your comprehensive talent readiness overview</p>
             </article>
-            <article>
-                <span>
-                    <Clock4 /> Last updated: {last_updated}
+            <article className="flex items-center gap-4">
+                <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Clock4 className="w-4 h-4" /> Last updated: {last_updated}
                 </span>
                 <AppSelect items={filters} />
             </article>
