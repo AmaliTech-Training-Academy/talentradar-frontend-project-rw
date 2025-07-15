@@ -45,6 +45,7 @@
   --color-orange: var(--orange);
   --color-teal: var(--teal);
   --color-white: var(--white);
+  --color-red: var(--red);
 }
 
 :root {
@@ -86,6 +87,7 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+  --red: oklch(68.098% 0.20738 24.489);
 }
 
 .dark {
