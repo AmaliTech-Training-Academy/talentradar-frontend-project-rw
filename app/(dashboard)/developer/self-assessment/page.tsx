@@ -3,14 +3,15 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { dimensions } from "@/lib/dummyData";
-import RatingSelector, {
-  RatingOption,
-} from "@/components/feature-specific/dashboard/RatingSelector";
+import RatingSelector from "@/components/feature-specific/dashboard/RatingSelector";
+import { RatingOption } from "@/lib/types";
+import { CircleCheck, Save, TrendingUp } from "lucide-react";
+import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
+import { cn } from "@/lib/utils";
 
 const RATING_OPTIONS: RatingOption[] = [
   {
@@ -35,15 +36,9 @@ const RATING_OPTIONS: RatingOption[] = [
   { value: 5, color: "green", title: "Expert", desc: "Drives best practices" },
 ];
 
-const SelfAssessmentSchema = z.object({
-  reflection: z.string().min(10, "Reflection must be at least 10 characters."),
-  dimensions: z.array(
-    z.object({
-      dimension_definition_id: z.string().uuid(),
-      rating: z.number().min(1).max(5),
-    })
-  ),
-});
+const getRatingTitle = (rating: number): string => {
+  return RATING_OPTIONS.find((option) => option.value === rating)?.title || "";
+};
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
 
@@ -80,21 +75,67 @@ export default function SelfAssessmentPage() {
   return (
     <div className="px-5 p-8 space-y-8 ">
       <div className="border rounded-xl overflow-hidden">
-        <div className="p-6 space-y-4 border-b bg-muted-foreground/10">
-          <h1 className="text-3xl font-bold">Self-Assessment</h1>
+        <div className="p-6 space-y-4 border-b bg-muted-foreground/10 flex justify-between items-center">
+          <div>
+            <h1 className="md:text-3xl text-xl font-bold">
+              {" "}
+              Professional Self-Assessment
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              Comprehensive evaluation based on industry-standards and
+              competency frameworks
+            </p>
+          </div>
+          <div>
+            <div className="flex items-center gap-2 text-lg font-semibold text-primary">
+              <TrendingUp />
+              <p>4.0</p>
+            </div>
+            <p className="text-primary text-xs">High Performance</p>
+          </div>
         </div>
         <div className="px-5 space-y-6 pt-5">
           {dimensions.map((dim, index) => (
             <Card key={dim.id} className="bg-muted-foreground/10">
               <CardHeader>
-                <CardTitle>{dim.dimension_name}</CardTitle>
+                <CardTitle className="flex items-center justify-between">
+                  <h3>{dim.dimension_name}</h3>
+                  <div className="flex items-center gap-2">
+                    <p className="text-muted-foreground text-xs">
+                      Weight: {dim.Weight}%
+                    </p>
+                    {/* dynamic badge */}
+                    <p
+                      className={cn(
+                        "text-xs bg-white border rounded-full px-2 inline",
+                        watch(`dimensions.${index}.rating`) === 1 &&
+                          "text-destructive",
+                        watch(`dimensions.${index}.rating`) === 2 &&
+                          "text-orange",
+                        watch(`dimensions.${index}.rating`) === 3 &&
+                          "text-chart-4",
+                        watch(`dimensions.${index}.rating`) === 4 &&
+                          "text-primary",
+                        watch(`dimensions.${index}.rating`) === 5 && "text-teal"
+                      )}
+                    >
+                      {getRatingTitle(watch(`dimensions.${index}.rating`))}
+                    </p>
+                  </div>
+                </CardTitle>
                 <p className="text-muted-foreground">{dim.description}</p>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="list-disc list-inside text-sm text-muted-foreground bg-white p-2 rounded-md mb-4 border">
-                  {dim.criteria.map((c) => (
-                    <li key={c.id}>{c.criteria_name}</li>
-                  ))}
+                <ul className=" list-inside text-sm text-muted-foreground bg-white p-2 rounded-md mb-4 border">
+                  <p className="font-semibold">Assessment Criteria:</p>
+                  <div className="grid grid-cols-2">
+                    {dim.criteria.map((c) => (
+                      <li key={c.id} className="flex items-center gap-1">
+                        <CircleCheck size={12} className="text-teal" />
+                        <p>{c.criteria_name}</p>
+                      </li>
+                    ))}
+                  </div>
                 </ul>
 
                 <RatingSelector
@@ -124,12 +165,12 @@ export default function SelfAssessmentPage() {
               )}
             </CardContent>
           </Card>
-        <div className="flex justify-end mt-6 mb-10">
-          <Button onClick={handleSubmit(onSubmit)}>
-            Submit Professional Assessment
-          </Button>
-
-        </div>
+          <div className="flex justify-end mt-6 mb-10">
+            <Button onClick={handleSubmit(onSubmit)}>
+              <Save />
+              Submit Professional Assessment
+            </Button>
+          </div>
         </div>
       </div>
     </div>

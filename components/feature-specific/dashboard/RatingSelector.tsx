@@ -2,13 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-
-export type RatingOption = {
-  value: number
-  color: string
-  title: string
-  desc: string
-}
+import { RatingOption } from "@/lib/types"
 
 interface RatingSelectorProps {
   options: RatingOption[]
@@ -22,6 +16,11 @@ export default function RatingSelector({
   onSelect,
 }: RatingSelectorProps) {
   return (
+    <div>
+        <div className="flex justify-between items-center mb-1">
+            <p className="font-semibold text-muted-foreground">Rating Scale</p>
+            <p className="text-muted-foreground text-sm">Select your current level</p>
+        </div>
     <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 gap-4">
       {options.map((option) => (
         <Card
@@ -56,6 +55,8 @@ export default function RatingSelector({
           <div className="text-xs text-muted-foreground">{option.desc}</div>
         </Card>
       ))}
+    </div>
+
     </div>
   )
 }
