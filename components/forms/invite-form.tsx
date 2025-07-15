@@ -18,26 +18,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InviteFormValues } from "@/lib/schemas/invite-schema";
 import { inviteFormSchema } from "@/lib/schemas";
 import { sendInvite } from "@/lib/api/invite";
-import { useState } from "react";
-import { set } from "zod";
 
 export function InviteForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [isSending, setIsSending] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<InviteFormValues>({
     resolver: zodResolver(inviteFormSchema),
   });
 
   const onSubmit = async (data: InviteFormValues) => {
-    setIsSending(true);
     try {
       const result = await sendInvite(data);
       toast.message("Invite sent to the user", {
@@ -47,8 +43,6 @@ export function InviteForm({
       toast.error(
         error instanceof Error ? error.message : "Something went wrong"
       );
-    } finally {
-      setIsSending(false);
     }
   };
 
@@ -62,7 +56,9 @@ export function InviteForm({
                 <div className="flex flex-col gap-3 md:flex-row justify-between">
                   <Label htmlFor="email">Email</Label>
                   {errors.email && (
-                    <p className="text-xs text-red">{errors.email.message}</p>
+                    <p className="text-xs text-destructive">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
                 <Input
@@ -76,7 +72,9 @@ export function InviteForm({
                 <div className="flex flex-col gap-3 md:flex-row justify-between">
                   <Label htmlFor="password">Role</Label>
                   {errors.role && (
-                    <p className="text-xs text-red">{errors.role.message}</p>
+                    <p className="text-xs text-destructive">
+                      {errors.role.message}
+                    </p>
                   )}
                 </div>
                 <AppSelect
@@ -92,7 +90,7 @@ export function InviteForm({
               <Button
                 type="submit"
                 className="cursor-pointer max-w-lg"
-                disabled={isSending}
+                disabled={isSubmitting}
               >
                 Send Invite
               </Button>

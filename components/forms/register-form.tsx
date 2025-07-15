@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   RegisterFormValues,
@@ -19,7 +18,6 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [isSubmitting, setIsSending] = useState<boolean>(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -28,12 +26,11 @@ export function RegisterForm({
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors,isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(RegisterSchema),
   });
   const onSubmit = async (data: RegisterFormValues) => {
-    setIsSending(true);
     try {
       const requestBody = { ...data, token };
       await RegisterUser(requestBody);
@@ -44,14 +41,12 @@ export function RegisterForm({
       toast.error(
         error instanceof Error ? error.message : "Something went wrong"
       );
-    } finally {
-      setIsSending(false);
     }
   };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="text-center mb-6">
-        <p className="inline-flex items-center text-muted-foreground text-xs bg-foreground/10 rounded-xl px-3 py-1">
+        <p className="inline-flex items-center text-muted-foreground text-xs bg-foreground/10 rounded-xl px-2 py-1">
           <UserRound size={12} className="inline-block mr-1" />
           <span>{email || ""}</span>
         </p>
@@ -63,7 +58,7 @@ export function RegisterForm({
               <div className="flex flex-col gap-3 md:flex-row justify-between">
                 <Label htmlFor="fullName">Full name</Label>
                 {errors.fullName && (
-                  <p className="text-xs text-red">{errors.fullName.message}</p>
+                  <p className="text-xs text-destructive">{errors.fullName.message}</p>
                 )}
               </div>
               <Input
@@ -78,7 +73,7 @@ export function RegisterForm({
                 <Label htmlFor="password">Password</Label>
 
                 {errors.password && (
-                  <p className="text-xs text-red">{errors.password.message}</p>
+                  <p className="text-xs text-destructive">{errors.password.message}</p>
                 )}
               </div>
 
@@ -93,7 +88,7 @@ export function RegisterForm({
               <div className="flex flex-col gap-3 md:flex-row justify-between">
                 <Label htmlFor="conf-password">confirm password</Label>
                 {errors.confirmPassword && (
-                  <p className="text-xs text-red">
+                  <p className="text-xs text-destructive">
                     {errors.confirmPassword.message}
                   </p>
                 )}
