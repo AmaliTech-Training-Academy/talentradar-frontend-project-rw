@@ -103,7 +103,7 @@ export default function SelfAssessmentPage() {
                 <p className="text-muted-foreground">{dim.description}</p>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className=" list-inside text-sm text-muted-foreground bg-white p-2 rounded-md mb-4 border">
+                <ul className=" list-inside text-sm text-muted-foreground bg-white dark:bg-background p-2 rounded-md mb-4 border">
                   <p className="font-semibold">Assessment Criteria:</p>
                   <div className="grid grid-cols-2">
                     {dim.criteria.map((c) => (
@@ -143,7 +143,7 @@ export default function SelfAssessmentPage() {
             </CardContent>
           </Card>
           <div className="flex justify-end mt-6 mb-10">
-            <Button onClick={handleSubmit(onSubmit)}>
+            <Button className="text-white" onClick={handleSubmit(onSubmit)}>
               <Save />
               Submit Professional Assessment
             </Button>
