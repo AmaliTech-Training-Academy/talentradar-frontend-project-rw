@@ -12,33 +12,10 @@ import { RatingOption } from "@/lib/types";
 import { CircleCheck, Save, TrendingUp } from "lucide-react";
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";
+import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
+import { getRatingTitle } from "@/lib/get-rating-tittle";
 
-const RATING_OPTIONS: RatingOption[] = [
-  {
-    value: 1,
-    color: "red",
-    title: "Developing",
-    desc: "Needs significant guidance",
-  },
-  {
-    value: 2,
-    color: "orange",
-    title: "Progressing",
-    desc: "Requires moderate guidance",
-  },
-  {
-    value: 3,
-    color: "yellow",
-    title: "Proficient",
-    desc: "Works independently",
-  },
-  { value: 4, color: "blue", title: "Advanced", desc: "Exceeds expectations" },
-  { value: 5, color: "green", title: "Expert", desc: "Drives best practices" },
-];
 
-const getRatingTitle = (rating: number): string => {
-  return RATING_OPTIONS.find((option) => option.value === rating)?.title || "";
-};
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
 
