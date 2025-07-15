@@ -24,8 +24,8 @@ const insights = [
 
 export const AiInsights = () => {
     return (
-        <article className="bg-white rounded-md border-[1px] shadow-xs">
-            <div className="p-6 shadow-sm">
+        <article className="bg-white dark:bg-primary/5 rounded-md border-[1px] shadow-xs">
+            <div className="p-6 shadow-sm dark:border-b-[1px]">
                 <h2 className="text-lg font-medium">AI Insights & Recommendations</h2>
             </div>
             <div className="p-6 space-y-3">

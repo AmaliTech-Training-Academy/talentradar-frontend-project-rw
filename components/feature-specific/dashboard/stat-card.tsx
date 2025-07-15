@@ -15,7 +15,7 @@ export const StatCard = ({ statInfo }: StatCardProps) => {
     const { title, stat, desc, color, icon: Icon } = statInfo;
 
     return (
-        <article className="p-4 flex items-center justify-between bg-white rounded-md border-[1px] shadow-xs">
+        <article className="p-4 flex items-center justify-between bg-white dark:bg-primary/5 rounded-md border-[1px] shadow-xs">
             <div className="flex flex-col gap-1">
                 <p className="text-xs font-medium">{title}</p>
                 <p className="text-3xl font-bold">{stat}</p>
@@ -24,7 +24,7 @@ export const StatCard = ({ statInfo }: StatCardProps) => {
                     {desc}
                 </div>
             </div>
-            <div className="rounded-md p-2" style={{ backgroundColor: `color-mix(in oklch, var(--${color}) 10%, white)`}}>
+            <div className="rounded-md p-2" style={{ backgroundColor: `color-mix(in oklch, var(--${color}) 10%, var(--surface))`}}>
                 <Icon style={{ color: `var(--${color})` }} />
             </div>
         </article>

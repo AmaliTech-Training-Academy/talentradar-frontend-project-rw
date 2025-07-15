@@ -27,8 +27,8 @@ const activities = [
 
 export const RecentActivity = () => {
     return (
-        <article className="bg-white rounded-md border-[1px] shadow-xs">
-            <div className="p-6 shadow-sm flex items-center gap-2">
+        <article className="bg-white dark:bg-primary/5 rounded-md border-[1px] shadow-xs">
+            <div className="p-6 shadow-sm dark:border-b-[1px] flex items-center gap-2">
                 <Activity className="w-5 h-5" />
                 <h2 className="text-lg font-medium">Recent Activity</h2>
             </div>
