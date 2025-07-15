@@ -42,8 +42,8 @@ export const AiInsights = () => {
                             <div className="flex space-x-2 items-center">
                                 {
                                     insight.title === 'Strength Identified' ? <Award className="w-4 h-4" /> :
-                                    insight.title === 'Growth Opportunity' ? <Target className="w-4 h-4" /> :
-                                    <Calendar className="w-4 h-4" />
+                                        insight.title === 'Growth Opportunity' ? <Target className="w-4 h-4" /> :
+                                            <Calendar className="w-4 h-4" />
                                 }
                                 <h3 className="font-bold text-sm">{insight.title}</h3>
                             </div>
