@@ -24,7 +24,7 @@ const stats = [
     {
         id: 3,
         title: 'Pending Reviews',
-        stat: 0,
+        stat: 1,
         desc: 'Require attention',
         color: 'orange',
         icon: CircleAlert,
@@ -32,7 +32,7 @@ const stats = [
     {
         id: 4,
         title: 'Team Average',
-        stat: 4.1/5,
+        stat: '4.1/5',
         desc: 'Team performance',
         color: 'teal',
         icon: ChartColumn,

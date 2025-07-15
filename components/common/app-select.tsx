@@ -19,7 +19,7 @@ interface AppSelectProps {
 export const AppSelect = ({ options, placeholder, value, onChangeAction }: AppSelectProps) => {
     return (
         <Select value={value} onValueChange={onChangeAction}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
