@@ -1,34 +1,37 @@
-'use client';
-
+"use client";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-interface AppSelectProps {
-    options: { value: string, label: string}[];
-    placeholder: string;
-    value: string;
-    onChangeAction: (value: string) => void;
-
-}
-
-export const AppSelect = ({ options, placeholder, value, onChangeAction }: AppSelectProps) => {
-    return (
-        <Select value={value} onValueChange={onChangeAction}>
-            <SelectTrigger className="w-48">
-                <SelectValue placeholder={placeholder} />
-            </SelectTrigger>
-            <SelectContent>
-                {options.map(option => (
-                    <SelectItem key={option.value} value={option.value} className="capitalize">
-                        {option.label}
-                    </SelectItem>
-                ))}
-            </SelectContent>
-        </Select>
-    )
-}
+export const AppSelect = ({
+  options,
+  placeholder,
+  value,
+  onChangeAction,
+  className,
+}: {
+  value: string;
+  onChangeAction: (value: string) => void;
+  placeholder: string;
+  options: { value: string; label: string }[];
+  className?: string;
+}) => {
+  return (
+    <Select value={value} onValueChange={onChangeAction}>
+      <SelectTrigger className={className}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+};

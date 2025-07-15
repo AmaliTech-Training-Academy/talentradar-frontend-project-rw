@@ -22,6 +22,7 @@ import {
   Home,
   Map,
   Settings,
+  Send,
 } from "lucide-react";
 import { SidebarAccountInfo } from "./sidebar-account-info";
 
@@ -83,6 +84,11 @@ const items = [
     title: "AI Roadmap & Tests",
     url: "#",
     icon: Map,
+  },
+  {
+    title: "Invites",
+    url: "/admin/invite",
+    icon: Send,
   },
   {
     title: "Self-assessment",
