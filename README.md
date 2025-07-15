@@ -1,6 +1,6 @@
 # TalentRadar
 
-TalentRadar is a comprehensive talent management application that allows users to assess their technical skills, especially in the field of software development. Built with modern web technologies, it provides an intuitive platform for skill evaluation and career development.
+TalentRadar is a comprehensive talent management application that allows users to assess their technical skills, especially in the field of software development. Built with modern web technologies, it provides an intuitive platform for skill evaluation and career development......
 
 ## 🚀 Tech Stack
 
