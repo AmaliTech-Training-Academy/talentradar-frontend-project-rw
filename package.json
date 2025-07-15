@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@radix-ui/react-dialog": "^1.1.14",
+=======
+    "@hookform/resolvers": "^5.1.1",
+>>>>>>> f37cec1 (feat(self-assessment): implement self-assessment form with dimensions, criteria, ratings, and reflection)
     "@radix-ui/react-dropdown-menu": "^2.1.15",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-separator": "^1.1.7",
