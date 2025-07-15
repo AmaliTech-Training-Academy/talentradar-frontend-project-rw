@@ -1,19 +1,5 @@
-# CODEOWNERS file for talentradar-frontend-project-rw
-# This file defines code ownership for automatic review requests
-
-# Global ownership - Frontend team reviewers
-* @aimerukundo @aristoteMkaty @bencyubahiro77 @kevin-rukundo
+# CODEOWNERS file for talentradar-frontend-project-rw - Development Branch
+# Only .github directory has code owner requirements
 
 # GitHub configuration files - Final reviewers only
 /.github/ @bikaze @muhirwaJD
-
-# Production and staging critical files - Final reviewers
-/package.json @bikaze @muhirwaJD
-/package-lock.json @bikaze @muhirwaJD
-/yarn.lock @bikaze @muhirwaJD
-/tsconfig.json @bikaze @muhirwaJD
-/next.config.js @bikaze @muhirwaJD
-/tailwind.config.js @bikaze @muhirwaJD
-/docker* @bikaze @muhirwaJD
-/Dockerfile* @bikaze @muhirwaJD
-/.env* @bikaze @muhirwaJD
