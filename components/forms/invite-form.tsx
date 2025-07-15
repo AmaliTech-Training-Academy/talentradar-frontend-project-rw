@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AppSelect } from "../ui/AppSelect";
+import { AppSelect } from "../common/app-select";
 import { userRoles } from "@/lib/constants/roles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -83,7 +83,7 @@ export function InviteForm({
                     label: role.name,
                   }))}
                   value={watch("role")}
-                  onChange={(value) => setValue("role", value)}
+                  onChangeAction={(value) => setValue("role", value)}
                   placeholder="Select role"
                 />
               </div>
