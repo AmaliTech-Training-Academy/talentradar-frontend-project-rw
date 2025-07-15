@@ -4,16 +4,19 @@ import { Award, Calendar, Target } from "lucide-react";
 const insights = [
     {
         id: 1,
+        icon: Award,
         title: 'Strength Identified',
         desc: 'Your technical leadership skills have improved significantly. Consider mentoring junior developers.'
     },
     {
         id: 2,
+        icon: Target,
         title: 'Growth Opportunity',
         desc: 'Increase cross-team collaboration to enhance your communication impact score.'
     },
     {
         id: 3,
+        icon: Calendar,
         title: 'Upcoming',
         desc: 'Your next self-assessment is due in 5 days. Prepare by reviewing recent projects.'
     }
@@ -27,29 +30,27 @@ export const AiInsights = () => {
             </div>
             <div className="p-6 space-y-3">
                 {
-                    insights.map(insight => (
+                    insights.map(insight => {
+                        const { id, title, icon: Icon, desc } = insight
+                        return (
                         <div
-                            key={insight.id}
+                            key={id}
                             className={clsx(
                                 'p-4 rounded-md space-y-3',
                                 {
-                                    'text-teal bg-teal/10': insight.title === 'Strength Identified',
-                                    'text-primary bg-primary/10': insight.title === 'Growth Opportunity',
-                                    'text-violet bg-violet/10': insight.title === 'Upcoming'
+                                    'text-teal bg-teal/10': title === 'Strength Identified',
+                                    'text-primary bg-primary/10': title === 'Growth Opportunity',
+                                    'text-violet bg-violet/10': title === 'Upcoming'
                                 }
                             )}
                         >
                             <div className="flex space-x-2 items-center">
-                                {
-                                    insight.title === 'Strength Identified' ? <Award className="w-4 h-4" /> :
-                                        insight.title === 'Growth Opportunity' ? <Target className="w-4 h-4" /> :
-                                            <Calendar className="w-4 h-4" />
-                                }
-                                <h3 className="font-bold text-sm">{insight.title}</h3>
+                                <Icon className="w-4 h-4" />
+                                <h3 className="font-bold text-sm">{title}</h3>
                             </div>
-                            <p className="text-sm">{insight.desc}</p>
+                            <p className="text-sm">{desc}</p>
                         </div>
-                    ))
+                    )})
                 }
             </div>
         </article>
