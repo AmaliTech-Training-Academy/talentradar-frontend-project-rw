@@ -28,8 +28,17 @@ export default function RatingSelector({
           key={option.value}
           onClick={() => onSelect(option.value)}
           className={cn(
-            "cursor-pointer  border flex flex-col items-center justify-center text-center",
-            selected === option.value ? "ring-2 ring-blue-500 border-blue-500" : "border-gray-300"
+            "cursor-pointer border flex flex-col items-center justify-center text-center",
+            selected === option.value 
+              ? cn(
+                  "ring-2",
+                  option.color === "red" && "ring-destructive border-destructive bg-destructive/10",
+                  option.color === "orange" && "ring-orange border-orange bg-orange/10",
+                  option.color === "yellow" && "ring-chart-4 border-chart-4 bg-chart-4/10",
+                  option.color === "blue" && "ring-primary border-primary bg-primary/10",
+                  option.color === "green" && "ring-teal border-teal bg-teal/10"
+                )
+              : "border-gray-300"
           )}
         >
           <div
