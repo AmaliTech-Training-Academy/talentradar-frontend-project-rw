@@ -1,15 +1,27 @@
-export default function LoginPage() {
+import { LoginForm } from "@/app/(auth)/components/login-form";
+import {
+  Card,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  CardTitle,
+  CardHeader,
+} from "@/components/ui/card";
+
+const LoginPage = () => {
   return (
-    <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-      <div className="w-full max-w-sm shadow-sm rounded-lg p-6 border-1">
-        <div className="text-center mb-2">
-          <h1 className="text-xl font-bold">Login</h1>
-          <p className="text-sm text-muted-foreground">
-            Enter your credentials to access your account
-          </p>
-        </div>
-        {/* Login form will go here */}
-      </div>
-    </div>
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">Login to your account</CardTitle>
+        <CardDescription>
+          Enter your credentials below to login to your account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <LoginForm />
+      </CardContent>
+    </Card>
   );
-}
+};
+
+export default LoginPage;

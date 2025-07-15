@@ -25,7 +25,9 @@ export default function Page({ children }: { children: ReactNode }) {
             </p>
             <div className="flex flex-col font-bold text-xl">
               TalentRadar.AI
-              <p className="text-xs font-normal">Mini Version</p>
+              <p className="text-xs font-normal">
+                Global talent readiness system
+              </p>
             </div>
           </div>
           <div className="flex-1  flex justify-end h-full">
