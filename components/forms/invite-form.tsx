@@ -55,22 +55,16 @@ export function InviteForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="shadow-none border-none">
-        {/* <CardHeader className="text-centr">
-          <CardTitle className="text-primary">
-            Invite a user to the platform
-          </CardTitle>
-          <CardDescription>
-            Enter user email and role to invite them to the platform
-          </CardDescription>
-        </CardHeader> */}
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-end gap-6">
               <div className="grid gap-3 flex-1">
-                <Label htmlFor="email">Email</Label>
-                {errors.email && (
-                  <p className="text-xs text-red">{errors.email.message}</p>
-                )}
+                <div className="flex flex-col gap-3 md:flex-row justify-between">
+                  <Label htmlFor="email">Email</Label>
+                  {errors.email && (
+                    <p className="text-xs text-red">{errors.email.message}</p>
+                  )}
+                </div>
                 <Input
                   id="email"
                   type="email"
@@ -79,10 +73,12 @@ export function InviteForm({
                 />
               </div>
               <div className="grid gap-3 flex-1">
-                <Label htmlFor="password">Role</Label>
-                {errors.role && (
-                  <p className="text-xs text-red">{errors.role.message}</p>
-                )}
+                <div className="flex flex-col gap-3 md:flex-row justify-between">
+                  <Label htmlFor="password">Role</Label>
+                  {errors.role && (
+                    <p className="text-xs text-red">{errors.role.message}</p>
+                  )}
+                </div>
                 <AppSelect
                   options={userRoles.map((role) => ({
                     value: role.id,

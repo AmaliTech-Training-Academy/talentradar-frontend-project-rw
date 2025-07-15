@@ -60,42 +60,50 @@ export function RegisterForm({
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-6">
             <div className="grid gap-3">
-              <Label htmlFor="fullName">Full name</Label>
+              <div className="flex flex-col gap-3 md:flex-row justify-between">
+                <Label htmlFor="fullName">Full name</Label>
+                {errors.fullName && (
+                  <p className="text-xs text-red">{errors.fullName.message}</p>
+                )}
+              </div>
               <Input
                 id="fullName"
                 type="text"
                 placeholder="Rad namo"
                 {...register("fullName")}
               />
-              {errors.fullName && (
-                <p className="text-sm text-red">{errors.fullName.message}</p>
-              )}
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="password">Password</Label>
+              <div className="flex flex-col gap-3 md:flex-row justify-between">
+                <Label htmlFor="password">Password</Label>
+
+                {errors.password && (
+                  <p className="text-xs text-red">{errors.password.message}</p>
+                )}
+              </div>
+
               <Input
                 id="password"
                 type="password"
                 placeholder="********"
                 {...register("password")}
               />
-              {errors.password && (
-                <p className="text-sm text-red">{errors.password.message}</p>
-              )}
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="conf-password">confirm password</Label>
+              <div className="flex flex-col gap-3 md:flex-row justify-between">
+                <Label htmlFor="conf-password">confirm password</Label>
+                {errors.confirmPassword && (
+                  <p className="text-xs text-red">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
+              </div>
               <Input
                 id="conf-password"
                 type="password"
                 placeholder="********"
                 {...register("confirmPassword")}
               />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               Submit
