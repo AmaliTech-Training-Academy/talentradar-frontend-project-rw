@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
     Select,
@@ -8,18 +8,22 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-interface AppSelectProps {
+export const AppSelect = ({
+    options,
+    placeholder,
+    value,
+    onChangeAction,
+    className
+}: {
     options: { value: string, label: string}[];
     placeholder: string;
     value: string;
     onChangeAction: (value: string) => void;
-
-}
-
-export const AppSelect = ({ options, placeholder, value, onChangeAction }: AppSelectProps) => {
+    className?: string;
+}) => {
     return (
         <Select value={value} onValueChange={onChangeAction}>
-            <SelectTrigger>
+            <SelectTrigger className={className}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -30,5 +34,5 @@ export const AppSelect = ({ options, placeholder, value, onChangeAction }: AppSe
                 ))}
             </SelectContent>
         </Select>
-    )
-}
+    );
+};
