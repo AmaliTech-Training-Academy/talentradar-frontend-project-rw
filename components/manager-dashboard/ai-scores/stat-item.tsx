@@ -8,7 +8,7 @@ interface StatItemProps {
 export const StatItem = ({ value, label, color, suffix = "" }: StatItemProps) => {
   return (
     <div className="text-center">
-      <div className={`text-lg font-bold ${color}`}>
+      <div className={`text-lg font-bold ${color} b`}>
         {value}
         {suffix}
       </div>

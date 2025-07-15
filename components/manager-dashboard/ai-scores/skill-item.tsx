@@ -1,60 +1,32 @@
-import { Progress } from "@/components/ui/progress";
+
+import { Progress } from "@/components/ui/progress"
+import type { LucideIcon } from "lucide-react"
 
 interface SkillItemProps {
-  label: string;
-  score: number;
-  color: string;
-  description?: string;
+  label: string
+  score: number
+  color: string
+  description: string
+  Icon: LucideIcon 
 }
 
-export const SkillItem = ({
-  label,
-  score,
-  color,
-  description,
-}: SkillItemProps) => {
-  const percentage = (score / 5) * 100;
-  const colorMap: { [key: string]: string } = {
-    first: "primary",
-    second: "var(--green)",
-    third: "var(--violet)",
-    fourth: "var(--orange)",
-    fify: "var(--teal)",
-  };
-  const backgroundColor = colorMap[color] || "ring";
+export function SkillItem({ label, score, color, description, Icon }: SkillItemProps) {
+  const textColorClass = color.replace("bg-", "text-")
 
   return (
-    <div className="space-y-2 p-2 bg-ring/10 rounded-md">
+    <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-sm font-medium ">{label}</span>
+        <div className="flex items-center space-x-2">
+          <Icon className="w-4 h-4 text-gray-700" />
+          <span className="text-sm font-medium text-gray-900">{label}</span>
         </div>
-        <span className="text-sm font-semibold">{score}</span>
+        <span className={`text-sm font-semibold ${textColorClass}`}>{score}</span> {/* Apply dynamic text color */}
       </div>
-      <div className="relative w-full">
-        <Progress
-          value={percentage}
-          className="h-2 w-full"
-        />
-        <div
-          className="absolute top-0 left-0 h-2 rounded-full transition-all duration-300"
-          style={{
-            width: `${percentage}%`,
-            backgroundColor: backgroundColor,
-          }}
-        />
-        <div
-          className="absolute top-0 h-2 rounded-full transition-all duration-300"
-          style={{
-            left: `${percentage}%`,
-            width: `${100 - percentage}%`,
-            backgroundColor: `${backgroundColor}0`,
-          }}
-        />
+      <div className="relative">
+        <Progress value={(score / 5) * 100} className="h-2" />
+        <div className={`absolute top-0 left-0 h-2 rounded-full ${color}`} style={{ width: `${(score / 5) * 100}%` }} />
       </div>
-      <div>
-        {description && <span className="text-xs mt-1">{description}</span>}
-      </div>
+      <p className="text-xs text-gray-500">{description}</p>
     </div>
-  );
+  )
 }

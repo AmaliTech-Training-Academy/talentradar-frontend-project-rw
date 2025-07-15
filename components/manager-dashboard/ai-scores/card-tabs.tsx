@@ -16,7 +16,7 @@ interface CardTabsProps {
 export const CardTabs = ({ member }: CardTabsProps) => {
   return (
     <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid w-full grid-cols-4 mb-4 bg-white p-0 h-auto">
+      <TabsList className="grid w-full grid-cols-4 mb-4 bg-white dark:bg-background p-0 h-auto">
         <TabsTrigger
           value="overview"
           className="data-[state=active]:text-violet  "
@@ -36,7 +36,7 @@ export const CardTabs = ({ member }: CardTabsProps) => {
         </TabsTrigger>
         <TabsTrigger
           value="ai-insights"
-          className="data-[state=active]:bg-transparent data-[state=active]:text-violet data-[state=active]:border-b-2 data-[state=active]:border-violet bg-transparent border-b-2 border-transparent rounded-none pb-3 hover:text-violet-500"
+          className="data-[state=active]:text-violet "
         >
           AI Insights
         </TabsTrigger>
@@ -52,6 +52,7 @@ export const CardTabs = ({ member }: CardTabsProps) => {
             description={
               skillConfig[skillKey as keyof typeof skillConfig].description
             }
+             Icon={skillConfig[skillKey as keyof typeof skillConfig].Icon}
           />
         ))}
 

@@ -1,5 +1,12 @@
-import { Brain } from "lucide-react";
-
+import {
+  Brain,
+  Code,
+  Lightbulb,
+  LucideIcon,
+  MessageSquare,
+  Target,
+  Users,
+} from "lucide-react";
 
 export interface TeamMember {
   id: string;
@@ -181,31 +188,43 @@ export const teamMembers: TeamMember[] = [
   },
 ];
 
-export const skillConfig = {
+interface SkillConfig {
+  label: string;
+  color: string;
+  description: string;
+  Icon: LucideIcon;
+}
+
+export const skillConfig: Record<string, SkillConfig> = {
   technical: {
     label: "Technical Excellence",
-    color: "first",
-    description: "Code quality, architecture, and problem-solving skills",
+    color: "bg-primary",
+    description: "Code quality, architecture, and technical innovation",
+    Icon: Code,
   },
   communication: {
     label: "Communication",
-    color: "second",
-    description: "Clear documentation, presentations, and team interaction",
+    color: "bg-green",
+    description: "Stakeholder engagement and knowledge sharing",
+    Icon: MessageSquare,
   },
   collaboration: {
     label: "Collaboration",
-    color: "third",
-    description: "Teamwork, knowledge sharing, and cross-functional work",
+    color: "bg-violet",
+    description: "Team dynamics and mentoring capabilities",
+    Icon: Users,
   },
   execution: {
     label: "Execution",
-    color: "fourth",
-    description: "Meeting deadlines, task completion, and delivery quality",
+    color: "bg-orange",
+    description: "Project delivery and business impact",
+    Icon: Target,
   },
   innovation: {
     label: "Innovation",
-    color: "fify",
-    description: "Creative solutions, new ideas, and process improvements",
+    color: "bg-teal",
+    description: "Learning agility and change leadership",
+    Icon: Lightbulb,
   },
 };
 

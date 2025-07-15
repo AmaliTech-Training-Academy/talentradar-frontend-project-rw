@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import {
   Bell,
+  Brain,
   ChartBarBig,
   ChartColumn,
   FileText,
@@ -94,6 +95,11 @@ const items = [
     title: "Self-assessment",
     url: "/dashboard/self-assessment",
     icon: FileText,
+  },
+  {
+    title: "AI Score",
+    url: "/manager/ai-scores",
+    icon: Brain,
   },
   {
     title: "Notifications",
