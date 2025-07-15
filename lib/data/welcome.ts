@@ -4,8 +4,20 @@ export const welcomeData = {
 };
 
 export const filters = [
-    '30 days',
-    '3 months',
-    '6 months',
-    '12 months'
+    {
+        value: '30',
+        label: '30 days'
+    },
+    {
+        value: '90',
+        label: '3 months'
+    },
+    {
+        value: '180',
+        label: '6 months'
+    },
+    {
+        value: '360',
+        label: '12 months'
+    }
 ];

@@ -1,9 +1,13 @@
+'use client';
+
 import { welcomeData, filters } from "@/lib/data/welcome";
 import { Clock4 } from "lucide-react";
-import { AppSelect } from "@/components/common/app-selector";
+import { AppSelect } from "@/components/common/app-select";
+import { useState } from "react";
 
 export const WelcomeMessageContainer = () => {
     const { fullName, last_updated } = welcomeData;
+    const [filter, setFilter] = useState('');
 
     return (
         <section
@@ -17,7 +21,7 @@ export const WelcomeMessageContainer = () => {
                 <span className="flex items-center gap-1 text-xs text-muted-foreground">
                     <Clock4 className="w-4 h-4" /> Last updated: {last_updated}
                 </span>
-                <AppSelect items={filters} />
+                <AppSelect options={filters} placeholder='Filter by Date range' value={filter} onChangeAction={(value) => setFilter(value)} />
             </article>
         </section>
     );
