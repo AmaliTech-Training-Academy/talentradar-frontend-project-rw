@@ -85,6 +85,7 @@ export function InviteForm({
                   value={watch("role")}
                   onChangeAction={(value) => setValue("role", value)}
                   placeholder="Select role"
+                  className="w-full"
                 />
               </div>
               <Button
