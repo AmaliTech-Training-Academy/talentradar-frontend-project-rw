@@ -1,5 +1,5 @@
-
-export const calculateOverallScore = (dimensions: any[]) => {
+import { DimensionScore } from "./types";
+export const calculateOverallScore = (dimensions: DimensionScore[]) => {
   const totalRatings = dimensions.reduce(
     (acc, dim) => acc + Number(dim.rating),
     0

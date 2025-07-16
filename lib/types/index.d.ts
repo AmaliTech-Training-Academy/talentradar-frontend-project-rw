@@ -15,4 +15,9 @@ export type Dimension = {
   description: string;
   Weight: string;
   criteria: Criterion[];
+  rating?: string;
+};
+export type DimensionScore = {
+  name: string;
+  rating: number;
 };
