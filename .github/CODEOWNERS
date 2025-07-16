@@ -1,8 +1,6 @@
-# CODEOWNERS file for talentradar-frontend-project-rw - Staging Branch
-# Frontend team reviewers required for staging
-
-# Global ownership - Frontend team reviewers
-* @aimerukundo @aristoteMkaty @bencyubahiro77 @kevin-rukundo
-
-# GitHub configuration files - Final reviewers only
+# Code owners for development branch - talentradar-frontend-project-rw
+# .github folder is managed by bikaze and muhirwaJD
 /.github/ @bikaze @muhirwaJD
+
+# Everything else is managed by all four backend code owners
+* @nccharles @ishimweeli @nkbtemmy2 @bumlev
