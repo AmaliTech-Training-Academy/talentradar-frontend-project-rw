@@ -1,9 +1,5 @@
-import { INotification } from "@/lib/types/notification"
 import Link from "next/link"
 import { Bell } from "lucide-react"
-import { useEffect, useState } from "react";
-import { getAllNotifications } from "@/lib/api/notification";
-import { toast } from "sonner";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,19 +9,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getRelativeTime } from "@/lib/get-relative-time";
+import { useNotifications } from "@/lib/hooks/use-notifications";
 
 export const NotificationDropdown = () => {
-    const [notifications, setNotifications] = useState<INotification[]>([]);
-
-    useEffect(() => {
-        const fetchNotifications = async () => {
-            const data = await getAllNotifications();
-            if (!data.success) toast.error(data.message);
-            setNotifications(notifications);
-        }
-
-        fetchNotifications();
-    }, []);
+    const { notifications, loading } = useNotifications();
 
     return (
         <DropdownMenu>
@@ -39,7 +26,9 @@ export const NotificationDropdown = () => {
                 <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                 <DropdownMenuGroup className="space-y-2 p-2">
                     {
-                        notifications.length === 0 ? (
+                        loading ? (
+                            <DropdownMenuItem disabled>Loading...</DropdownMenuItem>
+                        ) : notifications.length === 0 ? (
                             <DropdownMenuItem disabled>
                                 0 notifications
                             </DropdownMenuItem>
