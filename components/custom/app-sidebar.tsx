@@ -97,7 +97,7 @@ const items = [
   },
   {
     title: "Notifications",
-    url: "#",
+    url: "/dashboard/notifications",
     icon: Bell,
   },
   {
