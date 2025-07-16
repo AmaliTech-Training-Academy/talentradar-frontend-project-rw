@@ -1,14 +1,13 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SkillItem } from "./skill-item";
 import { StatItem } from "./stat-item";
+import { SkillItem } from "./skill-item";
 import {
   skillConfig,
   statsConfig,
   type TeamMember,
 } from "@/lib/data/team-data";
-
 interface CardTabsProps {
   member: TeamMember;
 }
@@ -31,7 +30,8 @@ export const CardTabs = ({ member }: CardTabsProps) => {
         </TabsTrigger>
         <TabsTrigger
           value="data-sources"
-          className="data-[state=active]:text-violet ">
+          className="data-[state=active]:text-violet "
+        >
           Data Sources
         </TabsTrigger>
         <TabsTrigger
@@ -52,7 +52,7 @@ export const CardTabs = ({ member }: CardTabsProps) => {
             description={
               skillConfig[skillKey as keyof typeof skillConfig].description
             }
-             Icon={skillConfig[skillKey as keyof typeof skillConfig].Icon}
+            Icon={skillConfig[skillKey as keyof typeof skillConfig].Icon}
           />
         ))}
 
@@ -88,4 +88,4 @@ export const CardTabs = ({ member }: CardTabsProps) => {
       </TabsContent>
     </Tabs>
   );
-}
+};

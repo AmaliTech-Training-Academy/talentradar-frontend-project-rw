@@ -5,9 +5,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Brain } from "lucide-react";
-import { CardTabs } from "@/components/manager-dashboard/ai-scores/card-tabs";
+import { CardTabs } from "@/app/dashboard/ai-scores/components/card-tabs";
 import { teamMembers, type TeamMember } from "@/lib/data/team-data";
-// import { ModeToggle } from "@/components/common/mode-toggle";
 export const AITeamOverview = () => {
   const [showAll, setShowAll] = useState(false);
   const displayedMembers = showAll ? teamMembers : teamMembers.slice(0, 4);
@@ -23,7 +22,6 @@ export const AITeamOverview = () => {
 
   return (
     <div className="p-6 min-h-screen bg-background">
-      {/* <ModeToggle /> */}
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">
@@ -33,7 +31,8 @@ export const AITeamOverview = () => {
             <Button
               onClick={() => setShowAll(true)}
               variant="outline"
-              className="text-violet/60 border-violet/60 hover:bg-violet/50 dark:text-violet/40 dark:border-violet/40 dark:hover:text-violet/95"           >
+              className="text-violet/60 border-violet/60 hover:bg-violet/50 dark:text-violet/40 dark:border-violet/40 dark:hover:text-violet/95"
+            >
               View All ({teamMembers.length})
             </Button>
           )}
