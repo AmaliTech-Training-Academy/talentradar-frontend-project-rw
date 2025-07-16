@@ -15,8 +15,10 @@ import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
 import { getRatingTitle } from "@/lib/get-rating-tittle";
 import { useState } from "react";
 import { ConfirmationModal } from "../components/confirmation-modal";
+import { calculateOverallScore } from "@/lib/calculate-overall-score";
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
+
 
 export default function SelfAssessmentPage() {
   const [hasDraft, setHasDraft] = useState(false);
@@ -60,6 +62,14 @@ export default function SelfAssessmentPage() {
       setShowConfirmModal(false);
     }
   };
+  const getDimensionScores = () => {
+    return dimensions.map((dim, index) => ({
+      name: dim.dimension_name,
+      rating: watch(`dimensions.${index}.rating`),
+    }));
+  };
+
+  const overallScore = calculateOverallScore(getDimensionScores());
 
   return (
     <div className="px-5 p-8 space-y-8">
@@ -70,7 +80,8 @@ export default function SelfAssessmentPage() {
               Professional Self-Assessment
             </h1>
             <p className="text-muted-foreground text-sm">
-              Comprehensive evaluation based on industry-standards and competency frameworks
+              Comprehensive evaluation based on industry-standards and
+              competency frameworks
             </p>
             {hasDraft && lastSaved && (
               <p className="text-xs text-muted-foreground">
@@ -100,10 +111,14 @@ export default function SelfAssessmentPage() {
                     <p
                       className={cn(
                         "text-xs bg-white border rounded-full px-2 inline",
-                        watch(`dimensions.${index}.rating`) === 1 && "text-destructive",
-                        watch(`dimensions.${index}.rating`) === 2 && "text-orange",
-                        watch(`dimensions.${index}.rating`) === 3 && "text-chart-4",
-                        watch(`dimensions.${index}.rating`) === 4 && "text-primary",
+                        watch(`dimensions.${index}.rating`) === 1 &&
+                          "text-destructive",
+                        watch(`dimensions.${index}.rating`) === 2 &&
+                          "text-orange",
+                        watch(`dimensions.${index}.rating`) === 3 &&
+                          "text-chart-4",
+                        watch(`dimensions.${index}.rating`) === 4 &&
+                          "text-primary",
                         watch(`dimensions.${index}.rating`) === 5 && "text-teal"
                       )}
                     >
@@ -153,6 +168,25 @@ export default function SelfAssessmentPage() {
               )}
             </CardContent>
           </Card>
+          <div className="border rounded-xl bg-primary/20 p-4">
+            <p className="font-semibold mb-2 text-primary">Assessment Summary</p>
+            <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-2">
+              {getDimensionScores().map((dim, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center justify-center text-primary"
+                >
+                  <p className="text-lg font-semibold">{dim.rating}</p>
+                  <p className="text-sm text-center">{dim.name}</p>
+                </div>
+              ))}
+            </div>
+            <hr className="border-primary my-2" />
+            <div className="flex flex-col items-center justify-center text-primary">
+              <p className="text-lg font-semibold">{overallScore}</p>
+              <p className="text-sm">Weighted Overall Score</p>
+            </div>
+          </div>
 
           <div className="flex justify-end gap-4 mt-6 mb-10">
             <Button
