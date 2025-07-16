@@ -1,8 +1,8 @@
 export interface INotification {
     id: string;
-    type: string;
-    category: string;
-    event_type: string;
+    category: 'SUCCESS' | 'WARNING' | 'ERROR' | 'INFO';
+    event_type: 'FEEDBACK' | 'ASSESSMENT' | 'AI_SCORE' | 'OTHER';
+    title: string;
     content: string;
     sent_at: string;
 }
