@@ -5,9 +5,6 @@ import { toast } from "sonner";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,7 +32,7 @@ export function InviteForm({
 
   const onSubmit = async (data: InviteFormValues) => {
     try {
-      const result = await sendInvite(data);
+      await sendInvite(data);
       toast.message("Invite sent to the user", {
         description: `${data.email}`,
       });
