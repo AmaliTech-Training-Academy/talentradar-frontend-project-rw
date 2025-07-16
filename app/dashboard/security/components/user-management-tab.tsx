@@ -1,4 +1,5 @@
 "use client";
+import AppTable from "@/components/custom/app-table";
 import {
   SelectTrigger,
   Select,
@@ -7,15 +8,18 @@ import {
   SelectContent,
   SelectGroup,
 } from "@/components/ui/select";
-import { UserCard } from "./user-card";
+import { Badge } from "@/components/ui/badge";
+import { userData } from "@/lib/data/security-dashboard-data";
 import { SelectLabel } from "@radix-ui/react-select";
+import { Button } from "@/components/ui/button";
+import { FileEdit, Trash2 } from "lucide-react";
 
 export const UserManagementTab = () => {
   return (
     <section className=" w-full">
-      <div className="w-full flex justify-between p-3 mb-3">
-        <p>List of users</p>
-        <Select onValueChange={(e) => console.log(e)}>
+      <div className="w-full flex justify-between p-3 pb-0 mb-3">
+        <h1 className="font-bold text-xl">List of users</h1>
+        <Select>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filter by" />
           </SelectTrigger>
@@ -29,9 +33,55 @@ export const UserManagementTab = () => {
           </SelectContent>
         </Select>
       </div>
-      {Array.from({ length: 3 }, (_) => crypto.randomUUID()).map((id) => (
-        <UserCard key={id} />
-      ))}
+      <AppTable
+        columns={columns}
+        data={userData}
+        actionsLabel="Actions"
+        renderActions={(session) => (
+          <div className=" flex items-start gap-1">
+            <Button variant={"ghost"} size={"icon"} className="">
+              <FileEdit />
+            </Button>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              className="text-destructive"
+            >
+              <Trash2 />
+            </Button>
+          </div>
+        )}
+      />
     </section>
   );
 };
+
+const columns = [
+  { key: "email", label: "Email" },
+  { key: "full_name", label: "Full name" },
+  { key: "role", label: "Role" },
+  {
+    key: "status",
+    label: "Status",
+    render: (value: any) =>
+      value ? (
+        <Badge variant="outline" className="text-green">
+          Active
+        </Badge>
+      ) : (
+        <Badge variant="outline" className="text-destructive">
+          Inactive
+        </Badge>
+      ),
+  },
+  {
+    key: "date_added",
+    label: "Date Added",
+    render: (val: string | boolean) => {
+      if (typeof val === "string") {
+        return new Date(val).toDateString();
+      }
+      return null;
+    },
+  },
+];

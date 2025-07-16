@@ -1,10 +1,9 @@
-export type RatingOption = {
-  value: number
-  color: string
-  title: string
-  desc: string
-}
-export type Criterion = {
+type RatingOption = {
+  value: number;
+  color: string;
+  title: string;
+  desc: string;
+};export type Criterion = {
   id: string;
   criteria_name: string;
 };

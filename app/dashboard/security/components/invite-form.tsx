@@ -2,10 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AppSelect } from "../../../../components/custom/app-select";
@@ -17,10 +14,9 @@ import { inviteFormSchema } from "@/lib/schemas";
 import { sendInvite } from "@/lib/api/invite";
 import { Loader } from "lucide-react";
 
-export function InviteForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+type InviteFormProps = React.ComponentProps<"div"> & { isOpen: boolean };
+
+export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
   const {
     register,
     handleSubmit,
@@ -45,13 +41,21 @@ export function InviteForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="shadow-none border-none  bg-sidebar">
+    <div
+      className={cn(
+        "flex flex-col gap-6 transition-all mt-3",
+        isOpen ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 max-h-0",
+        className
+      )}
+      {...props}
+    >
+      <Card className="shadow-none border-none pt-3 bg-sidebar">
         <CardContent>
+          <h1 className="font-bold text-lg mb-2">Add a user</h1>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex items-end gap-6">
+            <div className="flex flex-col gap-3 md:gap-6 md:flex-row md:items-end ">
               <div className="grid gap-3 flex-1">
-                <div className="flex flex-col gap-3 md:flex-row justify-between">
+                <div className="flex gap-3 flex-row justify-between">
                   <Label htmlFor="email">Email</Label>
                   {errors.email && (
                     <p className="text-xs text-destructive">
@@ -67,7 +71,7 @@ export function InviteForm({
                 />
               </div>
               <div className="grid gap-3 flex-1">
-                <div className="flex flex-col gap-3 md:flex-row justify-between">
+                <div className="flex  gap-3 flex-row text-end justify-between">
                   <Label htmlFor="password">Role</Label>
                   {errors.role && (
                     <p className="text-xs text-destructive">

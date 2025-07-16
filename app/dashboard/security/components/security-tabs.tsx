@@ -1,8 +1,9 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { Activity, Clock3, Settings, Shield, Users } from "lucide-react";
-import { UserManagementTab } from "../../../../components/feature-specific/admin/user-management-tab";
-import { SecurityAlerts } from "./overview-recent-alerts";
+import { UserManagementTab } from "./user-management-tab";
+import { SecurityAlerts } from "./overview/overview-recent-alerts";
+import { SessionsTable } from "./sessions/sessions";
 
 export const SecurityTabs = () => {
   return (
@@ -32,10 +33,10 @@ export const SecurityTabs = () => {
           <SecurityAlerts />
         </TabsContent>
         <TabsContent value="users" className="p-3 w-full">
-          <div>testing yes please</div>
+          <UserManagementTab />
         </TabsContent>
         <TabsContent value="sessions" className="p-3 w-full">
-          <div>testing yes please</div>
+          <SessionsTable />
         </TabsContent>
         <TabsContent value="logs" className="p-3 w-full">
           <div>testing yes please</div>

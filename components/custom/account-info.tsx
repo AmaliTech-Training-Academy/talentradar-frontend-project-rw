@@ -3,6 +3,12 @@
 import { LogOut, User } from "lucide-react";
 import { Button } from "../ui/button";
 import { NotificationDropdown } from "./notification-dropdown";
+import {
+  TooltipContent,
+  Tooltip,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
+import { LogoutCard } from "./logout-card";
 
 export const AccountInfo = () => {
   return (
@@ -19,13 +25,7 @@ export const AccountInfo = () => {
           <p className="text-xs">Developer</p>
         </div>
       </div>
-      <Button
-        variant={"ghost"}
-        size={"icon"}
-        className="hidden lg:block text-destructive hover:text-destructive"
-      >
-        <LogOut />
-      </Button>
+      <LogoutCard />
     </div>
   );
 };

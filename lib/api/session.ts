@@ -1,6 +1,7 @@
 import { Session } from "../types/sessions";
 import { FetchResponse } from "../types/response";
 import { handleApiError } from "../utils";
+import { sessions } from "../data/security-dashboard-data";
 
 export async function getSessions() {
   try {

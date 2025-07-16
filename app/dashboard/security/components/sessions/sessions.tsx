@@ -55,4 +55,3 @@ export const sessionColumns: Column<Session>[] = [
       ),
   },
 ];
-export default SessionsTable;
