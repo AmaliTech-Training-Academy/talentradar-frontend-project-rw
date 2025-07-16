@@ -1,5 +1,5 @@
-import AppTable from "@/components/common/app-table";
-import ErrorDiv from "@/components/common/ErrorDiv";
+import AppTable from "@/components/custom/app-table";
+import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
