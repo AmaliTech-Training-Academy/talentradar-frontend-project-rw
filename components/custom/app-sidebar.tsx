@@ -23,8 +23,8 @@ import {
   Home,
   Map,
   Settings,
-  Send,
   MessageSquare,
+  UserCheck,
 } from "lucide-react";
 import { SidebarAccountInfo } from "./sidebar-account-info";
 
@@ -90,7 +90,7 @@ const items = [
   {
     title: "Security Dashboard",
     url: "/dashboard/security",
-    icon: Send,
+    icon: UserCheck,
   },
   {
     title: "Self-assessment",

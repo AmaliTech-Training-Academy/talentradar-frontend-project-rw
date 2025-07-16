@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { InviteFormValues } from "@/lib/schemas/invite-schema";
 import { inviteFormSchema } from "@/lib/schemas";
 import { sendInvite } from "@/lib/api/invite";
+import { Loader } from "lucide-react";
 
 export function InviteForm({
   className,
@@ -45,7 +46,7 @@ export function InviteForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="shadow-none border-none">
+      <Card className="shadow-none border-none  bg-sidebar">
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex items-end gap-6">
@@ -87,9 +88,10 @@ export function InviteForm({
               </div>
               <Button
                 type="submit"
-                className="cursor-pointer max-w-lg"
+                className="cursor-pointer max-w-lg transition-all"
                 disabled={isSubmitting}
               >
+                {isSubmitting && <Loader className="animate-spin" size={20} />}
                 Send Invite
               </Button>
             </div>
