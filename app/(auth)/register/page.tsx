@@ -1,4 +1,5 @@
 import { RegisterForm } from "@/app/(auth)/components/register-form";
+import { Suspense } from "react";
 
 export default function page() {
   return (
@@ -7,7 +8,9 @@ export default function page() {
         <div className="text-center mb-2">
           <h1 className="text-xl font-bold">Set up your account</h1>
         </div>
-        <RegisterForm />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RegisterForm />
+        </Suspense>
       </div>
     </div>
   );

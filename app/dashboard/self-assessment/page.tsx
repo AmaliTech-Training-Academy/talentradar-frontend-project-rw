@@ -15,8 +15,6 @@ import { cn } from "@/lib/utils";
 import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
 import { getRatingTitle } from "@/lib/get-rating-tittle";
 
-
-
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
 
 export default function SelfAssessmentPage() {
@@ -118,7 +116,7 @@ export default function SelfAssessmentPage() {
                 <RatingSelector
                   options={RATING_OPTIONS}
                   selected={watch(`dimensions.${index}.rating`)}
-                  onSelect={(val) =>
+                  onSelectAction={(val) =>
                     setValue(`dimensions.${index}.rating`, val)
                   }
                 />
