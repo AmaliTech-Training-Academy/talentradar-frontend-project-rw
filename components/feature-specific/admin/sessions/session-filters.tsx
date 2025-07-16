@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CalendarIcon, Trash2, UserIcon } from "lucide-react";
-import React from "react";
 
 const SessionFilters = () => {
   return (
@@ -12,8 +11,6 @@ const SessionFilters = () => {
         <Input
           type="text"
           placeholder="Filter by User ID..."
-          // value={userIdFilter}
-          // onChange={(e) => setUserIdFilter(e.target.value)}
           className="pl-9 w-full"
           aria-label="Filter sessions by user ID"
         />
@@ -22,14 +19,11 @@ const SessionFilters = () => {
         <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="date"
-          //   value={startDateFilter}
-          //   onChange={(e) => setStartDateFilter(e.target.value)}
           className="pl-9 w-full"
           aria-label="Filter sessions from start date"
         />
       </div>
       <Button
-        // onClick={handleRevokeAllSessions}
         variant="outline"
       >
         Revoke All
