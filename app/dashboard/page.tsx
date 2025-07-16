@@ -1,7 +1,7 @@
-import { AiInsights } from "@/components/feature-specific/dashboard/ai-insights";
-import { RecentActivity } from "@/components/feature-specific/dashboard/recent-activity";
-import { StatCard } from "@/components/feature-specific/dashboard/stat-card";
-import { WelcomeMessageContainer } from "@/components/feature-specific/dashboard/welcome-message-container";
+import { AiInsights } from "@/app/dashboard/components/ai-insights";
+import { RecentActivity } from "@/app/dashboard/components/recent-activity";
+import { StatCard } from "@/app/dashboard/components/stat-card";
+import { WelcomeMessageContainer } from "@/app/dashboard/components/welcome-message-container";
 import { CircleAlert, CircleCheckBig, ChartColumn, Users } from "lucide-react";
 
 const stats = [
@@ -24,7 +24,7 @@ const stats = [
     {
         id: 3,
         title: 'Pending Reviews',
-        stat: 0,
+        stat: 1,
         desc: 'Require attention',
         color: 'orange',
         icon: CircleAlert,
@@ -32,14 +32,14 @@ const stats = [
     {
         id: 4,
         title: 'Team Average',
-        stat: 4.1/5,
+        stat: '4.1/5',
         desc: 'Team performance',
         color: 'teal',
         icon: ChartColumn,
     }
 ];
 
-export default function ManagerDashboard() {
+export default function Dashboard() {
     return (
         <main className="space-y-6">
             <WelcomeMessageContainer />

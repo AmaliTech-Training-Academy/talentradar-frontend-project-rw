@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
   Card,
-  CardContent,
+  CardContent
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AppSelect } from "../common/app-select";
+import { AppSelect } from "../../../../components/custom/app-select";
 import { userRoles } from "@/lib/constants/roles";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

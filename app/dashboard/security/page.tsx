@@ -1,4 +1,4 @@
-import { InviteForm } from "@/components/forms/invite-form";
+import { InviteForm } from "./components/invite-form";
 import React from "react";
 
 export default function page() {

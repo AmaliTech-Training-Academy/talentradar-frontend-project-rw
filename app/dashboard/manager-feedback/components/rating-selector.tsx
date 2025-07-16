@@ -7,13 +7,13 @@ import { RatingOption } from "@/lib/types"
 interface RatingSelectorProps {
   options: RatingOption[]
   selected: number
-  onSelect: (value: number) => void
+  onSelectAction: (value: number) => void
 }
 
 export default function RatingSelector({
   options,
   selected,
-  onSelect,
+  onSelectAction,
 }: RatingSelectorProps) {
   return (
     <div>
@@ -25,7 +25,7 @@ export default function RatingSelector({
       {options.map((option) => (
         <Card
           key={option.value}
-          onClick={() => onSelect(option.value)}
+          onClick={() => onSelectAction(option.value)}
           className={cn(
             "cursor-pointer border px-2 flex flex-col items-center justify-center text-center rounded-lg py-2 space-y-2",
             selected === option.value 

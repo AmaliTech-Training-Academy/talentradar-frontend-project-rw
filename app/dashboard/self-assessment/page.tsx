@@ -7,7 +7,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { dimensions } from "@/lib/dummyData";
-import RatingSelector from "@/components/feature-specific/dashboard/rating-selector";
+import RatingSelector from "@/app/dashboard/manager-feedback/components/rating-selector";
+import { RatingOption } from "@/lib/types";
 import { CircleCheck, Save, TrendingUp } from "lucide-react";
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";
@@ -115,7 +116,7 @@ export default function SelfAssessmentPage() {
                 <RatingSelector
                   options={RATING_OPTIONS}
                   selected={watch(`dimensions.${index}.rating`)}
-                  onSelect={(val) =>
+                  onSelectAction={(val) =>
                     setValue(`dimensions.${index}.rating`, val)
                   }
                 />
