@@ -1,17 +1,29 @@
-import { ModeToggle } from "@/components/custom/mode-toggle";
-import { Button } from "@/components/ui/button";
+import { CtaSection } from "@/components/custom/landing/cta-section";
+import { FeatureSection } from "@/components/custom/landing/feature-section";
+import Footer from "@/components/custom/landing/footer";
+import { Header } from "@/components/custom/landing/header";
+import { HeroSection } from "@/components/custom/landing/hero-section";
+import { Microservices } from "@/components/custom/landing/microservices-section";
+import { StatsSection } from "@/components/custom/landing/starts-section";
 
 const Home = () => {
   return (
-    <div className=" w-full h-full mt-20 ">
-      <div className="mx-auto w-fit space-y-10">
-        <div className="w-fit mx-auto">
-          <ModeToggle />
-        </div>
-        <p className="font-bold text-2xl text-center">TalentRadar!</p>
-        <p className="mx-auto w-fit">Welcome</p>
-        <Button className="flex mx-auto">Get started</Button>
-      </div>
+    <div className="min-h-screen flex flex-col bg-background">
+      <Header />
+      <main className="flex-1">
+        <HeroSection />
+        <StatsSection />
+
+        {/* Feature section */}
+        <FeatureSection />
+
+        {/* Microservices */}
+        <Microservices />
+
+        {/* cta - section */}
+        <CtaSection />
+      </main>
+      <Footer />
     </div>
   );
 };
