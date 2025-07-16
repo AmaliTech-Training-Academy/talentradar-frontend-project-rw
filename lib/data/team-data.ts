@@ -29,6 +29,7 @@ export interface TeamMember {
     projectsCompleted: number;
   };
   lastUpdated: string;
+  overallFeedback: string;
 }
 
 export const teamMembers: TeamMember[] = [
@@ -53,6 +54,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 8,
     },
     lastUpdated: "2 hours ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
   },
   {
     id: "2",
@@ -75,6 +78,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 12,
     },
     lastUpdated: "1 hour ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
   },
   {
     id: "3",
@@ -97,6 +102,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 6,
     },
     lastUpdated: "3 hours ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
   },
   {
     id: "4",
@@ -119,6 +126,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 9,
     },
     lastUpdated: "4 hours ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
   },
   {
     id: "5",
@@ -141,6 +150,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 7,
     },
     lastUpdated: "5 hours ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
   },
   {
     id: "6",
@@ -163,6 +174,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 11,
     },
     lastUpdated: "6 hours ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
   },
   {
     id: "7",
@@ -185,6 +198,9 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 3,
     },
     lastUpdated: "1 hour ago",
+     overallFeedback:
+      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
+  
   },
 ];
 

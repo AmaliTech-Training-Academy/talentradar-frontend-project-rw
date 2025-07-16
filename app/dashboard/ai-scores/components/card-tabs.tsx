@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatItem } from "./stat-item";
 import { SkillItem } from "./skill-item";
+import {MemberFeedback} from './member-feedback'
 import {
   skillConfig,
   statsConfig,
@@ -67,6 +68,7 @@ export const CardTabs = ({ member }: CardTabsProps) => {
             />
           ))}
         </div>
+         <MemberFeedback feedback={member.overallFeedback} />
       </TabsContent>
 
       <TabsContent value="analytics" className="py-8">
