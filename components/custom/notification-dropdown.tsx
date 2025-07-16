@@ -1,6 +1,5 @@
 import { INotification } from "@/lib/types/notification"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Bell } from "lucide-react"
 import { useEffect, useState } from "react";
 import { getAllNotifications } from "@/lib/api/notification";
@@ -13,9 +12,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import clsx from "clsx";
 import { getRelativeTime } from "@/lib/get-relative-time";
-import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 
 export const NotificationDropdown = () => {
     const [notifications, setNotifications] = useState<INotification[]>([]);
