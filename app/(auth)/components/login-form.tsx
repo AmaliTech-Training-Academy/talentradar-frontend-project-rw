@@ -17,14 +17,14 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
   const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
-    const testData = await new Promise((resolve) =>
+    await new Promise((resolve) =>
       setTimeout(() => {
         resolve(data);
       }, 1000)
     ).then((data) => {
       console.log(data);
       toast.error("Failure", {
-        // description: `${errors.root?.message}`,
+        description: `${errors.root?.message ?? ""}`,
         position: "top-right",
         style: {
           color: "var(--destructive)",
@@ -60,9 +60,9 @@ export const LoginForm = () => {
           />
         </div>
         <div className="grid gap-2">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1 justify-between">
             <Label htmlFor="password">Password</Label>
-            <p className="text-xs text-destructive">
+            <p className="text-xs text-destructive text-end">
               {errors.password && errors.password.message}
             </p>
           </div>
