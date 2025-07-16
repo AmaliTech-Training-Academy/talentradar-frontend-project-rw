@@ -56,9 +56,7 @@ export default function SelfAssessmentPage() {
     if (isDraft) {
       setHasDraft(true);
       setLastSaved(new Date().toLocaleTimeString());
-      console.log("DRAFT SAVED:", payload);
     } else {
-      console.log("SUBMIT PAYLOAD:", payload);
       setShowConfirmModal(false);
     }
   };
