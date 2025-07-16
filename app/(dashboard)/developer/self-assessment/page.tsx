@@ -8,14 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { dimensions } from "@/lib/dummyData";
 import RatingSelector from "@/components/feature-specific/dashboard/rating-selector";
-import { RatingOption } from "@/lib/types";
 import { CircleCheck, Save, TrendingUp } from "lucide-react";
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";
 import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
 import { getRatingTitle } from "@/lib/get-rating-tittle";
-
-
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
 
