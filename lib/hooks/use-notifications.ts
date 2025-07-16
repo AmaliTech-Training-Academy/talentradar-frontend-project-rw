@@ -17,13 +17,13 @@ export const useNotifications = () => {
 
     const fetchInitial = async () => {
       try {
-        const res = await getAllNotifications();
-        if (!res.success) throw new Error(res.message || "Failed to fetch notifications");
-        setNotifications(res.result);
-      } catch (err: any) {
-        console.error("Notification fetch error:", err);
-        setError(err.message || "Unknown error");
-        toast.error(err.message);
+        const getNotificationResponse = await getAllNotifications();
+        if (!getNotificationResponse.success) throw new Error(getNotificationResponse.message || "Failed to fetch notifications");
+        setNotifications(getNotificationResponse.result);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        setError(message);
+        toast.error(message);
       } finally {
         setLoading(false);
       }
@@ -45,8 +45,7 @@ export const useNotifications = () => {
             toast.info("New notification received");
           });
         },
-        onStompError: (frame) => {
-          console.error("STOMP error:", frame);
+        onStompError: () => {
           setError("WebSocket error");
           toast.error("WebSocket connection failed");
         },
