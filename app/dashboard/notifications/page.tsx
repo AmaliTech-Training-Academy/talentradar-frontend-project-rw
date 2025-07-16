@@ -4,14 +4,14 @@ import { useState } from "react";
 import { AppSelect } from "@/components/custom/app-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, Check, Clock, AlertCircle, CircleCheckBig, Info, XCircle } from "lucide-react";
+import { Bell, Check, Clock, AlertCircle, CircleCheckBig, Info, XCircle, Archive, Star } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import { TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useNotifications } from "@/lib/hooks/use-notifications";
-import { getRelativeTime } from "@/lib/get-relative-time";
+// import { useNotifications } from "@/lib/hooks/use-notifications";
+import { NotificationCard } from "./components/notification-card";
+import { INotification } from "@/lib/types/notification";
 
 type TabCategory = 'ALL' | 'UNREAD' | 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR';
 
@@ -42,7 +42,7 @@ export default function Notifications() {
     const [activeTab, setActiveTab] = useState(tabs[0].value);
     const [sortFilter, setSortFilter] = useState(sortOptions[0].value);
     // const { notifications, loading } = useNotifications();
-    const notifications = [
+    const notifications: INotification[] = [
         {
             "id": "550e8400-e29b-41d4-a716-446655440000",
             "category": "SUCCESS", // SUCCESS | WARNING | ERROR | INFO
@@ -149,9 +149,9 @@ export default function Notifications() {
             <Tabs
                 value={activeTab}
                 onValueChange={(value) => setActiveTab(value as TabCategory)}
-                className="w-full overflow-hidden rounded-b-md border-b border-l border-r border-input"
+                className="w-full rounded-b-md border-b border-l border-r border-input"
             >
-                <TabsList className="flex w-full gap-4 px-6 py-4 border-b border-input">
+                <TabsList className="flex flex-wrap w-full gap-4 px-6 py-4 border-b border-input">
                     {
                         tabs.map(({ value, icon: Icon }) => (
                                 <TabsTrigger
@@ -171,18 +171,27 @@ export default function Notifications() {
                 </div>
                 <TabsContent value={activeTab}>
                     <div className="p-2 space-y-2">
-                        {filteredNotifications.map((n) => (
-                            <div key={n.id} className="rounded-md border p-4 shadow-sm">
-                                <p className="font-medium">{n.title}</p>
-                                <p className="text-sm text-muted-foreground">{n.content}</p>
-                                <p className="text-xs text-muted-foreground">{getRelativeTime(n.sent_at)}</p>
-                            </div>
-                        ))}
+                        {filteredNotifications.map((n) => <NotificationCard key={n.id} notification={n} />)}
                         {filteredNotifications.length === 0 && (
                             <p className="text-muted-foreground text-center">No notifications found.</p>
                         )}
                     </div>
                 </TabsContent>
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-6 px-6 py-4 border-t border-input text-foreground/80 text-sm">
+                    <div>
+                        Showing 2 of 2 notifications
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-6">
+                        <div className="flex gap-1 items-center">
+                            <Archive size={15} />
+                            <span>Archive all read</span>
+                        </div>
+                        <div className="flex gap-1 items-center">
+                            <Star size={15} />
+                            <span>Notifications settings</span>
+                        </div>
+                    </div>
+                </div>
             </Tabs>
         </main>
     );
