@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Brain } from "lucide-react";
 import { CardTabs } from "@/components/manager-dashboard/ai-scores/card-tabs";
 import { teamMembers, type TeamMember } from "@/lib/data/team-data";
-import { ModeToggle } from "@/components/common/mode-toggle";
+// import { ModeToggle } from "@/components/common/mode-toggle";
 export const AITeamOverview = () => {
   const [showAll, setShowAll] = useState(false);
   const displayedMembers = showAll ? teamMembers : teamMembers.slice(0, 4);
@@ -23,7 +23,7 @@ export const AITeamOverview = () => {
 
   return (
     <div className="p-6 min-h-screen bg-background">
-      <ModeToggle />
+      {/* <ModeToggle /> */}
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">
