@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { dimensions } from "@/lib/dummyData";
 import RatingSelector from "@/app/dashboard/manager-feedback/components/rating-selector";
-import { RatingOption } from "@/lib/types";
 import { CircleCheck, Save, TrendingUp } from "lucide-react";
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";

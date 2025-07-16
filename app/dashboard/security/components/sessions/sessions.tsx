@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import SessionFilters from "./session-filters";
 
 const SessionsTable = async () => {
-    const sessions = await getSessions();
-    if (!sessions.success) return <ErrorDiv error={sessions.message} />;
+  const sessions = await getSessions();
+  if (!sessions.success) return <ErrorDiv error={sessions.message} />;
   return (
     <div className="p-5">
       <div className="mb-5 flex flex-col md:flex-row  justify-start md:justify-between items-start md:items-center">
@@ -37,13 +37,14 @@ export const sessionColumns = [
   {
     key: "created_at",
     label: "Created At",
-    render: (value: any) => new Date(value).toLocaleString(),
+    render: (value: string | boolean) =>
+      new Date(value as string).toLocaleString(),
   },
   {
     key: "is_active",
     label: "Status",
-    render: (value: any) =>
-      value ? (
+    render: (value: string | boolean) =>
+      (value as boolean) ? (
         <Badge variant="outline" className="text-green">
           Active
         </Badge>

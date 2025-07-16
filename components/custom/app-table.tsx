@@ -25,6 +25,7 @@ type AppTableProps<T> = {
   actionsLabel?: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const AppTable = <T extends Record<string, any>>({
   caption,
   columns,
@@ -60,7 +61,9 @@ const AppTable = <T extends Record<string, any>>({
               {columns.map((col) => (
                 <TableCell
                   key={String(col.key)}
-                  className={`${col.align === "right" ? "text-right" : ""} px-5 py-3`}
+                  className={`${
+                    col.align === "right" ? "text-right" : ""
+                  } px-5 py-3`}
                 >
                   {col.render ? col.render(row[col.key]) : row[col.key]}
                 </TableCell>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { Button } from "../ui/button";
 import { NotificationDropdown } from "./notification-dropdown";
 
