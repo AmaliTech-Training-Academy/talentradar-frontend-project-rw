@@ -1,4 +1,4 @@
-import { ModeToggle } from "@/components/common/mode-toggle";
+import { ModeToggle } from "@/components/custom/mode-toggle";
 import { Button } from "@/components/ui/button";
 
 const Home = () => {

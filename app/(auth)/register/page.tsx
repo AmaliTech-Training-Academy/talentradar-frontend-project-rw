@@ -1,5 +1,4 @@
-import { RegisterForm } from "@/components/forms/register-form";
-import Link from "next/link";
+import { RegisterForm } from "@/app/(auth)/components/register-form";
 
 export default function page() {
   return (

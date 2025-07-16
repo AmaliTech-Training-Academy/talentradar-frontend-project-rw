@@ -2,7 +2,7 @@
 
 import { welcomeData, filters } from "@/lib/data/welcome";
 import { Clock4 } from "lucide-react";
-import { AppSelect } from "@/components/common/app-select";
+import { AppSelect } from "@/components/custom/app-select";
 import { useState } from "react";
 
 export const WelcomeMessageContainer = () => {

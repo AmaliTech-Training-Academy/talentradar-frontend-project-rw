@@ -70,29 +70,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 }
 const items = [
   {
-    title: "Dashabord",
-    url: "#",
+    title: "Dashboard",
+    url: "/dashboard",
     isActive: true,
     icon: Home,
   },
   {
     title: "Productivity scored",
-    url: "#",
+    url: "/dashboard/productivity-scored",
     icon: ChartColumn,
   },
   {
-    title: "AI Roadmap & Tests",
-    url: "#",
+    title: "AI Scores",
+    url: "/dashboard/ai-scores",
     icon: Map,
   },
   {
-    title: "Invites",
-    url: "/admin/invite",
+    title: "Security Dashboard",
+    url: "/dashboard/security",
     icon: Send,
   },
   {
     title: "Self-assessment",
-    url: "#",
+    url: "/dashboard/self-assessment",
     icon: FileText,
   },
   {

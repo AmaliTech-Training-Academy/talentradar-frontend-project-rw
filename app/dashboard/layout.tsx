@@ -1,5 +1,5 @@
-import { AccountInfo } from "@/components/feature-specific/dashboard/account-info";
-import { AppSidebar } from "@/components/feature-specific/dashboard/app-sidebar";
+import { AccountInfo } from "@/components/custom/account-info";
+import { AppSidebar } from "@/components/custom/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,

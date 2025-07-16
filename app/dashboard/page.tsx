@@ -1,4 +1,7 @@
-import { StatCard } from "@/components/feature-specific/dashboard/stat-card";
+import { AiInsights } from "@/app/dashboard/components/ai-insights";
+import { RecentActivity } from "@/app/dashboard/components/recent-activity";
+import { StatCard } from "@/app/dashboard/components/stat-card";
+import { WelcomeMessageContainer } from "@/app/dashboard/components/welcome-message-container";
 import { CircleAlert, CircleCheckBig, ChartColumn, Users } from "lucide-react";
 
 const stats = [
@@ -36,9 +39,10 @@ const stats = [
     }
 ];
 
-export default function ManagerDashboard() {
+export default function Dashboard() {
     return (
-        <>
+        <main className="space-y-6">
+            <WelcomeMessageContainer />
             <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {
                     stats.map(stat => (
@@ -46,6 +50,10 @@ export default function ManagerDashboard() {
                     ))
                 }
             </section>
-        </>
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <RecentActivity />
+                <AiInsights />
+            </section>
+        </main>
     )
 }
