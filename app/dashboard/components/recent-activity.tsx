@@ -13,7 +13,7 @@ export const RecentActivity = ({activities}:{activities: ActivityPayload[]}) => 
             <div className="p-6 space-y-4">
                 {
                     activities.map(activity => {
-                        const { id, type, title, timestamp,} = activity
+                        const { id, type, title, timestamp} = activity
                         return (
                         <div
                             key={id}
