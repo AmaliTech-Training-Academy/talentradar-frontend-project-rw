@@ -1,31 +1,9 @@
+import { ActivityPayload } from "@/lib/types/activities";
 import clsx from "clsx";
-import { Activity, Brain, FileText, MessageSquare } from "lucide-react";
+import { Activity, } from "lucide-react";
+import LogIcon from "./log-icon";
 
-const activities = [
-    {
-        id: 1,
-        icon: MessageSquare,
-        type: 'feedback',
-        title: 'Lisa Thompson provided feedback for Michael Rodriguez',
-        timestamp: '13/02/2024, 12:15:00'
-    },
-    {
-        id: 2,
-        icon: FileText,
-        type: 'self-assessment',
-        title: 'Michael Rodriguez submitted a self-assessment',
-        timestamp: '13/02/2024, 12:15:00'
-    },
-    {
-        id: 3,
-        icon: Brain,
-        type: 'ai-score',
-        title: 'AI score updated for Jane Doe',
-        timestamp: '13/02/2024, 12:15:00'
-    }
-];
-
-export const RecentActivity = () => {
+export const RecentActivity = ({activities}:{activities: ActivityPayload[]}) => {
     return (
         <article className="bg-white dark:bg-primary/5 rounded-md border-[1px] shadow-xs">
             <div className="p-6 shadow-sm dark:border-b-[1px] flex items-center gap-2">
@@ -35,7 +13,7 @@ export const RecentActivity = () => {
             <div className="p-6 space-y-4">
                 {
                     activities.map(activity => {
-                        const { id, type, title, timestamp, icon: Icon} = activity
+                        const { id, type, title, timestamp} = activity
                         return (
                         <div
                             key={id}
@@ -51,7 +29,7 @@ export const RecentActivity = () => {
                                     }
                                 )}
                             >
-                                <Icon className="w-4 h-4" />
+                                <LogIcon type={type} />
                             </div>
                             <div className="flex flex-col">
                                 <p className="text-sm text-foreground/80">{title}</p>

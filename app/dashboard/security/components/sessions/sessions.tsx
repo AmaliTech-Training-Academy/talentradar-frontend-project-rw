@@ -1,10 +1,9 @@
-import AppTable from "@/components/custom/app-table";
+import AppTable, { Column } from "@/components/custom/app-table";
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import SessionFilters from "./session-filters";
-import { Column } from "@/components/custom/app-table";
 import { Session } from "@/lib/types/sessions";
 
 const SessionsTable = async () => {
