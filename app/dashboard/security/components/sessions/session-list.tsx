@@ -6,7 +6,7 @@ import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/lib/hooks";
 import { PaginationControls } from "@/components/custom/paginator-control";
-import { setPage } from "@/lib/features/paginationSlice";
+import { setPage } from "@/lib/features/paginationslice";
 import { getSessions } from "@/lib/api/session";
 import { handleApiError } from "@/lib/utils";
 import ErrorDiv from "@/components/custom/ErrorDiv";
@@ -61,7 +61,7 @@ const SessionsList = ({
         </div>
       ) : (
         <div className="flex justify-center">
-          <Loader className="mr-2 h-10 w-10 animate-spin" />
+          <Loader className="mr-2 h-6 w-6 animate-spin" />
         </div>
       )}
       {pageInfo && (pageInfo.totalPages ?? 0) > 1 && (
