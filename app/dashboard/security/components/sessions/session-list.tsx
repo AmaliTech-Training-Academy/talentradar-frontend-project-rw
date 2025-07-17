@@ -5,7 +5,12 @@ import React, { useState } from "react";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/lib/hooks";
+import { PaginationControls } from "@/components/custom/paginator-control";
 import { setPage } from "@/lib/features/paginationSlice";
+import { getSessions } from "@/lib/api/session";
+import { handleApiError } from "@/lib/utils";
+import ErrorDiv from "@/components/custom/ErrorDiv";
+import { Loader } from "lucide-react";
 
 const SessionsList = ({
   sessions,
@@ -14,38 +19,60 @@ const SessionsList = ({
 }) => {
   const dispatch = useAppDispatch();
   const [sessionsData, setSessions] = useState<Session[]>(sessions.content);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [pageInfo, setPageInfo] = useState({
     page: sessions.pageable.pageNumber - 1,
     size: sessions.pageable.pageSize,
     totalItems: sessions.totalElements,
     totalPages: sessions.totalPages,
-    // hasNext: sessions.pageInfo?.hasNext,
-    // hasPrevious: sessions.pageInfo?.hasPrevious,
     isFirst: sessions.first,
     isLast: sessions.last,
   });
   async function handlePageChange(page: number) {
     dispatch(setPage({ key: "session", page }));
     setPageInfo({ ...pageInfo, page });
-    console.log(page + 1);
+    setError(null);
+    setLoading(true);
+    try {
+      const sessions = await getSessions(page);
+      setSessions(sessions.content || []);
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      setError(errorMessage.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (error) {
+    return <ErrorDiv error={error} />;
   }
   return (
-    <div>
-      <AppTable<Session>
-        columns={sessionColumns}
-        data={sessionsData}
-        actionsLabel="Actions"
-        renderActions={(session) => <SessionActions session={session} />}
-      />
-      {/* {pageInfo && (pageInfo.totalPages ?? 0) > 1 && (
+    <>
+      {!loading ? (
+        <div>
+          <AppTable<Session>
+            columns={sessionColumns}
+            data={sessionsData}
+            actionsLabel="Actions"
+            renderActions={(session) => <SessionActions session={session} />}
+          />
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <Loader className="mr-2 h-10 w-10 animate-spin" />
+        </div>
+      )}
+      {pageInfo && (pageInfo.totalPages ?? 0) > 1 && (
         <div className="mt-6 flex justify-center">
           <PaginationControls
             pageInfo={pageInfo}
             onPageChange={handlePageChange}
           />
         </div>
-      )} */}
-    </div>
+      )}
+    </>
   );
 };
 

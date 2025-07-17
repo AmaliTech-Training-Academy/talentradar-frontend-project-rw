@@ -1,4 +1,3 @@
-"use client";
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
 import SessionFilters from "./session-filters";

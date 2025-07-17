@@ -9,7 +9,7 @@ import {
   handlePrevious,
   renderPageNumbers,
 } from "@/lib/pagination";
-import { PaginationControlsProps } from "@/lib/types/paginator";
+import { PaginationControlsProps } from "@/lib/types/pagination";
 
 export function PaginationControls({
   pageInfo,
