@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
-export const Header = () =>{
+export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -60,21 +60,19 @@ export const Header = () =>{
               About
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-violet-500 transition-all duration-200 group-hover:w-full"></span>
             </Link>
-           
+
             <Button
               asChild
               className="bg-violet  dark:bg-gradient-to-r from-primary/60 to-violet/80 text-white  transition-all duration-200 shadow-lg hover:shadow-violet/50/25"
             >
-              <Link href="/">Get Started →</Link>
+              <Link href="/login">Get Started →</Link>
             </Button>
-             <ModeToggle />
+            <ModeToggle />
           </nav>
 
           {/* Mobile Menu Button & Theme Toggle */}
           <div className="flex items-center gap-2 lg:hidden">
-            <div className="hidden sm:block">
-             
-            </div>
+            <div className="hidden sm:block"></div>
             <Button
               variant="ghost"
               size="sm"
@@ -122,7 +120,7 @@ export const Header = () =>{
                   className="w-full bg-violet dark:from-violet/60 dark:to-violet/80 text-white hover:opacity-90 hover:shadow-violet/50/25  transition-all duration-200 shadow-lg"
                   onClick={closeMobileMenu}
                 >
-                  <Link href="/get-started">Get Started →</Link>
+                  <Link href="/login">Get Started →</Link>
                 </Button>
 
                 {/* Mobile Theme Toggle (only show on small screens) */}
@@ -139,4 +137,4 @@ export const Header = () =>{
       )}
     </header>
   );
-}
+};
