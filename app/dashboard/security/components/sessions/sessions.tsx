@@ -1,3 +1,4 @@
+"use client";
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
 import SessionFilters from "./session-filters";
@@ -19,7 +20,9 @@ export const SessionsTable = async () => {
         </div>
         <SessionFilters />
       </div>
-      <SessionsList sessions={sessions as SessionResponse<Session[]>} />
+      <StoreProvider>
+        <SessionsList sessions={sessions as SessionResponse<Session[]>} />
+      </StoreProvider>
     </div>
   );
 };

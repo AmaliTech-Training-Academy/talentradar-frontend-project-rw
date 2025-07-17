@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-
+import paginationReducer from "./features/paginationSlice"
 export const makeStore = () => {
   return configureStore({
-    reducer: {}
+    reducer: paginationReducer
   })
 }
 

@@ -5,12 +5,16 @@ import React, { useState } from "react";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch } from "@/lib/hooks";
-import { setPage } from "@/lib/features/paginationslice";
+import { setPage } from "@/lib/features/paginationSlice";
 
-const SessionsList = ({ sessions }: { sessions: SessionResponse<Session[]> }) => {
+const SessionsList = ({
+  sessions,
+}: {
+  sessions: SessionResponse<Session[]>;
+}) => {
   const dispatch = useAppDispatch();
   const [sessionsData, setSessions] = useState<Session[]>(sessions.content);
-    const [pageInfo, setPageInfo] = useState({
+  const [pageInfo, setPageInfo] = useState({
     page: sessions.pageable.pageNumber - 1,
     size: sessions.pageable.pageSize,
     totalItems: sessions.totalElements,
@@ -33,6 +37,14 @@ const SessionsList = ({ sessions }: { sessions: SessionResponse<Session[]> }) =>
         actionsLabel="Actions"
         renderActions={(session) => <SessionActions session={session} />}
       />
+      {/* {pageInfo && (pageInfo.totalPages ?? 0) > 1 && (
+        <div className="mt-6 flex justify-center">
+          <PaginationControls
+            pageInfo={pageInfo}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )} */}
     </div>
   );
 };
