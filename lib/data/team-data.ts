@@ -83,7 +83,7 @@ export const teamMembers: TeamMember[] = [
     },
     lastUpdated: "1 hour ago",
 
-     overallFeedback:
+     overallFeedback: ""
 
   },
   {
