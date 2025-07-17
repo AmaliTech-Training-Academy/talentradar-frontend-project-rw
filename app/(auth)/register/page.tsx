@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import {
   Card,
   CardDescription,
@@ -17,7 +18,9 @@ export default function page() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <RegisterForm />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RegisterForm />
+        </Suspense>
       </CardContent>
     </Card>
   );
