@@ -20,10 +20,11 @@ export async function getSessions() {
     return handleApiError(error);
   }
 }
-export async function revokeSessions(id:string) {
+export async function revokeSessions(id: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,{
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,
+      {
         method: "DELETE",
       }
     );

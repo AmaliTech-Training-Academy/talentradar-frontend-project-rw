@@ -23,11 +23,7 @@ const SessionFilters = () => {
           aria-label="Filter sessions from start date"
         />
       </div>
-      <Button
-        variant="outline"
-      >
-        Revoke All
-      </Button>
+      <Button variant="outline">Revoke All</Button>
     </div>
   );
 };

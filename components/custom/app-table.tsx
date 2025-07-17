@@ -24,10 +24,9 @@ type AppTableProps<T> = {
   renderActions?: (row: T) => React.ReactNode;
   actionsLabel?: string;
 };
-
 type WithId = {
   id: string | number;
-}
+};
 
 const AppTable = <T extends WithId>({
   caption,
@@ -64,7 +63,9 @@ const AppTable = <T extends WithId>({
               {columns.map((col) => (
                 <TableCell
                   key={String(col.key)}
-                  className={`${col.align === "right" ? "text-right" : ""} px-5 py-3`}
+                  className={`${
+                    col.align === "right" ? "text-right" : ""
+                  } px-5 py-3`}
                 >
                   {col.render ? col.render(row[col.key]) : String(row[col.key])}
                 </TableCell>
