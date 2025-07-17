@@ -1,8 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import paginationReducer from "./features/paginationslice"
+import notificationsReducer from "./features/notificationSlice"
+
 export const makeStore = () => {
   return configureStore({
-    reducer: paginationReducer
+    reducer: {
+      pagination: paginationReducer,
+      notifications: notificationsReducer
+    }
   })
 }
 

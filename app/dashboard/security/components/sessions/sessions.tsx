@@ -2,7 +2,7 @@ import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
 import SessionFilters from "./session-filters";
 import SessionsList from "./session-list";
-import StoreProvider from "@/app/StoreProvider";
+import StoreProvider from "@/components/providers/store-provider";
 import { Session, SessionResponse } from "@/lib/types/sessions";
 
 export const SessionsTable = async () => {
