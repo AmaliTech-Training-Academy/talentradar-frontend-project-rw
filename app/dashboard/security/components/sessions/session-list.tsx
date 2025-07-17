@@ -4,9 +4,8 @@ import { Session, SessionResponse } from "@/lib/types/sessions";
 import React, { useState } from "react";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
-import { PaginationObj } from "@/lib/types/pagination";
-import { setPage } from "@/lib/features/paginationSlice";
 import { useAppDispatch } from "@/lib/hooks";
+import { setPage } from "@/lib/features/paginationslice";
 
 const SessionsList = ({ sessions }: { sessions: SessionResponse<Session[]> }) => {
   const dispatch = useAppDispatch();
