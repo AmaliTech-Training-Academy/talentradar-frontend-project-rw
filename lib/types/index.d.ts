@@ -46,3 +46,17 @@ export type FeedbackPayload = {
   dimensions: DimensionFeedback[];
   comments: CommentFeedback[];
 };
+
+
+export interface UserCardProps {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    joinDate: string;
+    avatar: string;
+    role: string;
+  };
+  isSelected: boolean;
+  onClick: () => void;
+}

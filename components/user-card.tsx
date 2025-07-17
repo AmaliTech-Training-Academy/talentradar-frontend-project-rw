@@ -1,18 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 
-interface UserCardProps {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    joinDate: string;
-    avatar: string;
-    role: string;
-  };
-  isSelected: boolean;
-  onClick: () => void;
-}
+import { UserCardProps } from "@/lib/types";
 
 export default function UserCard({ user, isSelected, onClick }: UserCardProps) {
   return (
