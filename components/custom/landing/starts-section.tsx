@@ -24,10 +24,10 @@ export const StatsSection = () => {
   return (
     <section className="py-8 md:py-20 lg:py-14 bg-ring/5 dark:bg-gradient-to-r from-violet/30 to-violet/40">
       <div className="container grid grid-cols-2 md:grid-cols-4 gap-8 px-4 md:px-8 lg:px-12">
-        <StatItem icon={Users} value="10K+" label="Active Developers" iconBgColor="bg-violet/90" />
-        <StatItem icon={CheckCircle} value="50K+" label="Assessments Completed" iconBgColor="bg-violet" />
-        <StatItem icon={Brain} value="94.2%" label="AI Accuracy" iconBgColor="bg-violet"/>
-        <StatItem icon={ShieldCheck} value="99.9%" label="Uptime" iconBgColor="bg-violet"/>
+        <StatItem icon={Users} value="10K+" label="Active Developers" iconBgColor=" bg-gradient-to-r from-primary to-violet/60" />
+        <StatItem icon={CheckCircle} value="50K+" label="Assessments Completed" iconBgColor="bg-gradient-to-r from-primary to-violet/60" />
+        <StatItem icon={Brain} value="94.2%" label="AI Accuracy" iconBgColor="bg-gradient-to-r from-primary to-violet/60"/>
+        <StatItem icon={ShieldCheck} value="99.9%" label="Uptime" iconBgColor="bg-gradient-to-r from-primary to-violet/60"/>
       </div>
     </section>
   )

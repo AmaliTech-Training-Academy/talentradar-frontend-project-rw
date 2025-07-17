@@ -21,7 +21,7 @@ export const FeatureSection = () => {
               icon={Brain}
               title="AI-Powered Insights"
               description="Advanced machine learning algorithms analyze GitHub, Slack, and Jira data to provide comprehensive readiness assessments"
-              iconBgColor="bg-violet/50 dark:bg-violet/20"
+              iconBgColor="  bg-gradient-to-r from-violet/70 to-destructive/70 dark:bg-gradient-to-r from-violet/30 to-destructive/60"
             />
           </div>
           <div className="w-full">
@@ -29,7 +29,7 @@ export const FeatureSection = () => {
               icon={BarChart}
               title="Productivity Scorecard"
               description="Track workload balance, code quality, flow efficiency, cross-functionality, and business value in real-time"
-              iconBgColor="bg-teal/60 dark:bg-teal/80"
+              iconBgColor="bg-teal/60 dark: bg-gradient-to-r from-primary/60 to-teal/80"
             />
           </div>
           <div className="w-full md:col-span-2 lg:col-span-1">
@@ -37,7 +37,7 @@ export const FeatureSection = () => {
               icon={Users}
               title="360° Feedback System"
               description="Seamless collaboration between developers and managers with structured feedback loops"
-              iconBgColor="bg-green/80 dark:bg-green"
+              iconBgColor="bg-gradient-to-r from-green/40 to-green/60 "
             />
           </div>
           <div className="w-full">
@@ -45,7 +45,7 @@ export const FeatureSection = () => {
               icon={Rocket}
               title="AI-Guided Roadmaps"
               description="Personalized development paths with mock tests and resource recommendations"
-              iconBgColor="bg-orange/80 dark:bg-orange"
+              iconBgColor="bg-orange/80 dark:bg-gradient-to-r from-orange/60 to-orange "
             />
           </div>
           <div className="w-full">
