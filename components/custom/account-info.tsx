@@ -6,9 +6,9 @@ import { NotificationDropdown } from "./notification-dropdown";
 
 export const AccountInfo = () => {
   return (
-    <div className=" hidden lg:flex gap-3 items-center justify-start">
+    <div className="flex gap-3 items-center justify-start">
       <NotificationDropdown />
-      <div className="flex gap-2 items-center">
+      <div className="hidden lg:flex gap-2 items-center">
         <User
           size={40}
           strokeWidth={1.3}
@@ -22,7 +22,7 @@ export const AccountInfo = () => {
       <Button
         variant={"ghost"}
         size={"icon"}
-        className="text-destructive hover:text-destructive"
+        className="hidden lg:block text-destructive hover:text-destructive"
       >
         <LogOut />
       </Button>
