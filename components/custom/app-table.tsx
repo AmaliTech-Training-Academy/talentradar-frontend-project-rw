@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/table";
 // components/ui/AppTable.tsx
 
-type Column<T> = {
-  key: string;
+export type Column<T> = {
+  key: keyof T;
   label: string;
   align?: "left" | "right";
   render?: (value: T[keyof T]) => React.ReactNode;
@@ -25,8 +25,11 @@ type AppTableProps<T> = {
   actionsLabel?: string;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const AppTable = <T extends Record<string, any>>({
+type WithId = {
+  id: string | number;
+}
+
+const AppTable = <T extends WithId>({
   caption,
   columns,
   data,
@@ -61,11 +64,9 @@ const AppTable = <T extends Record<string, any>>({
               {columns.map((col) => (
                 <TableCell
                   key={String(col.key)}
-                  className={`${
-                    col.align === "right" ? "text-right" : ""
-                  } px-5 py-3`}
+                  className={`${col.align === "right" ? "text-right" : ""} px-5 py-3`}
                 >
-                  {col.render ? col.render(row[col.key]) : row[col.key]}
+                  {col.render ? col.render(row[col.key]) : String(row[col.key])}
                 </TableCell>
               ))}
               {renderActions && (

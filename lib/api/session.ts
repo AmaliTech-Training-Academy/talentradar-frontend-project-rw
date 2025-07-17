@@ -16,15 +16,14 @@ export async function getSessions() {
       };
     }
     return result;
-  } catch (error: unknown) {
+  } catch (error) {
     return handleApiError(error);
   }
 }
-export async function revokeSessions(id: string) {
+export async function revokeSessions(id:string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,
-      {
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,{
         method: "DELETE",
       }
     );
@@ -37,7 +36,7 @@ export async function revokeSessions(id: string) {
       };
     }
     return result;
-  } catch (error: unknown) {
+  } catch (error) {
     return handleApiError(error);
   }
 }

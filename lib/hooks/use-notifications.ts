@@ -31,7 +31,7 @@ export const useNotifications = () => {
 
     const connectSocket = () => {
       const socket = new SockJS('/ws-notifications', undefined, {
-        // @ts-ignore
+        // @ts-expect-error SockJS types do not support withCredentials
         withCredentials: true,
       });
 

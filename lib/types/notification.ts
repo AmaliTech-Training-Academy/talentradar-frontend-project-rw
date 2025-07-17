@@ -5,6 +5,7 @@ export interface INotification {
     title: string;
     content: string;
     sent_at: string;
+    read_at?: string;
 }
 
 export interface INotificationApiResponse {
