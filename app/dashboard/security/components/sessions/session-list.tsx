@@ -22,7 +22,7 @@ const SessionsList = ({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [pageInfo, setPageInfo] = useState({
-    page: sessions.pageable.pageNumber - 1,
+    page: sessions.pageable.pageNumber,
     size: sessions.pageable.pageSize,
     totalItems: sessions.totalElements,
     totalPages: sessions.totalPages,
@@ -30,8 +30,8 @@ const SessionsList = ({
     isLast: sessions.last,
   });
   async function handlePageChange(page: number) {
-    dispatch(setPage({ key: "session", page }));
-    setPageInfo({ ...pageInfo, page });
+    dispatch(setPage({ key: "session", page:page }));
+    setPageInfo({ ...pageInfo, page:page });
     setError(null);
     setLoading(true);
     try {

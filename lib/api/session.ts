@@ -3,7 +3,7 @@ import { ApiResponse } from "../types/response";
 import { handleError } from "../utils";
 // import { sessions } from "../data/security-dashboard-data";
 
-export async function getSessions(page:number = 1) {
+export async function getSessions(page:number = 0) {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions?page=${page}`,

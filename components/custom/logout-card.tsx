@@ -1,3 +1,4 @@
+"use client";
 import {
   TooltipTrigger,
   Tooltip,
@@ -5,8 +6,13 @@ import {
 } from "@radix-ui/react-tooltip";
 import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
+import { useAppDispatch } from "@/lib/hooks";
+import { clearUser } from "@/lib/features/authSlice";
+import { useRouter } from "next/navigation";
 
 export const LogoutCard = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -14,6 +20,10 @@ export const LogoutCard = () => {
           variant={"ghost"}
           size={"icon"}
           className="hidden lg:block text-destructive hover:text-destructive"
+          onClick={() => {
+            router.push("/login");
+            dispatch(clearUser());
+          }}
         >
           <LogOut />
         </Button>
