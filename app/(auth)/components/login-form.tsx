@@ -1,12 +1,13 @@
 "use client";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
-import { Loader } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Loader, Lock, LogIn, Mail } from "lucide-react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginSchema, LoginSchemaProps } from "@/lib/schemas/login-schema";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { CustomInput } from "./custom-input";
 export const LoginForm = () => {
   const {
     register,
@@ -52,7 +53,8 @@ export const LoginForm = () => {
               {errors.email && errors.email.message}
             </p>
           </div>
-          <Input
+          <CustomInput
+            Icon={Mail}
             id="loginEmail"
             type="email"
             placeholder="m@example.com"
@@ -66,15 +68,29 @@ export const LoginForm = () => {
               {errors.password && errors.password.message}
             </p>
           </div>
-          <Input id="loginPassword" type="password" {...register("password")} />
+          {/* <Input
+            id="loginPassword"
+            type="password"
+            placeholder="*******"
+            {...register("password")}
+            className="bg-white/25 border-none "
+          /> */}
+          <CustomInput
+            Icon={Lock}
+            id="loginPassword"
+            type="password"
+            placeholder="*******"
+            {...register("password")}
+          />
         </div>
         <Button
           type="submit"
-          className="w-full text-white"
+          className="w-full text-white py-3 h-fit"
           disabled={isSubmitting}
         >
-          {isSubmitting && <Loader size={18} className="animate-spin " />}
           Login
+          {isSubmitting && <Loader size={18} className="animate-spin " />}
+          {!isSubmitting && <LogIn size={18} />}
         </Button>
       </div>
     </form>
