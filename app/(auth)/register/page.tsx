@@ -1,17 +1,27 @@
-import { RegisterForm } from "@/app/(auth)/components/register-form";
 import { Suspense } from "react";
+import {
+  Card,
+  CardDescription,
+  CardContent,
+  CardTitle,
+  CardHeader,
+} from "@/components/ui/card";
+import { RegisterForm } from "../components/register-form";
 
 export default function page() {
   return (
-    <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-      <div className="w-full max-w-sm shadow-sm rounded-lg p-6 border-1">
-        <div className="text-center mb-2">
-          <h1 className="text-xl font-bold">Set up your account</h1>
-        </div>
+    <Card className="w-full max-w-sm backdrop-blur-xl bg-card/20 text-white shadow-none border-white/30">
+      <CardHeader className="w-full text-center">
+        <CardTitle className="text-2xl ">Create account</CardTitle>
+        <CardDescription className=" text-white/50">
+          Start your proffessional journey
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         <Suspense fallback={<div>Loading...</div>}>
           <RegisterForm />
         </Suspense>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

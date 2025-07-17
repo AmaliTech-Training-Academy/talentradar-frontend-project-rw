@@ -1,29 +1,32 @@
-import { Session } from "../types/sessions";
+// import { Session } from "../types/sessions";
 import { FetchResponse } from "../types/response";
 import { handleApiError } from "../utils";
+import { sessions } from "../data/security-dashboard-data";
 
 export async function getSessions() {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions`
-    );
-    const result: FetchResponse<Session[]> = await res.json();
-    if (!res.ok) {
-      return {
-        success: false,
-        message: result.message || "An unknown error occurred",
-        data: null,
-      };
-    }
-    return result;
-  } catch (error: any) {
+    // const res = await fetch(
+    //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions`
+    // );
+    // const result: FetchResponse<Session[]> = await res.json();
+    // if (!res.ok) {
+    //   return {
+    //     success: false,
+    //     message: result.message || "An unknown error occurred",
+    //     data: null,
+    //   };
+    // }
+
+    return { data: sessions, message: "", success: true };
+  } catch (error) {
     return handleApiError(error);
   }
 }
-export async function revokeSessions(id:string) {
+export async function revokeSessions(id: string) {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,{
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,
+      {
         method: "DELETE",
       }
     );
@@ -36,7 +39,7 @@ export async function revokeSessions(id:string) {
       };
     }
     return result;
-  } catch (error: any) {
+  } catch (error) {
     return handleApiError(error);
   }
 }

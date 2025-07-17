@@ -31,7 +31,9 @@ export const AITeamOverview = () => {
             <Button
               onClick={() => setShowAll(true)}
               variant="outline"
+
               className="text-violet/60 border-violet/60 hover:bg-violet/50 dark:text-white dark:border-violet/40 dark:hover:bg-violet/95"
+
             >
               View All ({teamMembers.length})
             </Button>
@@ -110,6 +112,7 @@ export const AITeamOverview = () => {
             <Button
               onClick={() => setShowAll(false)}
               variant="outline"
+
               className="text-violet/60 border-violet/60 hover:bg-violet/50 dark:text-white dark:border-violet/40 dark:hover:bg-violet/95"
             >
               Show Less

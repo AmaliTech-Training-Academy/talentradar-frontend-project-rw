@@ -68,7 +68,9 @@ export const CardTabs = ({ member }: CardTabsProps) => {
             />
           ))}
         </div>
+
          <MemberFeedback feedback={member.overallFeedback} />
+
       </TabsContent>
 
       <TabsContent value="analytics" className="py-8">

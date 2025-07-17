@@ -1,5 +1,6 @@
 import { AccountInfo } from "@/components/custom/account-info";
 import { AppSidebar } from "@/components/custom/app-sidebar";
+import { ModeToggle } from "@/components/custom/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -25,10 +26,16 @@ export default function Page({ children }: { children: ReactNode }) {
             </p>
             <div className="flex flex-col font-bold text-xl">
               TalentRadar.AI
-              <p className="text-xs font-normal">Mini Version</p>
+              <p className="text-xs font-normal">
+                Global talent readiness system
+              </p>
             </div>
           </div>
-          <div className="flex-1  flex justify-end h-full">
+          <div
+            className="flex-1 gap-2
+           flex justify-end items-center h-full"
+          >
+            <ModeToggle />
             <AccountInfo />
           </div>
         </header>

@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon, Trash2, UserIcon } from "lucide-react";
+import { CalendarIcon, UserIcon } from "lucide-react";
 
 const SessionFilters = () => {
   return (
@@ -23,11 +23,7 @@ const SessionFilters = () => {
           aria-label="Filter sessions from start date"
         />
       </div>
-      <Button
-        variant="outline"
-      >
-        Revoke All
-      </Button>
+      <Button variant="outline">Revoke All</Button>
     </div>
   );
 };

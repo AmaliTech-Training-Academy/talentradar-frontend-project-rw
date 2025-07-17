@@ -1,4 +1,3 @@
-import { RatingOption } from "./types";
 export const RATING_OPTIONS: RatingOption[] = [
   {
     value: 1,

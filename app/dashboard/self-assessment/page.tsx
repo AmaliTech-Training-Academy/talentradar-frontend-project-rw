@@ -45,6 +45,7 @@ export default function SelfAssessmentPage() {
   } = form;
 
   const onSubmit = (data: FormValues, isDraft: boolean = false) => {
+    //eslint-disable-next-line
     const payload = {
       userId: "550e8400-e29b-41d4-a716-446655440000",
       reflection: data.reflection,

@@ -38,22 +38,40 @@ const stats = [
         icon: ChartColumn,
     }
 ];
+export const activities = [
+    {
+        id: "!",
+        type: 'feedback',
+        title: 'Lisa Thompson provided feedback for Michael Rodriguez',
+        timestamp: '13/02/2024, 12:15:00'
+    },
+    {
+        id: "2",
+        type: 'self-assessment',
+        title: 'Michael Rodriguez submitted a self-assessment',
+        timestamp: '13/02/2024, 12:15:00'
+    },
+    {
+        id: "3",
+        type: 'ai-score',
+        title: 'AI score updated for Jane Doe',
+        timestamp: '13/02/2024, 12:15:00'
+    }
+];
 
 export default function Dashboard() {
     return (
-        <main className="space-y-6">
-            <WelcomeMessageContainer />
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {
-                    stats.map(stat => (
-                        <StatCard key={stat.id} statInfo={stat} />
-                    ))
-                }
-            </section>
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <RecentActivity />
-                <AiInsights />
-            </section>
-        </main>
-    )
+      <main className="space-y-6">
+        <WelcomeMessageContainer />
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((stat) => (
+            <StatCard key={stat.id} statInfo={stat} />
+          ))}
+        </section>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <RecentActivity activities={activities} title="Recent Activity" />
+          <AiInsights />
+        </section>
+      </main>
+    );
 }

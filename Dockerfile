@@ -27,9 +27,6 @@ COPY --from=deps /app/node_modules ./node_modules
 # Copy all source files
 COPY . .
 
-# Create public directory if it doesn't exist
-RUN mkdir -p ./public
-
 # Disable Next.js telemetry during build
 ENV NEXT_TELEMETRY_DISABLED 1
 

@@ -1,5 +1,6 @@
 export interface Session {
     id: string;
+    user_name: string;
     user_id: string;
     ip_address: string;
     device_info: string;

@@ -1,6 +1,7 @@
-# Code owners for development branch - talentradar-frontend-project-rw
-# .github folder is managed by bikaze and muhirwaJD
-/.github/ @bikaze @muhirwaJD
-
-# Everything else is managed by all four backend code owners
+# Code owners for talentradar-frontend-project-rw
+# Global owners for all files
 * @aimerukundo @aristoteMkaty @bencyubahiro77 @kevin-rukundo
+
+# GitHub folder specific owners
+.github/ @bikaze @muhirwaJD
+
