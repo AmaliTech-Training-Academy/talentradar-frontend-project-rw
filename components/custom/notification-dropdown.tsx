@@ -9,10 +9,62 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getRelativeTime } from "@/lib/get-relative-time";
-import { useNotifications } from "@/lib/hooks/use-notifications";
+// import { useNotifications } from "@/lib/hooks/use-notifications";
+import { INotification } from "@/lib/types/notification";
 
 export const NotificationDropdown = () => {
-    const { notifications, loading } = useNotifications();
+    // const { notifications, loading } = useNotifications();
+    const loading = false;
+    const notifications: INotification[] = [
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "SUCCESS", // SUCCESS | WARNING | ERROR | INFO
+            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
+            "title": "New feedback",
+            "content": "Your manager has submitted new feedback",
+            "sent_at": "2025-07-15T10:30:00Z"
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "WARNING", // SUCCESS | WARNING | ERROR | INFO
+            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
+            "title": "New feedback",
+            "content": "Your manager has submitted new feedback",
+            "sent_at": "2025-07-15T10:30:00Z"
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "ERROR", // SUCCESS | WARNING | ERROR | INFO
+            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
+            "title": "New feedback",
+            "content": "Your manager has submitted new feedback",
+            "sent_at": "2025-07-15T10:30:00Z"
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "INFO", // SUCCESS | WARNING | ERROR | INFO
+            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
+            "title": "New feedback",
+            "content": "Your manager has submitted new feedback",
+            "sent_at": "2025-07-15T10:30:00Z"
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "SUCCESS", // SUCCESS | WARNING | ERROR | INFO
+            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
+            "title": "New feedback",
+            "content": "Your manager has submitted new feedback",
+            "sent_at": "2025-07-15T10:30:00Z"
+        },
+        {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "category": "INFO", // SUCCESS | WARNING | ERROR | INFO
+            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
+            "title": "New feedback",
+            "content": "Your manager has submitted new feedback",
+            "sent_at": "2025-07-15T10:30:00Z"
+        }
+    ];
 
     return (
         <DropdownMenu>
@@ -53,6 +105,11 @@ export const NotificationDropdown = () => {
                         )
                     }
                 </DropdownMenuGroup>
+                <DropdownMenuItem className="flex items-center justify-center">
+                    <Link href='/dashboard/notifications' aria-label="Notifications page">
+                        See more ({notifications.length})
+                    </Link>
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )
