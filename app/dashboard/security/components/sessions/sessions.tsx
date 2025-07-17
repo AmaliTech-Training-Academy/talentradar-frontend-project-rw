@@ -4,10 +4,6 @@ import { getSessions } from "@/lib/api/session";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import SessionFilters from "./session-filters";
-<<<<<<< HEAD
-=======
-import { Column } from "@/components/custom/app-table";
->>>>>>> 536a711bbc304d82954a285ccf803b7800299e5f
 import { Session } from "@/lib/types/sessions";
 
 const SessionsTable = async () => {
