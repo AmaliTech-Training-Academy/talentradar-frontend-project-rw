@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, forwardRef } from 'react';
+import React, { useEffect, useRef,  } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
@@ -9,8 +9,8 @@ type RichTextEditorProps = {
   onChange: (content: string) => void;
 };
 
-const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
-  ({ value, onChange }, ref) => {
+const RichTextEditor:React.FC<RichTextEditorProps> =
+  ({ value, onChange }) => {
     const editorRef = useRef<HTMLDivElement>(null);
     const quillRef = useRef<Quill | null>(null);
 
@@ -46,7 +46,6 @@ const RichTextEditor = forwardRef<HTMLDivElement, RichTextEditorProps>(
 
     return <div ref={editorRef} style={{ height: '300px' }} />;
   }
-);
 
 RichTextEditor.displayName = 'RichTextEditor';
 
