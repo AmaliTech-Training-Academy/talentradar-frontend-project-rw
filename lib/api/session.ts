@@ -1,25 +1,32 @@
-// import { Session } from "../types/sessions";
+import { Session, SessionResponse } from "../types/sessions";
 import { FetchResponse } from "../types/response";
 import { handleApiError } from "../utils";
 import { sessions } from "../data/security-dashboard-data";
 
 export async function getSessions() {
   try {
-    // const res = await fetch(
-    //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions`
-    // );
-    // const result: FetchResponse<Session[]> = await res.json();
-    // if (!res.ok) {
-    //   return {
-    //     success: false,
-    //     message: result.message || "An unknown error occurred",
-    //     data: null,
-    //   };
-    // }
-
-    return { data: sessions, message: "", success: true };
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions`
+    );
+    const result: SessionResponse<Session[]> = await res.json();
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || "An unknown error occurred",
+        content: null,
+      };
+    }
+    return result;
   } catch (error) {
-    return handleApiError(error);
+    if (error instanceof Error) {
+      return { success: false, message: error.message, content: null };
+    }
+    return {
+      success: false,
+      message: "Unexpected error occurred",
+      content: null,
+    };
+    // return handleApiError(error);
   }
 }
 export async function revokeSessions(id: string) {

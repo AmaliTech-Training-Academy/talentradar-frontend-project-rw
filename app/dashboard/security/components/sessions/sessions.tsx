@@ -1,7 +1,9 @@
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
 import SessionFilters from "./session-filters";
-import SessionsList from "./session-table";
+import SessionsList from "./session-list";
+import StoreProvider from "@/app/StoreProvider";
+import { Session, SessionResponse } from "@/lib/types/sessions";
 
 export const SessionsTable = async () => {
   const sessions = await getSessions();
@@ -17,7 +19,7 @@ export const SessionsTable = async () => {
         </div>
         <SessionFilters />
       </div>
-      <SessionsList sessions={sessions.data || []} />
+      <SessionsList sessions={sessions as SessionResponse<Session[]>} />
     </div>
   );
 };
