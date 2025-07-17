@@ -8,11 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { dimensions } from "@/lib/dummyData";
 import RatingSelector from "@/app/dashboard/manager-feedback/components/rating-selector";
-<<<<<<< HEAD
-import { CircleCheck, Save, TrendingUp } from "lucide-react";
-=======
 import { CircleCheck, Save, SaveAll, TrendingUp } from "lucide-react";
->>>>>>> 2b76ab8410c07bad9d05ccdeea8c9740b9446fbc
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";
 import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
@@ -22,7 +18,6 @@ import { ConfirmationModal } from "../components/confirmation-modal";
 import { calculateOverallScore } from "@/lib/calculate-overall-score";
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
-
 
 export default function SelfAssessmentPage() {
   const [hasDraft, setHasDraft] = useState(false);
@@ -171,7 +166,9 @@ export default function SelfAssessmentPage() {
             </CardContent>
           </Card>
           <div className="border rounded-xl bg-primary/20 p-4">
-            <p className="font-semibold mb-2 text-primary">Assessment Summary</p>
+            <p className="font-semibold mb-2 text-primary">
+              Assessment Summary
+            </p>
             <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-2">
               {getDimensionScores().map((dim, index) => (
                 <div
