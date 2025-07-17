@@ -6,16 +6,29 @@ import { AlertCircle, Check, CircleCheckBig, Clock, Dot, Info, X, XCircle } from
 import Link from "next/link";
 
 export const NotificationCard = ({
-    notification
+    notification,
+    checked,
+    onCheck,
+    onMarkRead,
+    onDismiss
 }: {
-    notification: INotification
+    notification: INotification;
+    checked: boolean;
+    onCheck: () => void;
+    onMarkRead: () => void;
+    onDismiss: () => void;
 }) => {
     const { id, title, content, category, sent_at } = notification;
 
     return (
         <div className={clsx("rounded-md border py-4 px-4 sm:px-6 shadow-sm flex justify-between gap-4", { 'bg-primary/10': !notification.read_at })}>
             <div className="flex gap-2 sm:gap-3">
-                <Checkbox id={id} className="mt-1" />
+                <Checkbox
+                    id={id}
+                    className="mt-1"
+                    checked={checked}
+                    onCheckedChange={onCheck}
+                />
                 <div className="flex gap-2 sm:gap-4">
                     {
                         category === 'SUCCESS' ? <CircleCheckBig className="text-teal" /> :
@@ -49,8 +62,8 @@ export const NotificationCard = ({
                 </div>
             </div>
             <div className="flex gap-4">
-                <Check size={18} className="cursor-pointer" />
-                <X size={18} className="cursor-pointer" />
+                <Check size={18} className="cursor-pointer" onClick={onMarkRead} />
+                <X size={18} className="cursor-pointer" onClick={onDismiss} />
             </div>
         </div>
     );

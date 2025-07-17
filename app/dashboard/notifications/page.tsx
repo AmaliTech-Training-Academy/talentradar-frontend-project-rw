@@ -9,9 +9,9 @@ import { Tabs } from "@/components/ui/tabs";
 import { TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-// import { useNotifications } from "@/lib/hooks/use-notifications";
+import { useNotifications } from "@/lib/hooks/use-notifications";
 import { NotificationCard } from "./components/notification-card";
-import { INotification } from "@/lib/types/notification";
+// import { INotification } from "@/lib/types/notification";
 
 type TabCategory = 'ALL' | 'UNREAD' | 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR';
 
@@ -19,13 +19,13 @@ const tabs: {
     value: TabCategory;
     icon: React.ElementType
 }[] = [
-    { value: 'ALL', icon: Bell },
-    { value: 'UNREAD', icon: Clock },
-    { value: 'INFO', icon: Info },
-    { value: 'SUCCESS', icon: CircleCheckBig },
-    { value: 'WARNING', icon: AlertCircle },
-    { value: 'ERROR', icon: XCircle }
-];
+        { value: 'ALL', icon: Bell },
+        { value: 'UNREAD', icon: Clock },
+        { value: 'INFO', icon: Info },
+        { value: 'SUCCESS', icon: CircleCheckBig },
+        { value: 'WARNING', icon: AlertCircle },
+        { value: 'ERROR', icon: XCircle }
+    ];
 
 const sortOptions = [
     {
@@ -41,61 +41,8 @@ const sortOptions = [
 export default function Notifications() {
     const [activeTab, setActiveTab] = useState(tabs[0].value);
     const [sortFilter, setSortFilter] = useState(sortOptions[0].value);
-    // const { notifications, loading } = useNotifications();
-    const notifications: INotification[] = [
-        {
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "category": "SUCCESS", // SUCCESS | WARNING | ERROR | INFO
-            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
-            "title": "New feedback",
-            "content": "Your manager has submitted new feedback",
-            "sent_at": "2025-07-15T10:30:00Z",
-            "read_at": "2025-07-15T10:30:00Z"
-        },
-        {
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "category": "WARNING", // SUCCESS | WARNING | ERROR | INFO
-            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
-            "title": "New feedback",
-            "content": "Your manager has submitted new feedback",
-            "sent_at": "2025-07-15T10:30:00Z",
-            "read_at": "2025-07-15T10:30:00Z"
-        },
-        {
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "category": "ERROR", // SUCCESS | WARNING | ERROR | INFO
-            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
-            "title": "New feedback",
-            "content": "Your manager has submitted new feedback",
-            "sent_at": "2025-07-15T10:30:00Z",
-            "read_at": "2025-07-15T10:30:00Z"
-        },
-        {
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "category": "INFO", // SUCCESS | WARNING | ERROR | INFO
-            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
-            "title": "New feedback",
-            "content": "Your manager has submitted new feedback",
-            "sent_at": "2025-07-15T10:30:00Z",
-            "read_at": "2025-07-15T10:30:00Z"
-        },
-        {
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "category": "SUCCESS", // SUCCESS | WARNING | ERROR | INFO
-            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
-            "title": "New feedback",
-            "content": "Your manager has submitted new feedback",
-            "sent_at": "2025-07-15T10:30:00Z"
-        },
-        {
-            "id": "550e8400-e29b-41d4-a716-446655440000",
-            "category": "INFO", // SUCCESS | WARNING | ERROR | INFO
-            "event_type": "FEEDBACK", // FEEDBACK | ASSESSMENT | OTHER
-            "title": "New feedback",
-            "content": "Your manager has submitted new feedback",
-            "sent_at": "2025-07-15T10:30:00Z"
-        }
-    ];
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    const { notifications, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
 
     const filteredNotifications = notifications.filter((notification) => {
         if (activeTab === 'ALL') return true;
@@ -110,6 +57,25 @@ export default function Notifications() {
         SUCCESS: notifications.filter(n => n.category === 'SUCCESS').length,
         WARNING: notifications.filter(n => n.category === 'WARNING').length,
         ERROR: notifications.filter(n => n.category === 'ERROR').length,
+    };
+
+    const isAllSelected = filteredNotifications.length > 0 && filteredNotifications.every(n => selectedIds.includes(n.id));
+
+    const toggleSelectAll = () => {
+        if (isAllSelected) {
+            setSelectedIds([]);
+        } else {
+            const allIds = filteredNotifications.map(n => n.id);
+            setSelectedIds(allIds);
+        }
+    };
+
+    const toggleSingleSelect = (id: string) => {
+        setSelectedIds(prev =>
+            prev.includes(id)
+                ? prev.filter(_id => _id !== id)
+                : [...prev, id]
+        );
     };
 
     return (
@@ -128,6 +94,7 @@ export default function Notifications() {
                     <Button
                         size="lg"
                         className="py-2 px-4 bg:primary text-white w-fit cursor-pointer"
+                        onClick={markAllAsRead}
                     >
                         <Check /> Mark all as read
                     </Button>
@@ -154,24 +121,33 @@ export default function Notifications() {
                 <TabsList className="flex flex-wrap w-full gap-4 px-6 py-4 border-b border-input">
                     {
                         tabs.map(({ value, icon: Icon }) => (
-                                <TabsTrigger
-                                    key={value}
-                                    value={value}
-                                    className="notification_tab_trigger group">
-                                    <Icon size={15} />
-                                    <span>{value.toLowerCase()}</span>
-                                    <span className="notification_count_badge">{tabCounts[value]}</span>
-                                </TabsTrigger>
-                            ))
+                            <TabsTrigger
+                                key={value}
+                                value={value}
+                                className="notification_tab_trigger group">
+                                <Icon size={15} />
+                                <span>{value.toLowerCase()}</span>
+                                <span className="notification_count_badge">{tabCounts[value]}</span>
+                            </TabsTrigger>
+                        ))
                     }
                 </TabsList>
                 <div className="flex items-center gap-2 px-6 py-4 border-b border-input">
-                    <Checkbox id="select_all" />
+                    <Checkbox id="select_all" checked={isAllSelected} onCheckedChange={toggleSelectAll} />
                     <Label htmlFor="select_all" className="text-foreground/70">Select all ({tabCounts[activeTab]})</Label>
                 </div>
                 <TabsContent value={activeTab}>
                     <div className="p-2 space-y-2">
-                        {filteredNotifications.map((n) => <NotificationCard key={n.id} notification={n} />)}
+                        {filteredNotifications.map((n) => (
+                            <NotificationCard
+                                key={n.id}
+                                notification={n}
+                                checked={selectedIds.includes(n.id)}
+                                onCheck={() => toggleSingleSelect(n.id)}
+                                onMarkRead={() => markAsRead(n.id)}
+                                onDismiss={() => dismissNotification(n.id)}
+                            />
+                        ))}
                         {filteredNotifications.length === 0 && (
                             <p className="text-muted-foreground text-center">No notifications found.</p>
                         )}
@@ -182,11 +158,11 @@ export default function Notifications() {
                         Showing 2 of 2 notifications
                     </div>
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <div className="flex gap-1 items-center">
+                        <div className="flex gap-1 items-center cursor-pointer hover:text-foreground">
                             <Archive size={15} />
                             <span>Archive all read</span>
                         </div>
-                        <div className="flex gap-1 items-center">
+                        <div className="flex gap-1 items-center cursor-pointer hover:text-foreground">
                             <Star size={15} />
                             <span>Notifications settings</span>
                         </div>

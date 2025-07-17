@@ -10,13 +10,17 @@ export interface INotification {
 
 export interface INotificationApiResponse {
     success: boolean;
-    data: INotification[];
-    pagination: {
-        page: number;
-        size: number;
-        totalElements: number;
-        totalPages: number;
-        hasNext: boolean;
-        hasPrevious: boolean;
-    }
+    message?: string;
+    data: {
+        notifications: INotification[] | null;
+        pagination?: {
+            page: number;
+            size: number;
+            totalElements: number;
+            totalPages: number;
+            hasNext: boolean;
+            hasPrevious: boolean;
+        };
+    };
+    errors: string | null;
 }
