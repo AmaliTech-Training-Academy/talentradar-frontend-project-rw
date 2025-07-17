@@ -8,24 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AppTableProps } from "@/lib/types/app-table";
+import { Session } from "@/lib/types/sessions";
 // components/ui/AppTable.tsx
 
-type Column<T> = {
-  key: string;
-  label: string;
-  align?: "left" | "right";
-  render?: (value: T[keyof T]) => React.ReactNode;
+type WithId = {
+  id: string | number; // depending on your data
 };
-
-type AppTableProps<T> = {
-  caption?: string;
-  columns: Column<T>[];
-  data: T[];
-  renderActions?: (row: T) => React.ReactNode;
-  actionsLabel?: string;
-};
-
-const AppTable = <T extends Record<string, any>>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const AppTable = <T extends WithId>({
   caption,
   columns,
   data,
@@ -60,9 +51,11 @@ const AppTable = <T extends Record<string, any>>({
               {columns.map((col) => (
                 <TableCell
                   key={String(col.key)}
-                  className={`${col.align === "right" ? "text-right" : ""} px-5 py-3`}
+                  className={`${
+                    col.align === "right" ? "text-right" : ""
+                  } px-5 py-3`}
                 >
-                  {col.render ? col.render(row[col.key]) : row[col.key]}
+                  {col.render ? col.render(row[col.key]) : String(row[col.key])}
                 </TableCell>
               ))}
               {renderActions && (
