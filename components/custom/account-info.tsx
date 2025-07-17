@@ -1,13 +1,7 @@
 "use client";
 
-import { LogOut, User } from "lucide-react";
-import { Button } from "../ui/button";
+import { User } from "lucide-react";
 import { NotificationDropdown } from "./notification-dropdown";
-import {
-  TooltipContent,
-  Tooltip,
-  TooltipTrigger,
-} from "@radix-ui/react-tooltip";
 import { LogoutCard } from "./logout-card";
 
 export const AccountInfo = () => {

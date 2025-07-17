@@ -83,8 +83,8 @@ const items = [
     icon: ChartColumn,
   },
   {
-    title: "AI Scores",
-    url: "/dashboard/ai-scores",
+    title: "AI Roadmap & Tests",
+    url: "#",
     icon: Map,
   },
   {
@@ -99,7 +99,7 @@ const items = [
   },
   {
     title: "AI Score",
-    url: "/manager/ai-scores",
+    url: "/dashboard/ai-scores",
     icon: Brain,
   },
   {

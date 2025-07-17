@@ -52,8 +52,8 @@ export function RegisterForm() {
               placeholder="email"
               disabled
               value={email ?? ""}
-              className="cursor-not-allowed text-muted/40 "
-              containerClassName="text-muted/40 hover:cursor-not-allowed"
+              className="cursor-not-allowed text-muted "
+              containerClassName="text-muted hover:cursor-not-allowed"
             />
           </div>
           <Separator orientation="horizontal" className="mt-0 " />

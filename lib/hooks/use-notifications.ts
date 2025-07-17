@@ -46,7 +46,7 @@ export const useNotifications = () => {
     const connectWebSocket = () => {
       const socket = new SockJS("/ws-notifications", undefined, {
         // @ts-expect-error SockJS types do not support withCredentials
-        withCredentials: true
+        withCredentials: true,
       });
 
       stompClient = new Client({
@@ -56,7 +56,7 @@ export const useNotifications = () => {
           stompClient.subscribe("/user/queue/notifications", (message) => {
             try {
               const newNotification: INotification = JSON.parse(message.body);
-              setNotifications(prev => [newNotification, ...prev]);
+              setNotifications((prev) => [newNotification, ...prev]);
               toast.info("New notification received");
             } catch {
               toast.error("Failed to parse incoming notification");
@@ -64,8 +64,11 @@ export const useNotifications = () => {
           });
         },
         onStompError: () => {
-          handleError("WebSocket connection error", "WebSocket connection failed");
-        }
+          handleError(
+            "WebSocket connection error",
+            "WebSocket connection failed"
+          );
+        },
       });
 
       stompClient.activate();

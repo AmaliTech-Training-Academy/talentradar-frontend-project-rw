@@ -1,5 +1,5 @@
 "use client";
-import AppTable from "@/components/custom/app-table";
+import AppTable, { Column } from "@/components/custom/app-table";
 import {
   SelectTrigger,
   Select,
@@ -37,7 +37,7 @@ export const UserManagementTab = () => {
         columns={columns}
         data={userData}
         actionsLabel="Actions"
-        renderActions={(session) => (
+        renderActions={() => (
           <div className=" flex items-start gap-1">
             <Button variant={"ghost"} size={"icon"} className="">
               <FileEdit />
@@ -56,14 +56,21 @@ export const UserManagementTab = () => {
   );
 };
 
-const columns = [
+const columns: Column<{
+  email: string;
+  full_name: string;
+  status: boolean;
+  role: string;
+  date_added: string;
+  id: string;
+}>[] = [
   { key: "email", label: "Email" },
   { key: "full_name", label: "Full name" },
   { key: "role", label: "Role" },
   {
     key: "status",
     label: "Status",
-    render: (value: any) =>
+    render: (value) =>
       value ? (
         <Badge variant="outline" className="text-green">
           Active

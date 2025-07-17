@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import SessionFilters from "./session-filters";
 import { Session } from "@/lib/types/sessions";
 
-const SessionsTable = async () => {
+export const SessionsTable = async () => {
   const sessions = await getSessions();
   if (!sessions.success) return <ErrorDiv error={sessions.message} />;
   return (

@@ -4,6 +4,8 @@ import { Activity, Clock3, Settings, Shield, Users } from "lucide-react";
 import { UserManagementTab } from "./user-management-tab";
 import { SecurityAlerts } from "./overview/overview-recent-alerts";
 import { SessionsTable } from "./sessions/sessions";
+import { RecentActivity } from "../../components/recent-activity";
+import { activities } from "../../page";
 
 export const SecurityTabs = () => {
   return (
@@ -39,10 +41,10 @@ export const SecurityTabs = () => {
           <SessionsTable />
         </TabsContent>
         <TabsContent value="logs" className="p-3 w-full">
-          <div>testing yes please</div>
+          <RecentActivity activities={activities} title="Activity logs" />
         </TabsContent>
         <TabsContent value="settings" className="p-3 w-full">
-          <div>testing yes please</div>
+          <p className="w-full p-3">Coming soon...</p>
         </TabsContent>
       </Tabs>
     </main>

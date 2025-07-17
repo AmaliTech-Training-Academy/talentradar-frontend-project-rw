@@ -1,5 +1,4 @@
-import { User, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
 import { LogoutCard } from "./logout-card";
 
 export const SidebarAccountInfo = () => {
