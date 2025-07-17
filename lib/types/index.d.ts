@@ -60,3 +60,8 @@ export interface UserCardProps {
   isSelected: boolean;
   onClick: () => void;
 }
+
+export type RichTextEditorProps = {
+  value: string;
+  onChange: (content: string) => void;
+};

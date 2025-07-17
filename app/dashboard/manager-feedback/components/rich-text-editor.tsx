@@ -4,10 +4,7 @@ import React, { useEffect, useRef,  } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
-type RichTextEditorProps = {
-  value: string;
-  onChange: (content: string) => void;
-};
+import { RichTextEditorProps } from '@/lib/types';
 
 const RichTextEditor:React.FC<RichTextEditorProps> =
   ({ value, onChange }) => {
