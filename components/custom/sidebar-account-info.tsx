@@ -1,5 +1,5 @@
-import { User, LogOut } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
+import { LogoutCard } from "./logout-card";
 
 export const SidebarAccountInfo = () => {
   return (
@@ -15,12 +15,7 @@ export const SidebarAccountInfo = () => {
           <p className="text-sm">Developer</p>
         </div>
       </div>
-      <Button
-        variant={"ghost"}
-        className="text-destructive hover:text-destructive"
-      >
-        <LogOut />
-      </Button>
+      <LogoutCard />
     </div>
   );
 };

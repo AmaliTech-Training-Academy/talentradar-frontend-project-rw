@@ -1,8 +1,8 @@
 "use client";
 
-import { LogOut, User } from "lucide-react";
-import { Button } from "../ui/button";
+import { User } from "lucide-react";
 import { NotificationDropdown } from "./notification-dropdown";
+import { LogoutCard } from "./logout-card";
 
 export const AccountInfo = () => {
   return (
@@ -19,13 +19,7 @@ export const AccountInfo = () => {
           <p className="text-xs">Developer</p>
         </div>
       </div>
-      <Button
-        variant={"ghost"}
-        size={"icon"}
-        className="hidden lg:block text-destructive hover:text-destructive"
-      >
-        <LogOut />
-      </Button>
+      <LogoutCard />
     </div>
   );
 };

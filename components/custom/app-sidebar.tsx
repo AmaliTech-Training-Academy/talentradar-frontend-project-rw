@@ -23,8 +23,8 @@ import {
   Home,
   Map,
   Settings,
-  Send,
   MessageSquare,
+  UserCheck,
 } from "lucide-react";
 import { SidebarAccountInfo } from "./sidebar-account-info";
 
@@ -83,14 +83,14 @@ const items = [
     icon: ChartColumn,
   },
   {
-    title: "AI Scores",
-    url: "/dashboard/ai-scores",
+    title: "AI Roadmap & Tests",
+    url: "#",
     icon: Map,
   },
   {
     title: "Security Dashboard",
     url: "/dashboard/security",
-    icon: Send,
+    icon: UserCheck,
   },
   {
     title: "Self-assessment",
@@ -99,7 +99,7 @@ const items = [
   },
   {
     title: "AI Score",
-    url: "/manager/ai-scores",
+    url: "/dashboard/ai-scores",
     icon: Brain,
   },
   {

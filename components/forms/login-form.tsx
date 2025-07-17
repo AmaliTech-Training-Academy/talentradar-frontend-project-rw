@@ -1,13 +1,12 @@
 "use client";
-import { Loader, Lock, LogIn, Mail } from "lucide-react";
-
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Loader } from "lucide-react";
+import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginSchema, LoginSchemaProps } from "@/lib/schemas/login-schema";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { CustomInput } from "./custom-input";
 export const LoginForm = () => {
   const {
     register,
@@ -24,7 +23,7 @@ export const LoginForm = () => {
       }, 1000)
     ).then(() => {
       toast.error("Failure", {
-        description: `${errors.root?.message ?? ""}`,
+        // description: `${errors.root?.message}`,
         position: "top-right",
         style: {
           color: "var(--destructive)",
@@ -52,8 +51,7 @@ export const LoginForm = () => {
               {errors.email && errors.email.message}
             </p>
           </div>
-          <CustomInput
-            Icon={Mail}
+          <Input
             id="loginEmail"
             type="email"
             placeholder="m@example.com"
@@ -61,35 +59,21 @@ export const LoginForm = () => {
           />
         </div>
         <div className="grid gap-2">
-          <div className="flex items-center gap-1 justify-between">
+          <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
-            <p className="text-xs text-destructive text-end">
+            <p className="text-xs text-destructive">
               {errors.password && errors.password.message}
             </p>
           </div>
-          {/* <Input
-            id="loginPassword"
-            type="password"
-            placeholder="*******"
-            {...register("password")}
-            className="bg-white/25 border-none "
-          /> */}
-          <CustomInput
-            Icon={Lock}
-            id="loginPassword"
-            type="password"
-            placeholder="*******"
-            {...register("password")}
-          />
+          <Input id="loginPassword" type="password" {...register("password")} />
         </div>
         <Button
           type="submit"
-          className="w-full text-white py-3 h-fit"
+          className="w-full text-white"
           disabled={isSubmitting}
         >
-          Login
           {isSubmitting && <Loader size={18} className="animate-spin " />}
-          {!isSubmitting && <LogIn size={18} />}
+          Login
         </Button>
       </div>
     </form>

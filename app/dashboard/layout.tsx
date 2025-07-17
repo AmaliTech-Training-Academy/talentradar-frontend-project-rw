@@ -1,5 +1,6 @@
 import { AccountInfo } from "@/components/custom/account-info";
 import { AppSidebar } from "@/components/custom/app-sidebar";
+import { ModeToggle } from "@/components/custom/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -30,7 +31,11 @@ export default function Page({ children }: { children: ReactNode }) {
               </p>
             </div>
           </div>
-          <div className="flex-1  flex justify-end h-full">
+          <div
+            className="flex-1 gap-2
+           flex justify-end items-center h-full"
+          >
+            <ModeToggle />
             <AccountInfo />
           </div>
         </header>

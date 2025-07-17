@@ -38,7 +38,7 @@ const stats = [
         icon: ChartColumn,
     }
 ];
-const activities = [
+export const activities = [
     {
         id: "!",
         type: 'feedback',
@@ -61,19 +61,17 @@ const activities = [
 
 export default function Dashboard() {
     return (
-        <main className="space-y-6">
-            <WelcomeMessageContainer />
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {
-                    stats.map(stat => (
-                        <StatCard key={stat.id} statInfo={stat} />
-                    ))
-                }
-            </section>
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <RecentActivity activities={activities}/>
-                <AiInsights />
-            </section>
-        </main>
-    )
+      <main className="space-y-6">
+        <WelcomeMessageContainer />
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((stat) => (
+            <StatCard key={stat.id} statInfo={stat} />
+          ))}
+        </section>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <RecentActivity activities={activities} title="Recent Activity" />
+          <AiInsights />
+        </section>
+      </main>
+    );
 }
