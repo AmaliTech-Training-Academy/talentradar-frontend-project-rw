@@ -77,6 +77,7 @@ export const useNotifications = () => {
     return () => {
       stompClient?.deactivate();
     };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const markAsRead = async (id: string) => {

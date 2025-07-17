@@ -24,6 +24,7 @@ import {
   Map,
   Settings,
   Send,
+  MessageSquare,
 } from "lucide-react";
 import { SidebarAccountInfo } from "./sidebar-account-info";
 
@@ -100,6 +101,11 @@ const items = [
     title: "AI Score",
     url: "/manager/ai-scores",
     icon: Brain,
+  },
+  {
+    title: "Manager Feedback",
+    url: "/dashboard/manager-feedback",
+    icon: MessageSquare,
   },
   {
     title: "Notifications",
