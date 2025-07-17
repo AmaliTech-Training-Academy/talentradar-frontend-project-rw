@@ -4,10 +4,12 @@ import { getSessions } from "@/lib/api/session";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import SessionFilters from "./session-filters";
+import { Column } from "@/components/custom/app-table";
+import { Session } from "@/lib/types/sessions";
 
 const SessionsTable = async () => {
-    const sessions = await getSessions();
-    if (!sessions.success) return <ErrorDiv error={sessions.message} />;
+  const sessions = await getSessions();
+  if (!sessions.success) return <ErrorDiv error={sessions.message} />;
   return (
     <div className="p-5">
       <div className="mb-5 flex flex-col md:flex-row  justify-start md:justify-between items-start md:items-center">
@@ -20,7 +22,7 @@ const SessionsTable = async () => {
         <SessionFilters />
       </div>
 
-      <AppTable
+      <AppTable<Session>
         columns={sessionColumns}
         data={sessions.data || []}
         actionsLabel="Actions"
@@ -30,19 +32,19 @@ const SessionsTable = async () => {
   );
 };
 
-export const sessionColumns = [
+export const sessionColumns: Column<Session>[] = [
   { key: "user_name", label: "User" },
   { key: "device_info", label: "Device" },
   { key: "ip_address", label: "IP Address" },
   {
     key: "created_at",
     label: "Created At",
-    render: (value: any) => new Date(value).toLocaleString(),
+    render: (value) => new Date(value as string).toLocaleString(),
   },
   {
     key: "is_active",
     label: "Status",
-    render: (value: any) =>
+    render: (value) =>
       value ? (
         <Badge variant="outline" className="text-green">
           Active

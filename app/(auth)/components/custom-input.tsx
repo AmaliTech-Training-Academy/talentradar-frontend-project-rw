@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
-import { Eye, EyeOff, Mail } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 

@@ -1,7 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -12,14 +10,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { RegisterUser } from "@/lib/api/auth";
-import { Loader, Lock, Mail, MoveRight, User, UserRound } from "lucide-react";
+import { Loader, Lock, Mail, MoveRight, User } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { CustomInput } from "./custom-input";
 
-export function RegisterForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
