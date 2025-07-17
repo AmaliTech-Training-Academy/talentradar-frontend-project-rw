@@ -1,0 +1,50 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "frontend",
+      "image": "323135480621.dkr.ecr.eu-west-1.amazonaws.com/talentradar/frontend:fixed-20250717-163653",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 3000,
+          "hostPort": 3000,
+          "protocol": "tcp",
+          "name": "frontend-3000-tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "3000"
+        },
+        {
+          "name": "NODE_ENV",
+          "value": "dev"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/aws/ecs/talentradar",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "frontend"
+        },
+        "secretOptions": []
+      },
+      "systemControls": []
+    }
+  ],
+  "family": "TalentRadar-frontend",
+  "taskRoleArn": "arn:aws:iam::323135480621:role/TalentRadar-ECSTaskRole",
+  "executionRoleArn": "arn:aws:iam::323135480621:role/TalentRadar-ECSTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512"
+}

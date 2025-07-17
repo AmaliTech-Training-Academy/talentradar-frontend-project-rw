@@ -79,7 +79,7 @@ jobs:
       - name: Test Docker build
         run: |
           echo "🐳 Testing Docker build..."
-          docker build -f Dockerfile . -t test-frontend:latest
+          docker build --platform linux/amd64 -f Dockerfile . -t test-frontend:latest
           echo "✅ Docker build successful"
 
   status-check:

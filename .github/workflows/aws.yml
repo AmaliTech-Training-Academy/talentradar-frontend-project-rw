@@ -110,8 +110,9 @@ jobs:
         echo "Context: ${{ env.BUILD_CONTEXT }}"
         echo "Dockerfile: ${{ env.DOCKERFILE_PATH }}"
         
-        # Build the Docker image
+        # Build the Docker image for Linux AMD64 platform
         docker build \
+          --platform linux/amd64 \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
           -f ${{ env.DOCKERFILE_PATH }} \
