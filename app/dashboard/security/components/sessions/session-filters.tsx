@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CalendarIcon, Trash2, UserIcon } from "lucide-react";
+import { CalendarIcon, UserIcon } from "lucide-react";
 
 const SessionFilters = () => {
   return (

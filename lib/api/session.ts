@@ -16,7 +16,7 @@ export async function getSessions() {
       };
     }
     return result;
-  } catch (error: any) {
+  } catch (error) {
     return handleApiError(error);
   }
 }
@@ -36,7 +36,7 @@ export async function revokeSessions(id:string) {
       };
     }
     return result;
-  } catch (error: any) {
+  } catch (error) {
     return handleApiError(error);
   }
 }
