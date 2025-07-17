@@ -57,10 +57,10 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: oklch(0.6275 0.192 264.5);
   --green: oklch(0.7227 0.192 149.58);
-  --violet:oklch(0.6268 0.2325 303.9);
-  --orange:oklch(0.7049 0.1867 47.6);
-  --teal:oklch(0.7038 0.123 182.5);
-  --white:oklch(1 0 0);
+  --violet: oklch(0.6268 0.2325 303.9);
+  --orange: oklch(0.7049 0.1867 47.6);
+  --teal: oklch(0.7038 0.123 182.5);
+  --white: oklch(1 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -96,10 +96,10 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.6275 0.192 264.5);
   --green: oklch(0.7227 0.192 149.58);
-  --violet:oklch(0.6268 0.2325 303.9);
-  --orange:oklch(0.7049 0.1867 47.6);
-  --teal:oklch(0.7038 0.123 182.5);
-  --white:oklch(1 0 0);
+  --violet: oklch(0.6268 0.2325 303.9);
+  --orange: oklch(0.7049 0.1867 47.6);
+  --teal: oklch(0.7038 0.123 182.5);
+  --white: oklch(1 0 0);
   --primary-foreground: oklch(0.21 0.006 285.885);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
@@ -132,7 +132,16 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.notification_tab_trigger {
+  @apply flex w-fit items-center space-x-2 px-4 py-2 text-sm font-medium capitalize rounded-md data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:font-semibold;
+}
+
+.notification_count_badge {
+  @apply flex h-fit items-center justify-center rounded-full bg-accent px-2 py-1 text-xs text-muted-foreground font-medium group-data-[state=active]:bg-primary/20 group-data-[state=active]:text-primary group-data-[state=active]:font-semibold;
 }

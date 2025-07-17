@@ -5,17 +5,22 @@ export interface INotification {
     title: string;
     content: string;
     sent_at: string;
+    read_at?: string;
 }
 
 export interface INotificationApiResponse {
     success: boolean;
-    data: INotification[];
-    pagination: {
-        page: number;
-        size: number;
-        totalElements: number;
-        totalPages: number;
-        hasNext: boolean;
-        hasPrevious: boolean;
-    }
+    message?: string;
+    data: {
+        notifications: INotification[] | null;
+        pagination?: {
+            page: number;
+            size: number;
+            totalElements: number;
+            totalPages: number;
+            hasNext: boolean;
+            hasPrevious: boolean;
+        };
+    };
+    errors: string | null;
 }
