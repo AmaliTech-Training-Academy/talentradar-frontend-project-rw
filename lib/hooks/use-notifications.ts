@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
@@ -18,7 +18,10 @@ export const useNotifications = () => {
     const fetchInitial = async () => {
       try {
         const getNotificationResponse = await getAllNotifications();
-        if (!getNotificationResponse.success) throw new Error(getNotificationResponse.message || "Failed to fetch notifications");
+        if (!getNotificationResponse.success)
+          throw new Error(
+            getNotificationResponse.message || "Failed to fetch notifications"
+          );
         setNotifications(getNotificationResponse.result);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";
@@ -30,8 +33,8 @@ export const useNotifications = () => {
     };
 
     const connectSocket = () => {
-      const socket = new SockJS('/ws-notifications', undefined, {
-        // @ts-ignore
+      const socket = new SockJS("/ws-notifications", undefined, {
+        // @ts-expect-error - This is fine
         withCredentials: true,
       });
 
@@ -39,7 +42,7 @@ export const useNotifications = () => {
         webSocketFactory: () => socket,
         reconnectDelay: 5000,
         onConnect: () => {
-          stompClient.subscribe('/user/queue/notifications', (message) => {
+          stompClient.subscribe("/user/queue/notifications", (message) => {
             const newNotification: INotification = JSON.parse(message.body);
             setNotifications((prev) => [newNotification, ...prev]);
             toast.info("New notification received");
