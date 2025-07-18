@@ -272,6 +272,6 @@ export const skillColors = {
   technical: "bg-primary",
   communication: "bg-green",
   collaboration: "bg-violet",
-  execution: "bg-orange-500",
+  execution: "bg-orange/50",
   innovation: "bg-teal",
 };

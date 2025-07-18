@@ -20,7 +20,7 @@ export function SkillItem({ label, score, color, description, Icon }: SkillItemP
           <Icon className="w-4 h-4 text-gray-700" />
           <span className="text-sm font-medium text-gray-900">{label}</span>
         </div>
-        <span className={`text-sm font-semibold ${textColorClass}`}>{score}</span> {/* Apply dynamic text color */}
+        <span className={`text-sm font-semibold ${textColorClass}`}>{score}</span>
       </div>
       <div className="relative">
         <Progress value={(score / 5) * 100} className="h-2" />
