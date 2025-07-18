@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { User } from "lucide-react";
 import { LogoutCard } from "./logout-card";
 import { useAppSelector } from "@/lib/hooks";
@@ -19,7 +19,7 @@ export const SidebarAccountInfo = () => {
           <p className="text-sm">{user.role}</p>
         </div>
       </div>
-      <LogoutCard />
+      <LogoutCard className="block lg:block" />
     </div>
   );
 };

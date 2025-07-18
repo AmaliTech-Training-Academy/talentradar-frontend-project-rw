@@ -45,7 +45,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-18">
-        <div className="flex gap-2 h-18">
+        <Link href={"/"} className="flex gap-2 h-18">
           <p className="p-2 bg-violet h-10 w-10 flex items-center justify-center text-xl aspect-square font-black rounded-sm text-white">
             TR
           </p>
@@ -53,7 +53,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             TalentRadar.AI
             <p className="text-xs font-normal">Mini Version</p>
           </div>
-        </div>
+        </Link>
         <Separator orientation="horizontal" />
       </SidebarHeader>
       <SidebarContent>
@@ -62,13 +62,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           {/* <SidebarGroupLabel>{item.title}</SidebarGroupLabel> */}
           <SidebarGroupContent>
             {!user.isAuthenticated ? (
-              <Link href="/dashboard" className="mx-20">
-                <Link
-                  href={"/login"}
-                  className="cursor-pointer inline-block underline italic"
-                >
-                  <Button variant={"link"}>Login</Button>
-                </Link>
+              <Link
+                href={"/login"}
+                className="cursor-pointer inline-block underline italic"
+              >
+                <Button variant={"link"}>Login</Button>
               </Link>
             ) : (
               <SidebarMenu className="space-y-3">

@@ -9,8 +9,9 @@ import { LogOut } from "lucide-react";
 import { useAppDispatch } from "@/lib/hooks";
 import { clearUser } from "@/lib/features/authSlice";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
-export const LogoutCard = () => {
+export const LogoutCard = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   return (
@@ -19,7 +20,10 @@ export const LogoutCard = () => {
         <Button
           variant={"ghost"}
           size={"icon"}
-          className="hidden lg:block text-destructive hover:text-destructive"
+          className={cn(
+            "hidden lg:block text-destructive hover:text-destructive",
+            className
+          )}
           onClick={() => {
             router.push("/login");
             dispatch(clearUser());
