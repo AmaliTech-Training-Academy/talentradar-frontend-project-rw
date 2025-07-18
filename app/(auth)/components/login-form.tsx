@@ -15,6 +15,7 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchemaProps>({
     resolver: zodResolver(loginSchema),
@@ -22,6 +23,9 @@ export const LoginForm = () => {
   const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
     const result = await loginUser(data);
     if (result.error) {
+      setError("root", {
+        message: result.error,
+      });
       toast.error("Failure", {
         description: `${errors.root?.message ?? ""}`,
         position: "top-right",
