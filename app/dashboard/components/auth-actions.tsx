@@ -67,7 +67,7 @@ const AuthAction = () => {
                   isAuthenticated: true,
                 })
               );
-              router.push("/login");
+              router.push("/dashboard");
             }}
           >
             Admin <MoveRight />
