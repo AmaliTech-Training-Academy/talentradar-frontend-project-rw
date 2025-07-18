@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setUser, clearUser } from "@/lib/features/authSlice";
 import { RoleEnum } from "@/lib/types/user-slice";
 import { useRouter } from "next/navigation";
+import { MoveRight } from "lucide-react";
 
 const AuthAction = () => {
   const dispatch = useAppDispatch();
@@ -13,9 +14,10 @@ const AuthAction = () => {
   return (
     <>
       {!user.isAuthenticated ? (
-        <div className="flex gap-2 justify-center my-2">
+        <div className="flex flex-col gap-2 justify-center my-2">
           <Button
             variant="outline"
+            className="py-4 bg-white/30 hover:bg-white/60 hover:text-white text-white h-fit flex justify-between items-center"
             size={"sm"}
             onClick={() => {
               dispatch(
@@ -30,10 +32,11 @@ const AuthAction = () => {
               router.push("/dashboard");
             }}
           >
-            Login as Developer
+            Developer <MoveRight />
           </Button>
           <Button
             variant="outline"
+            className="py-4 bg-white/30 hover:bg-white/60 hover:text-white text-white h-fit  flex justify-between items-center "
             size={"sm"}
             onClick={() => {
               dispatch(
@@ -48,10 +51,11 @@ const AuthAction = () => {
               router.push("/dashboard");
             }}
           >
-            Login as Manager
+            Manager <MoveRight />
           </Button>
           <Button
             variant="outline"
+            className="py-4 bg-white/30 hover:bg-white/60 hover:text-white text-white h-fit  flex justify-between items-center "
             size={"sm"}
             onClick={() => {
               dispatch(
@@ -66,15 +70,19 @@ const AuthAction = () => {
               router.push("/dashboard");
             }}
           >
-            Login as Admin
+            Admin <MoveRight />
           </Button>
         </div>
       ) : (
-        <Button variant="destructive" onClick={() => {
-            dispatch(clearUser())
-            router.push("/login")
-            }} className="my-2">
-          Logout
+        <Button
+          variant="destructive"
+          className="w-full py-3 my-2 h-fit"
+          onClick={() => {
+            dispatch(clearUser());
+            router.push("/login");
+          }}
+        >
+          Logout Demo Account
         </Button>
       )}
     </>

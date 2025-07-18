@@ -31,6 +31,8 @@ import {
 import { SidebarAccountInfo } from "./sidebar-account-info";
 import { RoleEnum } from "@/lib/types/user-slice";
 import { useAppSelector } from "@/lib/hooks";
+import { usePathname } from "next/navigation";
+import { Button } from "../ui/button";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const user = useAppSelector((state) => state.auth);
@@ -38,6 +40,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   if (user.isAuthenticated) {
     userItems = items.filter((item) => item.role.includes(user.role!));
   }
+  const path = usePathname();
+  console.log("Current path:", path);
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-18">
@@ -59,15 +63,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             {!user.isAuthenticated ? (
               <Link href="/dashboard" className="mx-20">
-                <p className="cursor-pointer inline-block underline italic">
-                  Login
-                </p>
+                <Link
+                  href={"/login"}
+                  className="cursor-pointer inline-block underline italic"
+                >
+                  <Button variant={"link"}>Login</Button>
+                </Link>
               </Link>
             ) : (
               <SidebarMenu className="space-y-3">
-                {userItems.map(({ title, isActive, url, icon: Icon }) => (
+                {userItems.map(({ title, url, icon: Icon }) => (
                   <SidebarMenuItem key={title}>
-                    <SidebarMenuButton asChild isActive={isActive}>
+                    <SidebarMenuButton asChild isActive={path === url}>
                       <Link href={url}>
                         <Icon size={20} strokeWidth={1.5} />
                         {title}
@@ -91,13 +98,12 @@ const items = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    isActive: true,
     icon: Home,
     role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
   },
   {
-    title: "Productivity scored",
-    url: "/dashboard/productivity-scored",
+    title: "Productivity Scorecard",
+    url: "/dashboard/productivity-scorecard",
     icon: ChartColumn,
     role: [RoleEnum.DEVELOPER],
   },
