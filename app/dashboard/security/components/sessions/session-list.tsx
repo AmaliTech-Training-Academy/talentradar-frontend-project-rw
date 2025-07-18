@@ -30,8 +30,8 @@ const SessionsList = ({
     isLast: sessions.last,
   });
   async function handlePageChange(page: number) {
-    dispatch(setPage({ key: "session", page:page }));
-    setPageInfo({ ...pageInfo, page:page });
+    dispatch(setPage({ key: "session", page: page }));
+    setPageInfo({ ...pageInfo, page: page });
     setError(null);
     setLoading(true);
     try {
@@ -77,16 +77,21 @@ const SessionsList = ({
 };
 
 export const sessionColumns: Column<Session>[] = [
-  { key: "user_name", label: "User" },
-  { key: "device_info", label: "Device" },
-  { key: "ip_address", label: "IP Address" },
   {
-    key: "created_at",
+    key: "user",
+    label: "User",
+    render: (value) =>
+      typeof value === "object" && ` (${value.email})`,
+  },
+  { key: "deviceInfo", label: "Device" },
+  { key: "ipAddress", label: "IP Address" },
+  {
+    key: "createdAt",
     label: "Created At",
     render: (value) => new Date(value as string).toLocaleString(),
   },
   {
-    key: "is_active",
+    key: "active",
     label: "Status",
     render: (value) =>
       value ? (

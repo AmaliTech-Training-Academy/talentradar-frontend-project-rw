@@ -123,7 +123,7 @@ const items = [
     title: "AI Score",
     url: "/dashboard/ai-scores",
     icon: Brain,
-    role: [RoleEnum.DEVELOPER],
+    role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER],
   },
   {
     title: "Manager Feedback",
