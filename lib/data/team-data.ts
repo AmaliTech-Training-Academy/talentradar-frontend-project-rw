@@ -80,8 +80,9 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 12,
     },
     lastUpdated: "1 hour ago",
-    overallFeedback:
-      "Michael demonstrates strong technical skills and reliable project delivery. His communication and collaboration abilities continue to improve, making him a valuable team contributor.",
+
+     overallFeedback: ""
+
   },
   {
     id: "3",

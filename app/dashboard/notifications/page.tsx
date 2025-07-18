@@ -11,7 +11,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { useNotifications } from "@/lib/hooks/use-notifications";
 import { NotificationCard } from "./components/notification-card";
-// import { INotification } from "@/lib/types/notification";
 
 type TabCategory = 'ALL' | 'UNREAD' | 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR';
 
@@ -46,13 +45,13 @@ export default function Notifications() {
 
     const filteredNotifications = notifications.filter((notification) => {
         if (activeTab === 'ALL') return true;
-        if (activeTab === 'UNREAD') return !notification.read_at;
+        if (activeTab === 'UNREAD') return !notification.readAt;
         return notification.category === activeTab;
     });
 
     const tabCounts = {
         ALL: notifications.length,
-        UNREAD: notifications.filter(n => !n.read_at).length,
+        UNREAD: notifications.filter(n => !n.readAt).length,
         INFO: notifications.filter(n => n.category === 'INFO').length,
         SUCCESS: notifications.filter(n => n.category === 'SUCCESS').length,
         WARNING: notifications.filter(n => n.category === 'WARNING').length,

@@ -5,7 +5,7 @@ import { UserManagementTab } from "./user-management-tab";
 import { SecurityAlerts } from "./overview/overview-recent-alerts";
 import { SessionsTable } from "./sessions/sessions";
 import { RecentActivity } from "../../components/recent-activity";
-import { activities } from "../../page";
+import { activities } from "@/lib/data/welcome";
 
 export const SecurityTabs = () => {
   return (

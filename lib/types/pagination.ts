@@ -1,19 +1,4 @@
-export interface Session {
-  id: string;
-  user_name: string;
-  user_id: string;
-  ip_address: string;
-  device_info: string;
-  is_active: boolean;
-  session_id: string;
-  created_at: string;
-}
-
-
-export interface SessionResponse<T> {
-  success: boolean;
-  message: string;
-  content: T;
+export interface PaginationObj {
   pageable: {
     pageNumber: number;
     pageSize: number;
@@ -31,4 +16,25 @@ export interface SessionResponse<T> {
   numberOfElements: number;
   sort: { empty: boolean; sorted: boolean; unsorted: boolean };
   empty: boolean;
+}
+
+
+export interface PageInfo {
+  page: number;
+  totalPages: number;
+  // hasNext: boolean;
+  // hasPrevious: boolean;
+  isFirst: boolean;
+  isLast: boolean;
+  size: number;
+  totalItems: number;
+}
+
+export interface PaginationControlsProps {
+  pageInfo: PageInfo;
+  onPageChange: (page: number) => void;
+}
+
+export interface PaginationState {
+  [tableKey: string]: number;
 }

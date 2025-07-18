@@ -1,25 +1,31 @@
-// import { Session } from "../types/sessions";
-import { FetchResponse } from "../types/response";
-import { handleApiError } from "../utils";
-import { sessions } from "../data/security-dashboard-data";
+import { Session, SessionResponse } from "../types/sessions";
+import { ApiResponse } from "../types/response";
+import { handleError } from "../utils";
 
-export async function getSessions() {
+export async function getSessions(page:number = 1) {
   try {
-    // const res = await fetch(
-    //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions`
-    // );
-    // const result: FetchResponse<Session[]> = await res.json();
-    // if (!res.ok) {
-    //   return {
-    //     success: false,
-    //     message: result.message || "An unknown error occurred",
-    //     data: null,
-    //   };
-    // }
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions?page=${page}`,
+    );
+    const result: SessionResponse<Session[]> = await res.json();
 
-    return { data: sessions, message: "", success: true };
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || "An unknown error occurred",
+        content: null,
+      };
+    }
+    return result;
   } catch (error) {
-    return handleApiError(error);
+    if (error instanceof Error) {
+      return { success: false, message: error.message, content: null };
+    }
+    return {
+      success: false,
+      message: "Unexpected error occurred",
+      content: null,
+    };
   }
 }
 export async function revokeSessions(id: string) {
@@ -30,7 +36,7 @@ export async function revokeSessions(id: string) {
         method: "DELETE",
       }
     );
-    const result: FetchResponse<null> = await res.json();
+    const result: ApiResponse<null> = await res.json();
     if (!res.ok) {
       return {
         success: false,
@@ -40,6 +46,6 @@ export async function revokeSessions(id: string) {
     }
     return result;
   } catch (error) {
-    return handleApiError(error);
+    return handleError(error);
   }
 }

@@ -18,10 +18,10 @@ export const NotificationCard = ({
     onMarkRead: () => void;
     onDismiss: () => void;
 }) => {
-    const { id, title, content, category, sent_at } = notification;
+    const { id, title, content, category, sentAt } = notification;
 
     return (
-        <div className={clsx("rounded-md border py-4 px-4 sm:px-6 shadow-sm flex justify-between gap-4", { 'bg-primary/10': !notification.read_at })}>
+        <div className={clsx("rounded-md border py-4 px-4 sm:px-6 shadow-sm flex justify-between gap-4", { 'bg-primary/10': !notification.readAt })}>
             <div className="flex gap-2 sm:gap-3">
                 <Checkbox
                     id={id}
@@ -39,7 +39,7 @@ export const NotificationCard = ({
                     <div className="space-y-2">
                         <p className="font-semibold flex space-x-2">
                             {title}
-                            {!notification.read_at && <Dot size={40} className="text-primary -mt-2" />}
+                            {!notification.readAt && <Dot size={40} className="text-primary -mt-2" />}
                         </p>
                         <p className="text-sm text-foreground/80">
                             {content}
@@ -47,7 +47,7 @@ export const NotificationCard = ({
                         <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-4">
                             <div className="flex items-center space-x-1">
                                 <Clock size={12} />
-                                <span className="capitalize">{getRelativeTime(sent_at)}</span>
+                                <span className="capitalize">{getRelativeTime(sentAt)}</span>
                             </div>
                             <span>{category[0] + category.slice(1).toLowerCase()}</span>
                             <Link

@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// components/ui/AppTable.tsx
 
 export type Column<T> = {
   key: keyof T;

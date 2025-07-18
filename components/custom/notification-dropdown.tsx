@@ -15,7 +15,7 @@ import { useNotifications } from "@/lib/hooks/use-notifications";
 
 export const NotificationDropdown = () => {
     const { notifications, loading } = useNotifications();
-    const unreadNotifications = notifications.filter(n => !n.read_at);
+    const unreadNotifications = notifications.filter(n => !n.readAt);
 
     return (
         <DropdownMenu>
@@ -37,7 +37,7 @@ export const NotificationDropdown = () => {
                             </DropdownMenuItem>
                         ) : (
                             unreadNotifications.map(notification => {
-                                const { id, content, sent_at, title } = notification
+                                const { id, content, sentAt, title } = notification
                                 return (
                                     <DropdownMenuItem key={id} className="border-[#f4f4f5] border-2 hover:bg-[#f4f4f5] dark:border-[#27272a] dark:hover:bg-[#27272a]">
                                         <Link
@@ -46,7 +46,7 @@ export const NotificationDropdown = () => {
                                         >
                                             <div className="flex justify-between">
                                                 <p className="text-sm font-medium">{title}</p>
-                                                <p className="capitalize text-xs">{getRelativeTime(sent_at)}</p>
+                                                <p className="capitalize text-xs">{getRelativeTime(sentAt)}</p>
                                             </div>
                                             <p className="text-xs">{content.length > 40 ? (content.slice(0, 40) + '...') : content}</p>
                                         </Link>
