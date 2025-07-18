@@ -10,3 +10,9 @@ export interface INotification {
   sentAt: string;
   readAt?: string;
 }
+
+export interface NotificationsState {
+    notifications: INotification[];
+    loading: boolean;
+    error: string | null;
+}

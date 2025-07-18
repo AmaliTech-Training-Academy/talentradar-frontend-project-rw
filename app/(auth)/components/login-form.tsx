@@ -67,13 +67,6 @@ export const LoginForm = () => {
               {errors.password && errors.password.message}
             </p>
           </div>
-          {/* <Input
-            id="loginPassword"
-            type="password"
-            placeholder="*******"
-            {...register("password")}
-            className="bg-white/25 border-none "
-          /> */}
           <CustomInput
             Icon={Lock}
             id="loginPassword"

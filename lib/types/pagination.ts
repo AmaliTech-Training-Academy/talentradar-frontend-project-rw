@@ -34,3 +34,7 @@ export interface PaginationControlsProps {
   pageInfo: PageInfo;
   onPageChange: (page: number) => void;
 }
+
+export interface PaginationState {
+  [tableKey: string]: number;
+}

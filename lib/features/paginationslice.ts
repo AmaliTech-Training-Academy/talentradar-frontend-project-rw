@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface PaginationState {
-  [tableKey: string]: number;
-}
+import { PaginationState } from '../types/pagination';
 
 const initialState: PaginationState = {};
 
