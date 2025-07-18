@@ -1,18 +1,30 @@
-import { configureStore } from '@reduxjs/toolkit'
-import paginationReducer from "./features/paginationslice"
-import notificationsReducer from "./features/notificationSlice"
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import paginationReducer from "./features/paginationslice";
+import {
+  persistReducer,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import persistStore from "redux-persist/es/persistStore";
+import authReducer from "./features/authSlice";
 
-export const makeStore = () => {
-  return configureStore({
-    reducer: {
-      pagination: paginationReducer,
-      notifications: notificationsReducer
-    }
-  })
-}
+const rootReducer = combineReducers({
+  pagination: paginationReducer,
+  auth: authReducer,
+});
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"],
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore['getState']>
-export type AppDispatch = AppStore['dispatch']
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
+});
+
+export const persistor = persistStore(store);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type AppStore = typeof store;

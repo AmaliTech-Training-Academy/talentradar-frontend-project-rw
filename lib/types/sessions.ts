@@ -1,12 +1,16 @@
 export interface Session {
   id: string;
-  user_name: string;
-  user_id: string;
-  ip_address: string;
-  device_info: string;
-  is_active: boolean;
-  session_id: string;
-  created_at: string;
+  user:{
+    id:string;
+    fullName: string;
+    email: string;
+  }
+  userId: string;
+  ipAddress: string;
+  deviceInfo: string;
+  active: boolean;
+  sessionId: string;
+  createdAt: string;
 }
 
 

@@ -1,4 +1,5 @@
 import { FC, ReactNode } from "react";
+import AuthAction from "../dashboard/components/auth-actions";
 
 const AuthLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
@@ -12,6 +13,7 @@ const AuthLayout: FC<{ children: ReactNode }> = ({ children }) => {
           <p className="text-xs font-normal">Grobal talent readiness system</p>
         </div>
       </div>
+      <AuthAction />
       {children}
     </main>
   );
