@@ -1,7 +1,6 @@
 import { Session, SessionResponse } from "../types/sessions";
 import { ApiResponse } from "../types/response";
 import { handleError } from "../utils";
-// import { sessions } from "../data/security-dashboard-data";
 
 export async function getSessions(page:number = 0) {
   try {
