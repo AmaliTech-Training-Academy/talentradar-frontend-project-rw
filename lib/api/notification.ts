@@ -129,6 +129,6 @@ export const mockDismissNotificationById = async (
   return {
     success: true,
     data: { id },
-    message: "Notification marked as read",
+    message: "Notification dismissed",
   };
 };
