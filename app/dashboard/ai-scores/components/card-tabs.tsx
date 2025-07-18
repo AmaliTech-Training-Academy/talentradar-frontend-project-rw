@@ -50,9 +50,7 @@ export const CardTabs = ({ member }: CardTabsProps) => {
             label={skillConfig[skillKey as keyof typeof skillConfig].label}
             score={score}
             color={skillConfig[skillKey as keyof typeof skillConfig].color}
-            description={
-              skillConfig[skillKey as keyof typeof skillConfig].description
-            }
+          
             Icon={skillConfig[skillKey as keyof typeof skillConfig].Icon}
           />
         ))}
