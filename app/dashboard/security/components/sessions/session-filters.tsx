@@ -14,32 +14,38 @@ const SessionFilters = ({ users }: { users: User[] }) => {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedUser, setSelectedUser] = useState<string>("");
 
-  async function handleUserSelect({
-    user,
-    date,
-  }: { user?: string; date?: string } = {}) {
-    setValue({ ...value, loading: true, error: null });
-    const filteredSessions = await getUSerSessions(user, date);
-    setValue({ ...value, loading: false });
-    if (filteredSessions.success && filteredSessions.content) {
-      setValue({ ...value, sessions: filteredSessions.content || [] });
-    } else {
-      setValue({
-        ...value,
-        error: filteredSessions.message || "Failed to fetch sessions",
-      });
-    }
-  }
+  const handleUserSelect = useCallback(
+    async ({ user, date }: { user?: string; date?: string } = {}) => {
+      setValue({ ...value, loading: true, error: null });
+      const filteredSessions = await getUSerSessions(user, date);
+      setValue({ ...value, loading: false });
+      if (filteredSessions.success && filteredSessions.content) {
+        setValue({ ...value, sessions: filteredSessions.content || [] });
+      } else {
+        setValue({
+          ...value,
+          error: filteredSessions.message || "Failed to fetch sessions",
+        });
+      }
+    },
+    [setValue, value]
+  );
 
-  const handleDateChange = useCallback((date: string) => {
-    setSelectedDate(date);
-    handleUserSelect({ date: date, user: selectedUser });
-  }, []);
+  const handleDateChange = useCallback(
+    (date: string) => {
+      setSelectedDate(date);
+      handleUserSelect({ date: date, user: selectedUser });
+    },
+    [handleUserSelect, selectedUser]
+  );
 
-  const handleUserChange = useCallback((user: string) => {
-    setSelectedUser(user);
-    handleUserSelect({ user: user, date: selectedDate });
-  }, []);
+  const handleUserChange = useCallback(
+    (user: string) => {
+      setSelectedUser(user);
+      handleUserSelect({ user: user, date: selectedDate });
+    },
+    [handleUserSelect, selectedDate]
+  );
 
   return (
     <div className="flex gap-2 flex-col sm:flex-row mb-5">

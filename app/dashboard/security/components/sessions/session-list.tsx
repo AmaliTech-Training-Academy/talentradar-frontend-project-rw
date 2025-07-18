@@ -29,7 +29,7 @@ const SessionsList = ({
       loading: false,
       error: null,
     });
-  }, []);
+  }, [setValue, sessions.content, value]);
   const { sessions: sessionsData, loading, error } = value;
   const [pageInfo, setPageInfo] = useState({
     page: sessions.pageable.pageNumber,

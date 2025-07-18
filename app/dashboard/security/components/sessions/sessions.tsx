@@ -1,6 +1,5 @@
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
-import SessionFilters from "./session-filters";
 import SessionsList from "./session-list";
 import { Session, SessionResponse } from "@/lib/types/sessions";
 import { getAllUsers } from "@/lib/api/user";
