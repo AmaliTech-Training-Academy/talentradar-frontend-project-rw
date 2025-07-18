@@ -1,9 +1,11 @@
-type RatingOption = {
+export type RatingOption = {
   value: number;
   color: string;
   title: string;
   desc: string;
-};export type Criterion = {
+};
+
+export type Criterion = {
   id: string;
   criteria_name: string;
 };
@@ -16,10 +18,13 @@ export type Dimension = {
   criteria: Criterion[];
   rating?: string;
 };
+
 export type DimensionScore = {
   name: string;
   rating: number;
-};export type User = {
+};
+
+export type User = {
   id: string;
   name: string;
   email: string;
