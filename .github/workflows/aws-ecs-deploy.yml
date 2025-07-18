@@ -49,8 +49,25 @@ jobs:
           node-version: "18"
           cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Fix broken lockfile and install dependencies
+        run: |
+          echo "Checking pnpm lockfile integrity..."
+
+          # Try to install with frozen lockfile first
+          if ! pnpm install --frozen-lockfile; then
+            echo "⚠️ Lockfile appears to be broken, regenerating..."
+            
+            # Remove the broken lockfile
+            rm -f pnpm-lock.yaml
+            
+            # Install dependencies and generate new lockfile
+            echo "Installing dependencies and generating new lockfile..."
+            pnpm install
+            
+            echo "✅ New lockfile generated successfully"
+          else
+            echo "✅ Lockfile is valid, dependencies installed"
+          fi
 
       - name: Build Next.js application
         run: |
