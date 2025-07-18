@@ -1,5 +1,5 @@
 import { INotification } from "../types/notification";
-import { ApiResponse, PaginatedList } from "../types/response";
+import { ApiResponse, PaginatedList, Pagination } from "../types/response";
 import { handleError, handleResponse } from "../utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -52,9 +52,9 @@ export const dismissNotificationById = async (
 };
 
 export const mockGetAllNotifications = async (): Promise<
-  ApiResponse<INotification[]>
+  ApiResponse<PaginatedList<INotification>>
 > => {
-  const notifications: INotification[] = [
+  const items: INotification[] = [
     {
       id: "550e8400-e29b-41d4-a716-446655440000",
       category: "SUCCESS",
@@ -107,9 +107,23 @@ export const mockGetAllNotifications = async (): Promise<
     },
   ];
 
+  const pagination: Pagination = {
+    page: 1,
+    size: 10,
+    totalElements: items.length,
+    totalPages: 1,
+    hasNext: false,
+    hasPrevious: false,
+  };
+
+  const paginatedNotifications: PaginatedList<INotification> = {
+    items: items,
+    pagination
+  }
+
   return {
     success: true,
-    data: notifications,
+    data: paginatedNotifications,
   };
 };
 

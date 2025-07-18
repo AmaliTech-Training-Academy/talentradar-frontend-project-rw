@@ -41,7 +41,7 @@ export const useNotifications = () => {
       try {
         const response = await mockGetAllNotifications();
         if (!response.success) throw new Error("Failed to fetch notifications");
-        dispatch(setNotifications(response.data));
+        dispatch(setNotifications(response.data.items));
       } catch (err) {
         handleError(err, "Failed to fetch notifications");
       } finally {
