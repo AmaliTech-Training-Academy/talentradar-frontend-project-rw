@@ -29,7 +29,7 @@ jobs:
     environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
-      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_FRONTEND }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_FRONTEND || github.event.repository.name }}
       ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
       ENV_NAME: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
       NODE_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
@@ -48,6 +48,22 @@ jobs:
       - name: Test AWS permissions and connectivity
         run: |
           echo "=== Testing AWS Permissions and Connectivity ==="
+          
+          # Debug ECR repository configuration
+          echo "=== ECR Configuration Debug ==="
+          echo "ECR_REPOSITORY_FRONTEND secret: '${{ secrets.ECR_REPOSITORY_FRONTEND }}'"
+          echo "GitHub repository name: '${{ github.event.repository.name }}'"
+          echo "Resolved ECR_REPOSITORY: '$ECR_REPOSITORY'"
+          echo "ECR_REGISTRY: '$ECR_REGISTRY'"
+          echo ""
+
+          # Validate ECR repository name is not empty
+          if [ -z "$ECR_REPOSITORY" ]; then
+            echo "❌ ECR repository name is empty!"
+            echo "Please check that ECR_REPOSITORY_FRONTEND secret is set in your repository secrets."
+            echo "Alternatively, this workflow will use the GitHub repository name as fallback."
+            exit 1
+          fi
 
           # Test basic AWS connectivity
           echo "1. Testing AWS STS (Security Token Service)..."
@@ -56,9 +72,16 @@ jobs:
             exit 1
           }
 
-          echo "2. Testing ECR permissions for frontend repository..."
+          echo "2. Testing ECR permissions for frontend repository: $ECR_REPOSITORY"
           aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION > /dev/null || {
             echo "❌ Failed to access ECR repository: $ECR_REPOSITORY"
+            echo "This could mean:"
+            echo "  - The repository doesn't exist in ECR"
+            echo "  - The AWS credentials don't have access to this repository"
+            echo "  - The repository name is incorrect"
+            echo ""
+            echo "Available ECR repositories in region $AWS_REGION:"
+            aws ecr describe-repositories --region $AWS_REGION --query 'repositories[].repositoryName' --output table || echo "No repositories found or no access"
             exit 1
           }
 
