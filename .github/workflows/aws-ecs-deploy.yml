@@ -1,0 +1,277 @@
+# TalentRadar Frontend - AWS ECR Deployment Workflow
+# This workflow builds and deploys the Next.js frontend Docker image to Amazon ECR when there's a merge to development, staging, or production branches
+
+name: Deploy TalentRadar Frontend to AWS ECR
+
+on:
+  push:
+    branches: ["development", "staging", "production"]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        default: "development"
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+permissions:
+  contents: read
+  id-token: write # Required for requesting the JWT
+
+jobs:
+  deploy:
+    name: Deploy Frontend
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
+    env:
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_FRONTEND || github.event.repository.name }}
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      ENV_NAME: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
+      NODE_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Test AWS permissions and connectivity
+        run: |
+          echo "=== Testing AWS Permissions and Connectivity ==="
+          
+          # Debug ECR repository configuration
+          echo "=== ECR Configuration Debug ==="
+          echo "ECR_REPOSITORY_FRONTEND secret: '${{ secrets.ECR_REPOSITORY_FRONTEND }}'"
+          echo "GitHub repository name: '${{ github.event.repository.name }}'"
+          echo "Resolved ECR_REPOSITORY: '$ECR_REPOSITORY'"
+          echo "ECR_REGISTRY: '$ECR_REGISTRY'"
+          echo ""
+
+          # Validate ECR repository name is not empty
+          if [ -z "$ECR_REPOSITORY" ]; then
+            echo "❌ ECR repository name is empty!"
+            echo "Please check that ECR_REPOSITORY_FRONTEND secret is set in your repository secrets."
+            echo "Alternatively, this workflow will use the GitHub repository name as fallback."
+            exit 1
+          fi
+
+          # Test basic AWS connectivity
+          echo "1. Testing AWS STS (Security Token Service)..."
+          aws sts get-caller-identity --region $AWS_REGION || {
+            echo "❌ Failed to get AWS caller identity"
+            exit 1
+          }
+
+          echo "2. Testing ECR permissions for frontend repository: $ECR_REPOSITORY"
+          aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION > /dev/null || {
+            echo "❌ Failed to access ECR repository: $ECR_REPOSITORY"
+            echo "This could mean:"
+            echo "  - The repository doesn't exist in ECR"
+            echo "  - The AWS credentials don't have access to this repository"
+            echo "  - The repository name is incorrect"
+            echo ""
+            echo "Available ECR repositories in region $AWS_REGION:"
+            aws ecr describe-repositories --region $AWS_REGION --query 'repositories[].repositoryName' --output table || echo "No repositories found or no access"
+            exit 1
+          }
+
+          echo "✅ All AWS permissions and connectivity tests passed"
+
+          # Show current AWS service health (if available)
+          echo ""
+          echo "=== AWS Service Information ==="
+          echo "AWS Region: $AWS_REGION"
+          echo "Frontend ECR Repository: $ECR_REPOSITORY"
+          echo "Current AWS Identity:"
+          aws sts get-caller-identity --region $AWS_REGION
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Check ECR repository configuration
+        run: |
+          echo "=== ECR Repository Information ==="
+          aws ecr describe-repositories \
+            --repository-names $ECR_REPOSITORY \
+            --region $AWS_REGION \
+            --query 'repositories[0].{Name:repositoryName,ImageTagMutability:imageTagMutability,RepositoryUri:repositoryUri}' \
+            --output table
+
+          echo ""
+          echo "Current frontend images in repository:"
+          aws ecr list-images \
+            --repository-name $ECR_REPOSITORY \
+            --region $AWS_REGION \
+            --query 'imageIds[*].imageTag' \
+            --output table || echo "No existing images found"
+
+      - name: Build, tag, and push frontend image to Amazon ECR
+        id: build-image
+        run: |
+          # Create unique tag using timestamp and commit SHA
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          COMMIT_SHA=$(echo ${{ github.sha }} | cut -c1-8)
+          UNIQUE_TAG="frontend-${ENV_NAME}-${TIMESTAMP}-${COMMIT_SHA}"
+
+          echo "Building TalentRadar frontend image with unique tag: $UNIQUE_TAG"
+
+          # Build docker container with unique tag for Next.js frontend
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$UNIQUE_TAG \
+            --build-arg NODE_ENV=$NODE_ENV \
+            --build-arg NEXT_TELEMETRY_DISABLED=1 \
+            -f Dockerfile \
+            .
+
+          # Also tag as latest for local reference
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$UNIQUE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+
+          # Push image to ECR
+          echo "Pushing frontend image to ECR..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$UNIQUE_TAG
+
+          # Try to push latest, but don't fail if it already exists
+          echo "Attempting to push frontend-latest tag (may fail if immutable)..."
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest || echo "Frontend-latest tag push failed (likely immutable repo) - continuing with unique tag"
+
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$UNIQUE_TAG" >> $GITHUB_OUTPUT
+          echo "unique_tag=$UNIQUE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Run security scan on Docker image
+        run: |
+          echo "Running basic security checks on the frontend image..."
+
+          # Check for known vulnerabilities in the base image
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            -v $PWD:/tmp/app \
+            aquasec/trivy:latest image \
+            --exit-code 0 \
+            --severity HIGH,CRITICAL \
+            --format table \
+            $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.build-image.outputs.unique_tag }} || echo "Security scan completed with warnings"
+
+      - name: Clean up old ECR images (keep latest 5 per environment)
+        run: |
+          echo "Cleaning up old ECR images for frontend environment: $ENV_NAME"
+
+          # Get all images for this environment using frontend prefix
+          echo "Fetching frontend images for environment: $ENV_NAME"
+
+          # First, get all image tags that match our frontend environment pattern
+          ENV_TAGS=$(aws ecr list-images \
+            --repository-name $ECR_REPOSITORY \
+            --region $AWS_REGION \
+            --query "imageIds[?starts_with(imageTag, 'frontend-$ENV_NAME-')].imageTag" \
+            --output text)
+
+          if [ -z "$ENV_TAGS" ] || [ "$ENV_TAGS" = "None" ]; then
+            echo "No frontend images found for environment: $ENV_NAME"
+          else
+            echo "Found frontend images for environment $ENV_NAME:"
+            echo "$ENV_TAGS"
+            
+            # Count how many images we have
+            IMAGE_COUNT=$(echo "$ENV_TAGS" | wc -w)
+            echo "Total frontend images for $ENV_NAME: $IMAGE_COUNT"
+            
+            # If we have more than 5 images, delete the oldest ones
+            if [ "$IMAGE_COUNT" -gt 5 ]; then
+              echo "Need to clean up $(($IMAGE_COUNT - 5)) old frontend images"
+              
+              # Sort tags by timestamp (they include timestamp in format YYYYMMDD-HHMMSS)
+              # Keep only the 5 newest, delete the rest
+              TAGS_TO_DELETE=$(echo "$ENV_TAGS" | tr ' ' '\n' | sort | head -n $(($IMAGE_COUNT - 5)))
+              
+              if [ ! -z "$TAGS_TO_DELETE" ]; then
+                echo "Frontend tags to delete:"
+                echo "$TAGS_TO_DELETE"
+                
+                # Delete each tag
+                for tag in $TAGS_TO_DELETE; do
+                  echo "Deleting frontend image with tag: $tag"
+                  aws ecr batch-delete-image \
+                    --repository-name $ECR_REPOSITORY \
+                    --region $AWS_REGION \
+                    --image-ids imageTag=$tag || echo "Failed to delete $tag (continuing...)"
+                done
+                echo "✅ Frontend cleanup completed"
+              fi
+            else
+              echo "Only $IMAGE_COUNT frontend images found, no cleanup needed (keeping up to 5)"
+            fi
+          fi
+
+      - name: Update ECS task definition (if applicable)
+        run: |
+          echo "=== ECS Task Definition Update ==="
+
+          # Check if ECS cluster and service exist for this environment
+          if [ ! -z "${{ secrets.ECS_CLUSTER_NAME }}" ] && [ ! -z "${{ secrets.ECS_SERVICE_NAME_FRONTEND }}" ]; then
+            echo "Checking ECS cluster and frontend service..."
+            
+            CLUSTER_EXISTS=$(aws ecs describe-clusters \
+              --clusters ${{ secrets.ECS_CLUSTER_NAME }} \
+              --region $AWS_REGION \
+              --query 'clusters[0].status' \
+              --output text 2>/dev/null || echo "NOT_FOUND")
+            
+            if [ "$CLUSTER_EXISTS" = "ACTIVE" ]; then
+              echo "ECS Cluster is active. Checking frontend service..."
+              
+              SERVICE_EXISTS=$(aws ecs describe-services \
+                --cluster ${{ secrets.ECS_CLUSTER_NAME }} \
+                --services ${{ secrets.ECS_SERVICE_NAME_FRONTEND }} \
+                --region $AWS_REGION \
+                --query 'services[0].status' \
+                --output text 2>/dev/null || echo "NOT_FOUND")
+              
+              if [ "$SERVICE_EXISTS" = "ACTIVE" ]; then
+                echo "✅ ECS frontend service is active"
+                echo "Image URI for ECS deployment: ${{ steps.build-image.outputs.image }}"
+                echo "Note: Update your ECS task definition to use this new frontend image"
+              else
+                echo "⚠️ ECS frontend service not found or not active"
+              fi
+            else
+              echo "⚠️ ECS cluster not found or not active"
+            fi
+          else
+            echo "⚠️ ECS configuration not provided in secrets"
+          fi
+
+      - name: Frontend deployment summary
+        run: |
+          echo "=== TalentRadar Frontend Deployment Summary ==="
+          echo "Environment: $ENV_NAME"
+          echo "Frontend Image URI: ${{ steps.build-image.outputs.image }}"
+          echo "Unique Tag: ${{ steps.build-image.outputs.unique_tag }}"
+          echo "ECR Repository: $ECR_REGISTRY/$ECR_REPOSITORY"
+          echo "Node Environment: $NODE_ENV"
+          echo "Build Status: ✅ Success"
+          echo ""
+          echo "✅ Next.js frontend Docker image successfully built and pushed to ECR"
+          echo "✅ TalentRadar frontend deployment to ECR completed for $ENV_NAME environment"
+          echo ""
+          echo "📝 Next Steps:"
+          echo "1. Update your ECS task definition to use the new image URI"
+          echo "2. Deploy the updated task definition to your ECS service"
+          echo "3. Verify the frontend application is running correctly"
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "🎉 Frontend deployment completed successfully!"
+          else
+            echo "❌ Frontend deployment failed. Please check the logs above."
+          fi

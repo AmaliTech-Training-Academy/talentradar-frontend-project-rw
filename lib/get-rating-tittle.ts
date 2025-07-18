@@ -1,4 +1,4 @@
-import { RatingOption } from "./types";
+import { RatingOption } from "@/lib/types";
 
 export const RATING_OPTIONS: RatingOption[] = [
   {

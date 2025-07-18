@@ -56,10 +56,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 8,
     },
     lastUpdated: "2 hours ago",
-
-     overallFeedback:
-      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
-
+    overallFeedback:
+      "Sarah demonstrates exceptional technical leadership and innovative problem-solving skills. Her strong execution and collaborative approach make her a key contributor to team success.",
   },
   {
     id: "2",
@@ -107,10 +105,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 6,
     },
     lastUpdated: "3 hours ago",
-
-     overallFeedback:
-      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
-
+    overallFeedback:
+      "Emily excels in user experience design with outstanding communication and collaboration skills. Her innovative approach to UX challenges consistently delivers user-centered solutions.",
   },
   {
     id: "4",
@@ -133,10 +129,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 9,
     },
     lastUpdated: "4 hours ago",
-
-     overallFeedback:
+    overallFeedback:
       "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
-
   },
   {
     id: "5",
@@ -159,9 +153,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 7,
     },
     lastUpdated: "5 hours ago",
-
-     overallFeedback:
-      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
+    overallFeedback:
+      "Lisa shows strong technical abilities in frontend development with good innovation skills. There's room for growth in communication and collaboration to reach her full potential.",
   },
   {
     id: "6",
@@ -184,10 +177,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 11,
     },
     lastUpdated: "6 hours ago",
-
-     overallFeedback:
-      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
-
+    overallFeedback:
+      "Alex brings excellent technical expertise and strong execution skills to DevOps operations. His reliability in project delivery and innovative approaches to infrastructure challenges are commendable.",
   },
   {
     id: "7",
@@ -210,11 +201,8 @@ export const teamMembers: TeamMember[] = [
       projectsCompleted: 3,
     },
     lastUpdated: "1 hour ago",
-
-     overallFeedback:
-      "David shows exceptional technical prowess and innovation in data science. His execution is strong, but there's an opportunity to enhance collaboration and communication within cross-functional teams.",
-  
-
+    overallFeedback:
+      "James is developing his technical skills and shows potential for growth. With continued mentoring and focus on communication and collaboration, he can become a strong team contributor.",
   },
 ];
 
