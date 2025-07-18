@@ -62,13 +62,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           {/* <SidebarGroupLabel>{item.title}</SidebarGroupLabel> */}
           <SidebarGroupContent>
             {!user.isAuthenticated ? (
-              <Link href="/dashboard" className="mx-20">
-                <Link
-                  href={"/login"}
-                  className="cursor-pointer inline-block underline italic"
-                >
-                  <Button variant={"link"}>Login</Button>
-                </Link>
+              <Link
+                href={"/login"}
+                className="cursor-pointer inline-block underline italic"
+              >
+                <Button variant={"link"}>Login</Button>
               </Link>
             ) : (
               <SidebarMenu className="space-y-3">
