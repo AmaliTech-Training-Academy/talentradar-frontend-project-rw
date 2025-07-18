@@ -1,11 +1,14 @@
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { getSessions } from "@/lib/api/session";
-import SessionFilters from "./session-filters";
 import SessionsList from "./session-list";
 import { Session, SessionResponse } from "@/lib/types/sessions";
+import { getAllUsers } from "@/lib/api/user";
+import { SessionProvider } from "@/components/providers/session-context-provider";
 
 export const SessionsTable = async () => {
   const sessions = await getSessions();
+  const users = await getAllUsers();
+  if (!users.success) return <ErrorDiv error={users.message} />;
   if (!sessions.success) return <ErrorDiv error={sessions.message} />;
   return (
     <div className="p-5">
@@ -16,9 +19,13 @@ export const SessionsTable = async () => {
             Manage and monitor active user sessions.
           </p>
         </div>
-        <SessionFilters />
       </div>
-      <SessionsList sessions={sessions as SessionResponse<Session[]>} />
+      <SessionProvider>
+        <SessionsList
+          sessions={sessions as SessionResponse<Session[]>}
+          users={users.data || []}
+        />
+      </SessionProvider>
     </div>
   );
 };

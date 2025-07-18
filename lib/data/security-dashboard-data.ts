@@ -16,7 +16,7 @@ export const sessions: Session[] = [
     createdAt: "2024-10-01T09:15:00Z",
   },
   {
-    id: "s1",
+    id: "s2",
     user: {
       id: "u1",
       fullName: "John Doe",
@@ -30,7 +30,7 @@ export const sessions: Session[] = [
     createdAt: "2024-10-01T09:15:00Z",
   },
   {
-    id: "s1",
+    id: "s3",
     user: {
       id: "u1",
       fullName: "John Doe",

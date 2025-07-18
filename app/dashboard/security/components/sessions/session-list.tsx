@@ -1,26 +1,36 @@
 "use client";
 import AppTable, { Column } from "@/components/custom/app-table";
 import { Session, SessionResponse } from "@/lib/types/sessions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
-import { useAppDispatch } from "@/lib/hooks";
 import { PaginationControls } from "@/components/custom/paginator-control";
-import { setPage } from "@/lib/features/paginationslice";
 import { getSessions } from "@/lib/api/session";
 import { handleError } from "@/lib/utils";
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { Loader } from "lucide-react";
+import { User } from "@/lib/types";
+import SessionFilters from "./session-filters";
+import { useSessionContext } from "@/components/providers/session-context-provider";
 
 const SessionsList = ({
   sessions,
+  users,
 }: {
   sessions: SessionResponse<Session[]>;
+  users: User[];
 }) => {
-  const dispatch = useAppDispatch();
-  const [sessionsData, setSessions] = useState<Session[]>(sessions.content);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const sessionContext = useSessionContext();
+  const { value, setValue } = sessionContext;
+  useEffect(() => {
+    setValue({
+      ...value,
+      sessions: sessions.content,
+      loading: false,
+      error: null,
+    });
+  }, [setValue, sessions.content, value]);
+  const { sessions: sessionsData, loading, error } = value;
   const [pageInfo, setPageInfo] = useState({
     page: sessions.pageable.pageNumber,
     size: sessions.pageable.pageSize,
@@ -30,18 +40,16 @@ const SessionsList = ({
     isLast: sessions.last,
   });
   async function handlePageChange(page: number) {
-    dispatch(setPage({ key: "session", page: page }));
     setPageInfo({ ...pageInfo, page: page });
-    setError(null);
-    setLoading(true);
+    setValue({ ...value, error: null, loading: true });
     try {
       const sessions = await getSessions(page);
-      setSessions(sessions.content || []);
+      setValue({ ...value, sessions: sessions.content || [] });
     } catch (error) {
       const errorMessage = handleError(error);
-      setError(errorMessage.message);
+      setValue({ ...value, error: errorMessage.message });
     } finally {
-      setLoading(false);
+      setValue({ ...value, loading: false });
     }
   }
 
@@ -50,6 +58,7 @@ const SessionsList = ({
   }
   return (
     <>
+      <SessionFilters users={users || []} />
       {!loading ? (
         <div>
           <AppTable<Session>
@@ -80,8 +89,7 @@ export const sessionColumns: Column<Session>[] = [
   {
     key: "user",
     label: "User",
-    render: (value) =>
-      typeof value === "object" && ` (${value.email})`,
+    render: (value) => typeof value === "object" && ` (${value.email})`,
   },
   { key: "deviceInfo", label: "Device" },
   { key: "ipAddress", label: "IP Address" },
