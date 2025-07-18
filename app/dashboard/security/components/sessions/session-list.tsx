@@ -8,7 +8,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { PaginationControls } from "@/components/custom/paginator-control";
 import { setPage } from "@/lib/features/paginationslice";
 import { getSessions } from "@/lib/api/session";
-import { handleApiError } from "@/lib/utils";
+import { handleError } from "@/lib/utils";
 import ErrorDiv from "@/components/custom/ErrorDiv";
 import { Loader } from "lucide-react";
 
@@ -38,7 +38,7 @@ const SessionsList = ({
       const sessions = await getSessions(page);
       setSessions(sessions.content || []);
     } catch (error) {
-      const errorMessage = handleApiError(error);
+      const errorMessage = handleError(error);
       setError(errorMessage.message);
     } finally {
       setLoading(false);

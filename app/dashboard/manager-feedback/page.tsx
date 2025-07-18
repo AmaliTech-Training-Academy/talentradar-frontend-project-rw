@@ -69,18 +69,18 @@ export default function ManagerFeedBackPage() {
     return average.toFixed(1);
   };
 
-const handleSubmitClick = form.handleSubmit(() => {
-  if (!selectedUser) {
-    toast.error("Please select a team member to evaluate");
-    return;
-  }
-  setShowConfirmModal(true);
-});
+  const handleSubmitClick = form.handleSubmit(() => {
+    if (!selectedUser) {
+      toast.error("Please select a team member to evaluate");
+      return;
+    }
+    setShowConfirmModal(true);
+  });
 
 
   const onSubmit = (data: FormValues) => {
     if (!selectedUser) return;
-//eslint-disable-next-line
+    //eslint-disable-next-line
     const payload = {
       developer_id: selectedUser,
       dimensions: data.dimensions,
@@ -228,15 +228,15 @@ const handleSubmitClick = form.handleSubmit(() => {
                             className={cn(
                               "text-xs bg-white border rounded-full px-2 inline",
                               watch(`dimensions.${index}.rating`) === 1 &&
-                                "text-destructive",
+                              "text-destructive",
                               watch(`dimensions.${index}.rating`) === 2 &&
-                                "text-orange",
+                              "text-orange",
                               watch(`dimensions.${index}.rating`) === 3 &&
-                                "text-chart-4",
+                              "text-chart-4",
                               watch(`dimensions.${index}.rating`) === 4 &&
-                                "text-primary",
+                              "text-primary",
                               watch(`dimensions.${index}.rating`) === 5 &&
-                                "text-teal"
+                              "text-teal"
                             )}
                           >
                             {getRatingTitle(
@@ -313,7 +313,7 @@ const handleSubmitClick = form.handleSubmit(() => {
                             </>
                           )}
                         />
-                        
+
                       </CardContent>
                     </Card>
                   ))}

@@ -29,8 +29,8 @@ export default function RootLayout({
         >
           <StoreProvider>
             {children}
-            <Toaster position="top-center" />
           </StoreProvider>
+          <Toaster position="top-center" />
         </ThemeProvider>
       </body>
     </html>

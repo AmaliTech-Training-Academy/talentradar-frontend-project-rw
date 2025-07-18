@@ -2,6 +2,7 @@ import { AiInsights } from "@/app/dashboard/components/ai-insights";
 import { RecentActivity } from "@/app/dashboard/components/recent-activity";
 import { StatCard } from "@/app/dashboard/components/stat-card";
 import { WelcomeMessageContainer } from "@/app/dashboard/components/welcome-message-container";
+import { activities } from "@/lib/data/welcome";
 import { CircleAlert, CircleCheckBig, ChartColumn, Users } from "lucide-react";
 
 const stats = [
@@ -36,26 +37,6 @@ const stats = [
         desc: 'Team performance',
         color: 'teal',
         icon: ChartColumn,
-    }
-];
-export const activities = [
-    {
-        id: "!",
-        type: 'feedback',
-        title: 'Lisa Thompson provided feedback for Michael Rodriguez',
-        timestamp: '13/02/2024, 12:15:00'
-    },
-    {
-        id: "2",
-        type: 'self-assessment',
-        title: 'Michael Rodriguez submitted a self-assessment',
-        timestamp: '13/02/2024, 12:15:00'
-    },
-    {
-        id: "3",
-        type: 'ai-score',
-        title: 'AI score updated for Jane Doe',
-        timestamp: '13/02/2024, 12:15:00'
     }
 ];
 

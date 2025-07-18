@@ -1,5 +1,6 @@
 "use client"
 import { Card } from "@/components/ui/card"
+import { RatingOption } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 interface RatingSelectorProps {

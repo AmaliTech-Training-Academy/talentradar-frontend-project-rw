@@ -41,7 +41,7 @@ export const useNotifications = () => {
       try {
         const response = await mockGetAllNotifications();
         if (!response.success) throw new Error("Failed to fetch notifications");
-        dispatch(setNotifications(response.result));
+        dispatch(setNotifications(response.data));
       } catch (err) {
         handleError(err, "Failed to fetch notifications");
       } finally {
@@ -101,7 +101,7 @@ export const useNotifications = () => {
   };
 
   const markAllAsRead = async () => {
-    const unreadIds = notifications.filter(n => !n.read_at).map(n => n.id);
+    const unreadIds = notifications.filter(n => !n.readAt).map(n => n.id);
     await Promise.all(unreadIds.map(markAsRead));
   };
 

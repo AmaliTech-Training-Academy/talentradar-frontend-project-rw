@@ -25,7 +25,7 @@ export const notificationsSlice = createSlice({
         },
         markAsRead: (state, action: PayloadAction<string>) => {
             const notification = state.notifications.find(n => n.id === action.payload);
-            if(notification) notification.read_at = new Date().toISOString();
+            if(notification) notification.readAt = new Date().toISOString();
         },
         dismissNotification: (state, action: PayloadAction<string>) => {
             state.notifications = state.notifications.filter(n => n.id !== action.payload);

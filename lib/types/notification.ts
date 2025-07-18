@@ -1,26 +1,12 @@
-export interface INotification {
-    id: string;
-    category: 'SUCCESS' | 'WARNING' | 'ERROR' | 'INFO';
-    event_type: 'FEEDBACK' | 'ASSESSMENT' | 'AI_SCORE' | 'OTHER';
-    title: string;
-    content: string;
-    sent_at: string;
-    read_at?: string;
-}
+export type NotificationCategory = "SUCCESS" | "WARNING" | "ERROR" | "INFO";
+export type NotificationEventType = "FEEDBACK" | "ASSESSMENT" | "AI_SCORE" | "OTHER";
 
-export interface INotificationApiResponse {
-    success: boolean;
-    message?: string;
-    data: {
-        notifications: INotification[] | null;
-        pagination?: {
-            page: number;
-            size: number;
-            totalElements: number;
-            totalPages: number;
-            hasNext: boolean;
-            hasPrevious: boolean;
-        };
-    };
-    errors: string | null;
+export interface INotification {
+  id: string;
+  category: NotificationCategory;
+  eventType: NotificationEventType;
+  title: string;
+  content: string;
+  sentAt: string;
+  readAt?: string;
 }
