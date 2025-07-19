@@ -1,16 +1,27 @@
+import { send } from "process";
 import { InviteFormValues } from "../schemas/invite-schema";
+import { InviteRes } from "../types/invite";
+import { ApiResponse } from "../types/response";
+import { handleError, handleResponse } from "../utils";
+import { sendInviteMock } from "../mock/invite";
 
-export async function sendInvite(data: InviteFormValues) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/users`,
-    {
-      method: "POST",
-      body: JSON.stringify(data),
-    }
-  );
-  const result = await res.json();
-  if (!res.ok) {
-    throw new Error(result.message || "An unknown error occurred");
+const useMock = true;
+export async function sendInvite(
+  data: InviteFormValues
+): Promise<ApiResponse<InviteRes>> {
+  if (useMock) {
+    return await sendInviteMock(data.email);
   }
-  return result;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/invite`,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
+    return await handleResponse<InviteRes>(res);
+  } catch (error) {
+    return handleError(error);
+  }
 }

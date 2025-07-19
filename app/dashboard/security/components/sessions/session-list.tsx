@@ -1,7 +1,7 @@
 "use client";
 import AppTable, { Column } from "@/components/custom/app-table";
-import { Session, SessionResponse } from "@/lib/types/sessions";
-import React, { useEffect, useState } from "react";
+import { Session, SessionPagination } from "@/lib/types/sessions";
+import React, { useEffect, useState, useCallback } from "react";
 import SessionActions from "./actions";
 import { Badge } from "@/components/ui/badge";
 import { PaginationControls } from "@/components/custom/paginator-control";
@@ -17,49 +17,86 @@ const SessionsList = ({
   sessions,
   users,
 }: {
-  sessions: SessionResponse<Session[]>;
+  sessions: SessionPagination<Session>;
   users: User[];
 }) => {
   const sessionContext = useSessionContext();
   const { value, setValue } = sessionContext;
   useEffect(() => {
-    setValue({
-      ...value,
-      sessions: sessions.content,
+    setValue((prev) => ({
+      ...prev,
+      sessions: sessions.items || [],
       loading: false,
       error: null,
-    });
-  }, [setValue, sessions.content, value]);
+    }));
+  }, [setValue, sessions.items]);
+
   const { sessions: sessionsData, loading, error } = value;
-  const [pageInfo, setPageInfo] = useState({
+
+  const [pageInfo, setPageInfo] = useState(() => ({
     page: sessions.pageable.pageNumber,
     size: sessions.pageable.pageSize,
     totalItems: sessions.totalElements,
     totalPages: sessions.totalPages,
     isFirst: sessions.first,
     isLast: sessions.last,
-  });
-  async function handlePageChange(page: number) {
-    setPageInfo({ ...pageInfo, page: page });
-    setValue({ ...value, error: null, loading: true });
-    try {
-      const sessions = await getSessions(page);
-      setValue({ ...value, sessions: sessions.content || [] });
-    } catch (error) {
-      const errorMessage = handleError(error);
-      setValue({ ...value, error: errorMessage.message });
-    } finally {
-      setValue({ ...value, loading: false });
-    }
-  }
+  }));
+
+  const handlePageChange = useCallback(
+    async (page: number) => {
+      try {
+        setPageInfo((prev) => ({ ...prev, page }));
+        setValue((prev) => ({ ...prev, error: null, loading: true }));
+        const sessionsResponse = await getSessions(page);
+
+        if (!sessionsResponse.success) {
+          setValue((prev) => ({
+            ...prev,
+            error: sessionsResponse.message,
+            loading: false,
+          }));
+          return;
+        }
+
+        const newSessions = sessionsResponse.data;
+        setValue((prev) => ({
+          ...prev,
+          sessions: newSessions.items || [],
+          loading: false,
+        }));
+
+        setPageInfo({
+          page: newSessions.pageable.pageNumber,
+          size: newSessions.pageable.pageSize,
+          totalItems: newSessions.totalElements,
+          totalPages: newSessions.totalPages,
+          isFirst: newSessions.first,
+          isLast: newSessions.last,
+        });
+      } catch (error) {
+        const errorMessage = handleError(error);
+        setValue((prev) => ({
+          ...prev,
+          error: errorMessage.message,
+          loading: false,
+        }));
+      }
+    },
+    [setValue]
+  );
 
   if (error) {
     return <ErrorDiv error={error} />;
   }
+
   return (
     <>
       <SessionFilters users={users || []} />
-      {!loading ? (
+      {loading ? (
+        <div className="flex justify-center py-8">
+          <Loader className="mr-2 h-6 w-6 animate-spin" />
+        </div>
+      ) : (
         <div>
           <AppTable<Session>
             columns={sessionColumns}
@@ -68,12 +105,8 @@ const SessionsList = ({
             renderActions={(session) => <SessionActions session={session} />}
           />
         </div>
-      ) : (
-        <div className="flex justify-center">
-          <Loader className="mr-2 h-6 w-6 animate-spin" />
-        </div>
       )}
-      {pageInfo && (pageInfo.totalPages ?? 0) > 1 && (
+      {pageInfo && pageInfo.totalPages > 1 && (
         <div className="mt-6 flex justify-center">
           <PaginationControls
             pageInfo={pageInfo}
