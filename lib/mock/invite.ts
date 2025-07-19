@@ -1,4 +1,3 @@
-import { User } from "../types";
 import { InviteRes } from "../types/invite";
 import { ApiResponse } from "../types/response";
 export async function sendInviteMock(
