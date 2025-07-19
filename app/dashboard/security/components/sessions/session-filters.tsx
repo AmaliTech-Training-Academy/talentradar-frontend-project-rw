@@ -3,8 +3,10 @@ import AppcomboBox from "@/app/dashboard/security/components/app-combo-box";
 import { useSessionContext } from "@/components/providers/session-context-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { getUSerSessions } from "@/lib/api/session";
+import { getSessions, getUSerSessions } from "@/lib/api/session";
 import { User } from "@/lib/types";
+import { ApiResponse } from "@/lib/types/response";
+import { Session, SessionPagination } from "@/lib/types/sessions";
 import { CalendarIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 
@@ -15,12 +17,22 @@ const SessionFilters = ({ users }: { users: User[] }) => {
   const [selectedUser, setSelectedUser] = useState<string>("");
 
   const handleUserSelect = useCallback(
-    async ({ user, date }: { user?: string; date?: string } = {}) => {
+    async (
+      { user, date }: { user?: string; date?: string } = {
+        user: selectedUser,
+        date: selectedDate,
+      }
+    ) => {
       setValue({ ...value, loading: true, error: null });
-      const filteredSessions = await getUSerSessions(user, date);
+      let filteredSessions: ApiResponse<SessionPagination<Session>>;
+      if (!user && !date) {
+        filteredSessions = await getSessions();
+      } else {
+        filteredSessions = await getUSerSessions(user, date);
+      }
       setValue({ ...value, loading: false });
-      if (filteredSessions.success && filteredSessions.content) {
-        setValue({ ...value, sessions: filteredSessions.content || [] });
+      if (filteredSessions.success && filteredSessions.data) {
+        setValue({ ...value, sessions: filteredSessions.data.items || [] });
       } else {
         setValue({
           ...value,
@@ -28,23 +40,25 @@ const SessionFilters = ({ users }: { users: User[] }) => {
         });
       }
     },
-    [setValue, value]
+    [setValue, value,selectedUser, selectedDate]
   );
 
   const handleDateChange = useCallback(
     (date: string) => {
+      if (date === selectedDate || !date) return;
       setSelectedDate(date);
       handleUserSelect({ date: date, user: selectedUser });
     },
-    [handleUserSelect, selectedUser]
+    [handleUserSelect, selectedUser, selectedDate]
   );
 
   const handleUserChange = useCallback(
     (user: string) => {
+      if (user === selectedUser && user !=="") return;
       setSelectedUser(user);
       handleUserSelect({ user: user, date: selectedDate });
     },
-    [handleUserSelect, selectedDate]
+    [handleUserSelect, selectedDate, selectedUser]
   );
 
   return (

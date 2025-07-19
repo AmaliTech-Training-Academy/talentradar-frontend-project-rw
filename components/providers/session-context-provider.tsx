@@ -2,14 +2,16 @@
 import { Session } from "@/lib/types/sessions";
 import React, { createContext, useContext, useState } from "react";
 
-interface SessionContextType {
+export interface SessionContextType {
   sessions: Session[];
   loading: boolean;
   error: string | null;
 }
 interface MyContextType {
   value: SessionContextType;
-  setValue: (val: SessionContextType) => void;
+  setValue: (
+    val: SessionContextType | ((prev: SessionContextType) => SessionContextType)
+  ) => void;
 }
 
 const MyContext = createContext<MyContextType | undefined>(undefined);

@@ -22,22 +22,21 @@ export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<InviteFormValues>({
     resolver: zodResolver(inviteFormSchema),
   });
 
   const onSubmit = async (data: InviteFormValues) => {
-    try {
-      await sendInvite(data);
-      toast.message("Invite sent to the user", {
-        description: `${data.email}`,
-      });
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
-      );
+    const result = await sendInvite(data);
+    if (!result.success) {
+      return toast.error(result.message || "Failed to send invite");
     }
+    toast.message(result.message, {
+      description: `An invite has been sent to ${data.email}`,
+    });
+    reset();
   };
 
   return (
