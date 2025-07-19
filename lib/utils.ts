@@ -1,31 +1,38 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { ApiResponse, ErrorResponse } from "./types/response";
+import { ApiResponse } from "./types/response";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const handleError = (error: unknown): ErrorResponse => {
+export const handleError = <T>(error: unknown): ApiResponse<T> => {
   const message = error instanceof Error ? error.message : "An unknown error occurred";
-  return { success: false, message };
+  console.log('Error: ', message);
+  return {
+    success: false,
+    message,
+    data: null,
+    errors: message,
+  };
 }
 
 // Handle fetch response
 export const handleResponse = async <T>(res: Response): Promise<ApiResponse<T>> => {
-  const data = await res.json();
-
-  if (!res.ok) {
-    const message = data.message ?? "An unknown error occurred";
+  try {
+    const data = await res.json();
+    return {
+      success: res.ok,
+      data: res.ok ? (data.data as T) : null,
+      message: data.message,
+      errors: data.errors || null,
+    };
+  } catch {
     return {
       success: false,
-      message,
+      data: null,
+      message: "Invalid server response",
+      errors: null,
     };
   }
-
-  return {
-    success: true,
-    data,
-    message: data.message,
-  };
 };

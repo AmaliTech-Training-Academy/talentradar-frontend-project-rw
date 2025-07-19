@@ -24,125 +24,57 @@ export const getAllNotifications = async (): Promise<
 // Mark notification as read
 export const markNotificationAsRead = async (
   id: string
-): Promise<ApiResponse<INotification>> => {
+): Promise<ApiResponse<null>> => {
   try {
     const res = await fetch(`${API_BASE}/notifications/${id}/read`, {
       method: "PATCH",
       credentials: "include",
     });
-    return await handleResponse<INotification>(res);
+    return await handleResponse<null>(res);
   } catch (err) {
-    return handleError(err);
+    return handleError<null>(err);
   }
 };
 
 // Dismiss notification
 export const dismissNotificationById = async (
   id: string
-): Promise<ApiResponse<INotification>> => {
+): Promise<ApiResponse<null>> => {
   try {
     const res = await fetch(`${API_BASE}/notifications/${id}/dismiss`, {
       method: "PATCH",
       credentials: "include",
     });
-    return await handleResponse<INotification>(res);
+    return await handleResponse<null>(res);
+  } catch (err) {
+    return handleError<null>(err);
+  }
+};
+
+// Get single notification
+export const getNotificationById = async (
+  id: string
+): Promise<ApiResponse<{ item: INotification }>> => {
+  try {
+    const res = await fetch(`${API_BASE}/notifications/${id}`, {
+      credentials: "include",
+    });
+    return await handleResponse<{ item: INotification }>(res);
   } catch (err) {
     return handleError(err);
   }
 };
 
-export const mockGetAllNotifications = async (): Promise<
-  ApiResponse<PaginatedList<INotification>>
-> => {
-  const items: INotification[] = [
-    {
-      id: "550e8400-e29b-41d4-a716-446655440000",
-      category: "SUCCESS",
-      eventType: "FEEDBACK",
-      title: "New feedback",
-      content: "Your manager has submitted new feedback",
-      sentAt: "2025-07-15T10:30:00Z",
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440001",
-      category: "WARNING",
-      eventType: "FEEDBACK",
-      title: "New feedback",
-      content: "Your manager has submitted new feedback",
-      sentAt: "2025-07-15T10:30:00Z",
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440002",
-      category: "ERROR",
-      eventType: "FEEDBACK",
-      title: "New feedback",
-      content: "Your manager has submitted new feedback",
-      sentAt: "2025-07-15T10:30:00Z",
-      readAt: "2025-07-15T10:30:00Z",
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440003",
-      category: "INFO",
-      eventType: "FEEDBACK",
-      title: "New feedback",
-      content: "Your manager has submitted new feedback",
-      sentAt: "2025-07-15T10:30:00Z",
-      readAt: "2025-07-15T10:30:00Z",
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440004",
-      category: "SUCCESS",
-      eventType: "FEEDBACK",
-      title: "New feedback",
-      content: "Your manager has submitted new feedback",
-      sentAt: "2025-07-15T10:30:00Z",
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440005",
-      category: "INFO",
-      eventType: "FEEDBACK",
-      title: "New feedback",
-      content: "Your manager has submitted new feedback",
-      sentAt: "2025-07-15T10:30:00Z",
-    },
-  ];
-
-  const pagination: Pagination = {
-    page: 1,
-    size: 10,
-    totalElements: items.length,
-    totalPages: 1,
-    hasNext: false,
-    hasPrevious: false,
-  };
-
-  const paginatedNotifications: PaginatedList<INotification> = {
-    items: items,
-    pagination
+// Search notifications
+export const searchNotifications = async (
+  query: string
+): Promise<ApiResponse<PaginatedList<INotification>>> => {
+  try {
+    const res = await fetch(`${API_BASE}/notifications/search?q=${query}`, {
+      credentials: "include",
+    });
+    return await handleResponse<PaginatedList<INotification>>(res);
+  } catch (err) {
+    return handleError(err);
   }
-
-  return {
-    success: true,
-    data: paginatedNotifications,
-  };
-};
-
-export const mockMarkNotificationAsRead = async (
-  id: string
-): Promise<ApiResponse<{ id: string }>> => {
-  return {
-    success: true,
-    data: { id },
-    message: "Notification marked as read",
-  };
-};
-
-export const mockDismissNotificationById = async (
-  id: string
-): Promise<ApiResponse<{ id: string }>> => {
-  return {
-    success: true,
-    data: { id },
-    message: "Notification dismissed",
-  };
 };

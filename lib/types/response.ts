@@ -7,20 +7,14 @@ export interface Pagination {
   hasPrevious: boolean;
 }
 
-export type ErrorResponse = {
-  success: false;
-  message: string;
-};
-
-export type SuccessResponse<T> = {
-  success: true;
-  message?: string;
-  data: T;
-};
-
-export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
-
-export type PaginatedList<T> = {
+export interface PaginatedList<T> {
   items: T[];
   pagination: Pagination;
-};
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T | null;
+  message?: string;
+  errors?: string | Record<string, unknown> | null;
+}
