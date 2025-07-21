@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link"
-import { Bell } from "lucide-react"
+import { Bell, Loader } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -30,7 +30,7 @@ export const NotificationDropdown = () => {
                 <DropdownMenuGroup className="space-y-2 p-2">
                     {
                         loading ? (
-                            <DropdownMenuItem disabled>Loading...</DropdownMenuItem>
+                            <DropdownMenuItem disabled><Loader className="animate-spin" /> Loading...</DropdownMenuItem>
                         ) : unreadNotifications.length === 0 ? (
                             <DropdownMenuItem disabled>
                                 0 notifications
@@ -41,7 +41,7 @@ export const NotificationDropdown = () => {
                                 return (
                                     <DropdownMenuItem key={id} className="border-[#f4f4f5] border-2 hover:bg-[#f4f4f5] dark:border-[#27272a] dark:hover:bg-[#27272a]">
                                         <Link
-                                            href={`/dashboard/notifications/${id}`}
+                                            href={`/dashboard/notifications`}
                                             className="p-1 rounded-md space-y-2"
                                         >
                                             <div className="flex justify-between">
