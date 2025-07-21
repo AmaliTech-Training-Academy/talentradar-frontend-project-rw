@@ -9,7 +9,10 @@ import { Label } from "@/components/ui/label";
 import { CustomInput } from "./custom-input";
 import { loginUser } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { setUser } from "@/lib/features/authSlice";
 export const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const {
     register,
@@ -22,12 +25,12 @@ export const LoginForm = () => {
   });
   const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
     const result = await loginUser(data);
-    if (result.error) {
+    if (!result.status) {
       setError("root", {
-        message: result.error,
+        message: result.errors[0].message || result.message || "Login failed",
       });
       toast.error("Failure", {
-        description: `${errors.root?.message ?? ""}`,
+        description: `${result.errors[0].message || result.message || "Login failed"}`,
         position: "top-right",
         style: {
           color: "var(--destructive)",
@@ -53,8 +56,10 @@ export const LoginForm = () => {
       },
       duration: 3000,
     });
+    dispatch(setUser(result.data.user));
     router.push("/dashboard");
     reset();
+    // console.log(result.data.user)
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -28,12 +28,16 @@ export function RegisterForm() {
     resolver: zodResolver(RegisterSchema),
   });
   const onSubmit = async (data: RegisterFormValues) => {
-    const requestBody = { ...data, token };
-    const result = await RegisterUser(requestBody);
-    if (!result.success) {
-      return toast.error(result.message || "Failed to set account");
-    }
-    toast.success(result.message);
+    const requestBody = {
+      ...data,
+      token: token ?? "",
+    };
+    await RegisterUser(requestBody);
+    // if (!result.success) {
+    //   return toast.error(result.message || "Failed to set account");
+    // }
+    // toast.success (result.message);
+    toast.success ("Account set successfully");
     reset();
     router.push("/login");
   };

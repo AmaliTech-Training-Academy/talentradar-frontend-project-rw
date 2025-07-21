@@ -6,7 +6,7 @@ import { WelcomeCard } from "./components/welcome-card";
 export default function page() {
   return (
     <div className="w-full space-y-3">
-      <WelcomeCard />
+        <WelcomeCard/>
       <section className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 4 }, () => crypto.randomUUID()).map((id) => (
           <StatCard
