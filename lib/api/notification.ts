@@ -1,12 +1,12 @@
 import { INotification } from "../types/notification";
-import { ApiResponse, PaginatedList } from "../types/response";
+import { ApiResponse, NotificationsList } from "../types/response";
 import { handleError, handleResponse } from "../utils";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // Get all notifications
 export const getAllNotifications = async (): Promise<
-  ApiResponse<PaginatedList<INotification>>
+  ApiResponse<NotificationsList<INotification>>
 > => {
   try {
     const res = await fetch(
@@ -15,7 +15,7 @@ export const getAllNotifications = async (): Promise<
         credentials: "include",
       }
     );
-    return await handleResponse<PaginatedList<INotification>>(res);
+    return await handleResponse<NotificationsList<INotification>>(res);
   } catch (err) {
     return handleError(err);
   }

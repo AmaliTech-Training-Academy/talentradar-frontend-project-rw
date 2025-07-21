@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AppSelect } from "@/components/custom/app-select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bell, Check, Clock, AlertCircle, CircleCheckBig, Info, XCircle, Archive, Star } from "lucide-react";
+import { Bell, Check, Clock, AlertCircle, CircleCheckBig, Info, XCircle, Archive, Star, Loader } from "lucide-react";
 import { Tabs } from "@/components/ui/tabs";
 import { TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -41,7 +41,7 @@ export default function Notifications() {
     const [activeTab, setActiveTab] = useState(tabs[0].value);
     const [sortFilter, setSortFilter] = useState(sortOptions[0].value);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
-    const { notifications, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
+    const { notifications, loading, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
 
     const filteredNotifications = notifications.filter((notification) => {
         if (activeTab === 'ALL') return true;
@@ -137,24 +137,32 @@ export default function Notifications() {
                 </div>
                 <TabsContent value={activeTab}>
                     <div className="p-2 space-y-2">
-                        {filteredNotifications.map((n) => (
-                            <NotificationCard
-                                key={n.id}
-                                notification={n}
-                                checked={selectedIds.includes(n.id)}
-                                onCheck={() => toggleSingleSelect(n.id)}
-                                onMarkRead={() => markAsRead(n.id)}
-                                onDismiss={() => dismissNotification(n.id)}
-                            />
-                        ))}
-                        {filteredNotifications.length === 0 && (
-                            <p className="text-muted-foreground text-center">No notifications found.</p>
-                        )}
+                        {
+                            loading ? (
+                                <div className="flex items-center justify-center space-x-1">
+                                    <Loader className="animate-spin" />
+                                    <span>Loading...</span>
+                                </div>
+                            ) : filteredNotifications.length === 0 ? (
+                                <p className="text-muted-foreground text-center">0 notifications found.</p>
+                            ) : (
+                                filteredNotifications.map((n) => (
+                                    <NotificationCard
+                                        key={n.id}
+                                        notification={n}
+                                        checked={selectedIds.includes(n.id)}
+                                        onCheck={() => toggleSingleSelect(n.id)}
+                                        onMarkRead={() => markAsRead(n.id)}
+                                        onDismiss={() => dismissNotification(n.id)}
+                                    />
+                                ))
+                            )
+                        }
                     </div>
                 </TabsContent>
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6 px-6 py-4 border-t border-input text-foreground/80 text-sm">
                     <div>
-                        Showing 2 of 2 notifications
+                        Showing {notifications.length} of {notifications.length} notifications
                     </div>
                     <div className="flex flex-col sm:flex-row gap-6">
                         <div className="flex gap-1 items-center cursor-pointer hover:text-foreground">

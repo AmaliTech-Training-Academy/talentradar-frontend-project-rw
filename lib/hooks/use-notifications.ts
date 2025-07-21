@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { toast } from "sonner";
 import { INotification } from "@/lib/types/notification";
 import {
-  mockDismissNotificationById,
-  mockGetAllNotifications,
-  mockMarkNotificationAsRead
+  dismissNotificationById,
+  getAllNotifications,
+  markNotificationAsRead
 } from "@/lib/api/notification";
 import {
   setNotifications,
@@ -25,7 +25,8 @@ export const useNotifications = () => {
   const dispatch = useDispatch();
   const { notifications, loading, error } = useSelector(
     (state: RootState) => state.notifications
-  )
+  );
+  const [totalNotifications, setTotalNotifications] = useState<number>();
 
   const handleError = (err: unknown, defaultMessage: string) => {
     const message = err instanceof Error ? err.message : defaultMessage;
@@ -39,9 +40,11 @@ export const useNotifications = () => {
     const fetchInitialNotifications = async () => {
       dispatch(setLoading(true));
       try {
-        const response = await mockGetAllNotifications();
+        const response = await getAllNotifications();
+        console.log(response);
         if (!response.success) throw new Error("Failed to fetch notifications");
-        dispatch(setNotifications(response.data));
+        dispatch(setNotifications(response.data.data.items));
+        setTotalNotifications(response.data.data.pagination.totalElements);
       } catch (err) {
         handleError(err, "Failed to fetch notifications");
       } finally {
@@ -91,7 +94,7 @@ export const useNotifications = () => {
 
   const markAsRead = async (id: string) => {
     try {
-      const response = await mockMarkNotificationAsRead(id);
+      const response = await markNotificationAsRead(id);
       if (!response.success) throw new Error("Failed to mark notification as read");
       dispatch(markAsReadAction(id));
       toast.success("Notification marked as read");
@@ -107,7 +110,7 @@ export const useNotifications = () => {
 
   const dismissNotification = async (id: string) => {
     try {
-      const response = await mockDismissNotificationById(id);
+      const response = await dismissNotificationById(id);
       if (!response.success) throw new Error("Failed to dismiss notification");
       dispatch(dismissAction(id));
       toast.success("Notification dismissed");
@@ -118,6 +121,7 @@ export const useNotifications = () => {
 
   return {
     notifications,
+    totalNotifications,
     loading,
     error,
     markAsRead,
