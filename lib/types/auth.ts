@@ -8,6 +8,7 @@ export interface JwtPayload {
 export interface ProtectedRoute {
   title: string
   url: string
-  icon?: any // Lucide icon component
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  icon?: any 
   role: RoleEnum[]
 }
