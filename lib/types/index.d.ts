@@ -70,3 +70,24 @@ export type RichTextEditorProps = {
   value: string;
   onChange: (content: string) => void;
 };
+
+
+  export type InitialDimensions={
+  id: string;
+  }
+
+  export type GradingCriteria = {
+  id: string;
+  criteriaName: string;
+  }
+
+ export type Dimensions = {
+  id:string;
+  dimensionName: string;
+  description: string;
+  weight?: string;
+  gradingCriteria: {
+    id: string;
+    criteriaName: string;
+  }[];
+ }
