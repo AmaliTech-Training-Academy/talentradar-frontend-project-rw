@@ -91,14 +91,43 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Create .env file for build
+        run: |
+          # Create .env file with environment variables from GitHub secrets
+          echo "Creating .env file for Next.js build..."
+          
+          # Create .env file with NEXT_PUBLIC_ variables that will be baked into the build
+          cat > .env << EOF
+          # Next.js environment variables - these will be available at build time
+          NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          NEXT_PUBLIC_APP_ENV=$ENV_NAME
+          # Add other NEXT_PUBLIC_ environment variables as needed
+          EOF
+          
+          # Safely print variables (without showing actual secret values)
+          echo "Environment variables set for build:"
+          echo "NEXT_PUBLIC_APP_ENV=$ENV_NAME"
+          echo "NEXT_PUBLIC_API_BASE_URL=[secret]"
+          
+          # Verify .env file was created (without showing contents)
+          if [ -f .env ]; then
+            echo "✅ .env file created successfully"
+          else
+            echo "❌ Failed to create .env file"
+            exit 1
+          fi
+
       - name: Build, tag, and push frontend image to Amazon ECR
         id: build-image
         run: |
           echo "Building TalentRadar frontend image"
 
+          # Pass the environment variables to the Docker build
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
             --build-arg NODE_ENV=$NODE_ENV \
             --build-arg NEXT_TELEMETRY_DISABLED=1 \
+            --build-arg NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }} \
+            --build-arg NEXT_PUBLIC_APP_ENV=$ENV_NAME \
             -f Dockerfile \
             .
 
@@ -119,3 +148,4 @@ jobs:
           echo ""
           echo "✅ Next.js frontend Docker image successfully built and pushed to ECR"
           echo "✅ TalentRadar frontend deployment to ECR completed for $ENV_NAME environment"
+          echo "✅ Environment variables were properly injected at build time"
