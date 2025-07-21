@@ -22,7 +22,6 @@ export async function RegisterUser(data: {
           confirmPassword: data.confirmPassword,
           fullName: data.fullName,
         }),
-        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
@@ -31,6 +30,7 @@ export async function RegisterUser(data: {
     );
     return await handleResponse<null>(res);
   } catch (error) {
+    console.log(error);
     return handleError(error);
   }
 }

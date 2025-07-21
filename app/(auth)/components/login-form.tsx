@@ -25,12 +25,12 @@ export const LoginForm = () => {
   });
   const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
     const result = await loginUser(data);
-    if (result.error) {
+    if (!result.status) {
       setError("root", {
-        message: result.error,
+        message: result.errors[0].message || result.message || "Login failed",
       });
       toast.error("Failure", {
-        description: `${errors.root?.message ?? ""}`,
+        description: `${result.errors[0].message || result.message || "Login failed"}`,
         position: "top-right",
         style: {
           color: "var(--destructive)",

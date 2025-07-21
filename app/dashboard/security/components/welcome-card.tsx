@@ -5,18 +5,9 @@ import { ChevronDown, Shield } from "lucide-react";
 import { InviteForm } from "./invite-form";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { use } from "react";
-import { RolesResponse } from "@/lib/types/role";
-import { ApiResponse } from "@/lib/types/response";
 
-export const WelcomeCard = ({
-  roles,
-}: {
-  roles: Promise<ApiResponse<RolesResponse>>;
-}) => {
+export const WelcomeCard = () => {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
-  const sytemRoles = use(roles);
-  console.log(sytemRoles)
   return (
     <section className="p-3  bg-gradient-to-r from-primary/10 to-violet/10 rounded-md border-input border-[1px] shadow-xs transition-all">
       <section className=" flex flex-col lg:flex-row gap-6 justify-between">

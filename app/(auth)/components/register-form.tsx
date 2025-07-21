@@ -36,9 +36,10 @@ export function RegisterForm() {
     // if (!result.success) {
     //   return toast.error(result.message || "Failed to set account");
     // }
-    // toast.success(result.message);
-    // reset();
-    // router.push("/login");
+    // toast.success (result.message);
+    toast.success ("Account set successfully");
+    reset();
+    router.push("/login");
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

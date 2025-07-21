@@ -13,10 +13,28 @@ import { InviteFormValues } from "@/lib/schemas/invite-schema";
 import { inviteFormSchema } from "@/lib/schemas";
 import { sendInvite } from "@/lib/api/invite";
 import { Loader } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getRoles } from "@/lib/api/role";
 
 type InviteFormProps = React.ComponentProps<"div"> & { isOpen: boolean };
 
 export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
+  const [roles, setRoles] =
+    useState<{ id: string; roleName: string }[]>(userRoles);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    async function fetchRoles() {
+      setLoading(true);
+      const roles = await getRoles();
+      if (roles.success) {
+        setRoles(roles.data.data.roles);
+      } else {
+        toast.error(roles.message || "Failed to fetch roles");
+      }
+      setLoading(false);
+    }
+    fetchRoles();
+  }, []);
   const {
     register,
     handleSubmit,
@@ -48,59 +66,75 @@ export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
       )}
       {...props}
     >
-      <Card className="shadow-none border-none pt-3 bg-sidebar">
-        <CardContent>
-          <h1 className="font-bold text-lg mb-2">Add a user</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-3 md:gap-6 md:flex-row md:items-end ">
-              <div className="grid gap-3 flex-1">
-                <div className="flex gap-3 flex-row justify-between">
-                  <Label htmlFor="email">Email</Label>
-                  {errors.email && (
-                    <p className="text-xs text-destructive">
-                      {errors.email.message}
-                    </p>
-                  )}
+      {loading && (
+        <div className="flex items-center justify-center py-3">
+          <Loader className="animate-spin" size={16} />
+        </div>
+      )}
+      {loading && roles.length === 0 && (
+        <div className="flex items-center justify-center py-3">
+          <p className="text-xs text-muted-foreground">
+            No roles available. Please create a role first.
+          </p>
+        </div>
+      )}
+      {!loading && roles.length > 0 && (
+        <Card className="shadow-none border-none pt-3 bg-sidebar">
+          <CardContent>
+            <h1 className="font-bold text-lg mb-2">Add a user</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex flex-col gap-3 md:gap-6 md:flex-row md:items-end ">
+                <div className="grid gap-3 flex-1">
+                  <div className="flex gap-3 flex-row justify-between">
+                    <Label htmlFor="email">Email</Label>
+                    {errors.email && (
+                      <p className="text-xs text-destructive">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    {...register("email")}
+                  />
                 </div>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  {...register("email")}
-                />
-              </div>
-              <div className="grid gap-3 flex-1">
-                <div className="flex  gap-3 flex-row text-end justify-between">
-                  <Label htmlFor="password">Role</Label>
-                  {errors.roleId && (
-                    <p className="text-xs text-destructive">
-                      {errors.roleId.message}
-                    </p>
-                  )}
+                <div className="grid gap-3 flex-1">
+                  <div className="flex  gap-3 flex-row text-end justify-between">
+                    <Label htmlFor="password">Role</Label>
+                    {errors.roleId && (
+                      <p className="text-xs text-destructive">
+                        {errors.roleId.message}
+                      </p>
+                    )}
+                  </div>
+                  <AppSelect
+                    options={roles.map((role) => ({
+                      value: role.id,
+                      label: role.roleName,
+                    }))}
+                    value={watch("roleId")}
+                    onChangeAction={(value) => setValue("roleId", value)}
+                    placeholder="Select role"
+                    className="w-full"
+                  />
                 </div>
-                <AppSelect
-                  options={userRoles.map((role) => ({
-                    value: role.id,
-                    label: role.name,
-                  }))}
-                  value={watch("roleId")}
-                  onChangeAction={(value) => setValue("roleId", value)}
-                  placeholder="Select role"
-                  className="w-full"
-                />
+                <Button
+                  type="submit"
+                  className="cursor-pointer max-w-lg transition-all"
+                  disabled={isSubmitting || roles.length === 0}
+                >
+                  {isSubmitting && (
+                    <Loader className="animate-spin" size={20} />
+                  )}
+                  Send Invite
+                </Button>
               </div>
-              <Button
-                type="submit"
-                className="cursor-pointer max-w-lg transition-all"
-                disabled={isSubmitting}
-              >
-                {isSubmitting && <Loader className="animate-spin" size={20} />}
-                Send Invite
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </form>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

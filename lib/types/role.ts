@@ -5,8 +5,11 @@ export enum role {
 }
 
 export interface RolesResponse {
-  roles: {
-    id: string;
-    roleName: string;
-  }[];
+  data:{
+
+    roles: {
+      id: string;
+      roleName: string;
+    }[];
+  }
 }
