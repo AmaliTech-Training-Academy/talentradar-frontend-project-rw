@@ -32,7 +32,7 @@ export function RegisterForm() {
       ...data,
       token: token ?? "",
     };
-    const result = await RegisterUser(requestBody);
+    await RegisterUser(requestBody);
     // if (!result.success) {
     //   return toast.error(result.message || "Failed to set account");
     // }
