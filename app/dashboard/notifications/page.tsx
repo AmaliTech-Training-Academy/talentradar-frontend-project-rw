@@ -41,7 +41,7 @@ export default function Notifications() {
     const [activeTab, setActiveTab] = useState(tabs[0].value);
     const [sortFilter, setSortFilter] = useState(sortOptions[0].value);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
-    const { notifications, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
+    const { notifications, totalNotifications, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
 
     const filteredNotifications = notifications.filter((notification) => {
         if (activeTab === 'ALL') return true;
@@ -154,7 +154,7 @@ export default function Notifications() {
                 </TabsContent>
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-6 px-6 py-4 border-t border-input text-foreground/80 text-sm">
                     <div>
-                        Showing 2 of 2 notifications
+                        Showing {notifications.length} of {totalNotifications} notifications
                     </div>
                     <div className="flex flex-col sm:flex-row gap-6">
                         <div className="flex gap-1 items-center cursor-pointer hover:text-foreground">

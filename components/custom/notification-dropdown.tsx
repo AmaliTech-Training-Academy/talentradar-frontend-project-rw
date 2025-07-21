@@ -56,11 +56,15 @@ export const NotificationDropdown = () => {
                         )
                     }
                 </DropdownMenuGroup>
-                <DropdownMenuItem className="flex items-center justify-center">
-                    <Link href='/dashboard/notifications' aria-label="Notifications page">
-                        See more ({unreadNotifications.length})
-                    </Link>
-                </DropdownMenuItem>
+                {
+                    unreadNotifications.length > 0 && (
+                        <DropdownMenuItem className="flex items-center justify-center">
+                            <Link href='/dashboard/notifications' aria-label="Notifications page">
+                                See more details
+                            </Link>
+                        </DropdownMenuItem>
+                    )
+                }
             </DropdownMenuContent>
         </DropdownMenu>
     )
