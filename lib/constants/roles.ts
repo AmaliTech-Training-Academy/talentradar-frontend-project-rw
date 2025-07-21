@@ -8,7 +8,7 @@ export const userRoles = [
     name: "developer",
   },
   {
-    id: "3",
+    id: "30e4151e-bae3-443f-a733-cb6647582eb9",
     name: "manager",
   },
 ];

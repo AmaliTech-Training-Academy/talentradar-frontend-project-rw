@@ -72,9 +72,9 @@ export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
               <div className="grid gap-3 flex-1">
                 <div className="flex  gap-3 flex-row text-end justify-between">
                   <Label htmlFor="password">Role</Label>
-                  {errors.role && (
+                  {errors.roleId && (
                     <p className="text-xs text-destructive">
-                      {errors.role.message}
+                      {errors.roleId.message}
                     </p>
                   )}
                 </div>
@@ -83,8 +83,8 @@ export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
                     value: role.id,
                     label: role.name,
                   }))}
-                  value={watch("role")}
-                  onChangeAction={(value) => setValue("role", value)}
+                  value={watch("roleId")}
+                  onChangeAction={(value) => setValue("roleId", value)}
                   placeholder="Select role"
                   className="w-full"
                 />

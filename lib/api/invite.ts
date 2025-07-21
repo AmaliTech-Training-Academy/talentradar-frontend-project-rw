@@ -4,7 +4,7 @@ import { ApiResponse } from "../types/response";
 import { handleError, handleResponse } from "../utils";
 import { sendInviteMock } from "../mock/invite";
 
-const useMock = true;
+const useMock = false;
 export async function sendInvite(
   data: InviteFormValues
 ): Promise<ApiResponse<InviteRes>> {
@@ -17,6 +17,11 @@ export async function sendInvite(
       {
         method: "POST",
         body: JSON.stringify(data),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
       }
     );
     return await handleResponse<InviteRes>(res);

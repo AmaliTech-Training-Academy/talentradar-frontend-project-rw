@@ -7,7 +7,7 @@ export interface AuthState {
 }
 
 export enum RoleEnum {
-  ADMIN = "admin",
-  DEVELOPER = "developer",
-  MANAGER = "manager",
+  ADMIN = "ADMIN",
+  DEVELOPER = "DEVELOPER",
+  MANAGER = "MANAGER",
 }
