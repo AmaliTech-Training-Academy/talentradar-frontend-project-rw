@@ -41,7 +41,7 @@ export default function Notifications() {
     const [activeTab, setActiveTab] = useState(tabs[0].value);
     const [sortFilter, setSortFilter] = useState(sortOptions[0].value);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
-    const { notifications, loading, totalNotifications, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
+    const { notifications, loading, markAsRead, markAllAsRead, dismissNotification } = useNotifications();
 
     const filteredNotifications = notifications.filter((notification) => {
         if (activeTab === 'ALL') return true;
