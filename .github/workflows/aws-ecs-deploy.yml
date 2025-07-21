@@ -96,23 +96,23 @@ jobs:
         run: |
           echo "Building TalentRadar frontend image"
 
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest \
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
             --build-arg NODE_ENV=$NODE_ENV \
             --build-arg NEXT_TELEMETRY_DISABLED=1 \
             -f Dockerfile \
             .
 
           echo "Pushing frontend image to ECR..."
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
-          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest" >> $GITHUB_OUTPUT
-          echo "tag=frontend-latest" >> $GITHUB_OUTPUT
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >> $GITHUB_OUTPUT
+          echo "tag=latest" >> $GITHUB_OUTPUT
 
       - name: Frontend deployment summary
         run: |
           echo "=== TalentRadar Frontend Deployment Summary ==="
           echo "Environment: $ENV_NAME"
-          echo "Frontend Image URI: $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest"
+          echo "Frontend Image URI: $ECR_REGISTRY/$ECR_REPOSITORY:latest"
           echo "ECR Repository: $ECR_REGISTRY/$ECR_REPOSITORY"
           echo "Node Environment: $NODE_ENV"
           echo "Build Status: ✅ Success"
