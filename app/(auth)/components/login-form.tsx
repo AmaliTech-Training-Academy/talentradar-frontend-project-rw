@@ -48,6 +48,7 @@ export const LoginForm = () => {
       });
       return;
     }
+    console.log(result);
     toast.success("Login successful", {
       position: "top-right",
       style: {

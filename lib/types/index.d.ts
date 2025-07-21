@@ -26,11 +26,13 @@ export type DimensionScore = {
 
 export type User = {
   id: string;
-  name: string;
   email: string;
+  fullName: string;
+  role: string;
+  username: string | null;
+  name: string;
   joinDate: string;
   avatar: string;
-  role: string;
 };
 
 export type DimensionFeedback = {
@@ -50,7 +52,6 @@ export type FeedbackPayload = {
   dimensions: DimensionFeedback[];
   comments: CommentFeedback[];
 };
-
 
 export interface UserCardProps {
   user: {

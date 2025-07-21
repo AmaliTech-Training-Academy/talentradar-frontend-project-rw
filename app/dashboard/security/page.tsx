@@ -12,7 +12,7 @@ export default function page() {
           <StatCard
             key={id}
             statInfo={{
-              title: "Favor Eliab",
+              title: "Test title",
               desc: "the new configurations",
               color: "primary",
               stat: "123",
