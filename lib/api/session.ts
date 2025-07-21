@@ -7,7 +7,7 @@ const useMock = true;
 export async function getSessions(
   page: number = 0
 ): Promise<ApiResponse<SessionPagination<Session>>> {
-  if (!useMock) {
+  if (useMock) {
     return getSessionsMock(page);
   }
   try {
