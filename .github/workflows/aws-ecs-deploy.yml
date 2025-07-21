@@ -1,5 +1,6 @@
 # TalentRadar Frontend - AWS ECR Deployment Workflow
-# This workflow builds and deploys the Next.js frontend Docker image to Amazon ECR when there's a merge to development, staging, or production branches
+# This workflow builds and deploys the Next.js frontend Docker image to Amazon ECR
+# when there's a merge to development, staging, or production branches
 
 name: Deploy TalentRadar Frontend to AWS ECR
 
@@ -29,7 +30,7 @@ jobs:
     environment: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
     env:
       AWS_REGION: ${{ secrets.AWS_REGION }}
-      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_FRONTEND || github.event.repository.name }}
+      ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY || github.event.repository.name }}
       ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
       ENV_NAME: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
       NODE_ENV: ${{ github.event.inputs.environment || (github.ref == 'refs/heads/staging' && 'staging') || (github.ref == 'refs/heads/production' && 'production') || 'development' }}
@@ -48,20 +49,19 @@ jobs:
       - name: Test AWS permissions and connectivity
         run: |
           echo "=== Testing AWS Permissions and Connectivity ==="
-          
+
           # Debug ECR repository configuration
           echo "=== ECR Configuration Debug ==="
-          echo "ECR_REPOSITORY_FRONTEND secret: '${{ secrets.ECR_REPOSITORY_FRONTEND }}'
-          echo "GitHub repository name: '${{ github.event.repository.name }}'
-          echo "Resolved ECR_REPOSITORY: '$ECR_REPOSITORY'
-          echo "ECR_REGISTRY: '$ECR_REGISTRY'
+          echo "ECR_REPOSITORY secret: '${{ secrets.ECR_REPOSITORY }}'"
+          echo "GitHub repository name: '${{ github.event.repository.name }}'"
+          echo "Resolved ECR_REPOSITORY: '$ECR_REPOSITORY'"
+          echo "ECR_REGISTRY: '$ECR_REGISTRY'"
           echo ""
 
           # Validate ECR repository name is not empty
           if [ -z "$ECR_REPOSITORY" ]; then
             echo "❌ ECR repository name is empty!"
-            echo "Please check that ECR_REPOSITORY_FRONTEND secret is set in your repository secrets."
-            echo "Alternatively, this workflow will use the GitHub repository name as fallback."
+            echo "Please set the ECR_REPOSITORY secret in your repository."
             exit 1
           fi
 
@@ -72,12 +72,12 @@ jobs:
             exit 1
           }
 
-          echo "2. Testing ECR permissions for frontend repository: $ECR_REPOSITORY"
+          echo "2. Testing ECR permissions for repository: $ECR_REPOSITORY"
           aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION > /dev/null || {
             echo "❌ Failed to access ECR repository: $ECR_REPOSITORY"
             echo "This could mean:"
             echo "  - The repository doesn't exist in ECR"
-            echo "  - The AWS credentials don't have access to this repository"
+            echo "  - The AWS credentials don't have access"
             echo "  - The repository name is incorrect"
             echo ""
             echo "Available ECR repositories in region $AWS_REGION:"
@@ -96,14 +96,12 @@ jobs:
         run: |
           echo "Building TalentRadar frontend image"
 
-          # Build docker container for Next.js frontend
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest \
             --build-arg NODE_ENV=$NODE_ENV \
             --build-arg NEXT_TELEMETRY_DISABLED=1 \
             -f Dockerfile \
             .
 
-          # Push image to ECR
           echo "Pushing frontend image to ECR..."
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:frontend-latest
 
@@ -121,4 +119,3 @@ jobs:
           echo ""
           echo "✅ Next.js frontend Docker image successfully built and pushed to ECR"
           echo "✅ TalentRadar frontend deployment to ECR completed for $ENV_NAME environment"
-
