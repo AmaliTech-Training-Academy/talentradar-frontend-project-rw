@@ -48,7 +48,6 @@ export const LoginForm = () => {
       });
       return;
     }
-    console.log(result);
     toast.success("Login successful", {
       position: "top-right",
       style: {
@@ -60,7 +59,6 @@ export const LoginForm = () => {
     dispatch(setUser(result.data.user));
     router.push("/dashboard");
     reset();
-    // console.log(result.data.user)
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
