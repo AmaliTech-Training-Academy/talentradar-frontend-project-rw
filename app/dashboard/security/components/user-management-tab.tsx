@@ -14,7 +14,7 @@ import { SelectLabel } from "@radix-ui/react-select";
 import { Button } from "@/components/ui/button";
 import { FileEdit, Loader, Trash2 } from "lucide-react";
 import { getAllUsers } from "@/lib/api/user";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setUsers } from "@/lib/features/userSlice";

@@ -1,4 +1,4 @@
-import { jwtVerify, type JWTPayload } from "jose";
+import { jwtVerify } from "jose";
 import { CustomJwtPayload } from "./types/auth";
 
 const getSecretKey = () => {
