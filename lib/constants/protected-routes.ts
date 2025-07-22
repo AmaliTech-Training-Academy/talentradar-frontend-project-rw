@@ -82,3 +82,6 @@ export const protectedRoutes: ProtectedRoute[] = [
     role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
   },
 ];
+
+export const publicPaths = ["/", "/login", "/register", "/unauthorized"];
+

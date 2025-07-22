@@ -14,7 +14,7 @@ import { SelectLabel } from "@radix-ui/react-select";
 import { Button } from "@/components/ui/button";
 import { FileEdit, Loader, Trash2 } from "lucide-react";
 import { getAllUsers } from "@/lib/api/user";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { User } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setUsers } from "@/lib/features/userSlice";
@@ -23,6 +23,7 @@ export const UserManagementTab = () => {
   // const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const logedInUser = useAppSelector((state) => state.auth);
   const users = useAppSelector((state) => state.users.users);
   useEffect(() => {
     if (users.length > 0) return; // If users are already loaded, skip fetching
@@ -67,19 +68,23 @@ export const UserManagementTab = () => {
           columns={columns}
           data={users}
           actionsLabel="Actions"
-          renderActions={() => (
-            <div className=" flex items-start gap-1">
-              <Button variant={"ghost"} size={"icon"} className="">
-                <FileEdit />
-              </Button>
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                className="text-destructive"
-              >
-                <Trash2 />
-              </Button>
-            </div>
+          renderActions={(user: User) => (
+            <>
+              {user.id !== logedInUser.id && (
+                <div className=" flex items-start gap-1">
+                  <Button variant={"ghost"} size={"icon"} className="">
+                    <FileEdit />
+                  </Button>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    className="text-destructive"
+                  >
+                    <Trash2 />
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         />
       )}

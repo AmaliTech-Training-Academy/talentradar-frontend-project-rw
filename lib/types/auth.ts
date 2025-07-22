@@ -1,8 +1,11 @@
+import { type JWTPayload } from "jose"
 import { RoleEnum } from "./user-slice"
 
-export interface JwtPayload {
+export interface CustomJwtPayload extends JWTPayload {
   userId: string
   role: RoleEnum
+  fullName: string
+  email: string
 }
 
 export interface ProtectedRoute {
