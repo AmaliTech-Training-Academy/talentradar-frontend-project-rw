@@ -41,7 +41,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     userItems = items.filter((item) => item.role.includes(user.role!));
   }
   const path = usePathname();
-  console.log("Current path:", path);
   return (
     <Sidebar {...props}>
       <SidebarHeader className="h-18">

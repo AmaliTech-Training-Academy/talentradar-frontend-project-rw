@@ -41,7 +41,6 @@ export const useNotifications = () => {
       dispatch(setLoading(true));
       try {
         const response = await getAllNotifications();
-        console.log(response);
         if (!response.success) throw new Error("Failed to fetch notifications");
         dispatch(setNotifications(response.data.data.items));
         setTotalNotifications(response.data.data.pagination.totalElements);

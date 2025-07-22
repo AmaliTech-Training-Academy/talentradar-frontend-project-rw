@@ -91,7 +91,6 @@ export default function ManagerFeedBackPage() {
       })),
     };
 
-    // console.log("SUBMIT PAYLOAD:", payload);
     setShowConfirmModal(false);
     toast.success("Evaluation submitted successfully");
   };

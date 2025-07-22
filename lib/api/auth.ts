@@ -30,7 +30,6 @@ export async function RegisterUser(data: {
     );
     return await handleResponse<null>(res);
   } catch (error) {
-    console.log(error);
     return handleError(error);
   }
 }
