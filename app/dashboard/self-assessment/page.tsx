@@ -74,7 +74,7 @@ export default function SelfAssessmentPage() {
         const fetchedDimensions = data.data || [];
         setDimensions(fetchedDimensions);
 
-        // Initialize form with fetched dimensions
+
         const initialDimensions = fetchedDimensions.map((d: InitialDimensions) => ({
           dimensionDefinitionId: d.id,
           rating: 3,
@@ -101,7 +101,6 @@ export default function SelfAssessmentPage() {
       setSubmitting(true);
       setSubmitError(null);
       
-      // Transform the data to match your API expectations if needed
       const payload = {
         reflection: data.reflection,
         status: isDraft ? "DRAFT" : "SUBMITTED",
@@ -160,22 +159,17 @@ export default function SelfAssessmentPage() {
   //   handleSubmit((data) => onSubmit(data, true))();
   // };
 
-  // New function to handle submit button click with validation
+
   const handleSubmitClick = async () => {
-    // Clear any previous submit error
     setSubmitError(null);
     
-    // Trigger validation for all form fields
     const isFormValid = await trigger();
     
     if (isFormValid) {
-      // If form is valid, show confirmation modal
       setShowConfirmModal(true);
     } else {
-      // If form is invalid, show error message and scroll to first error
       toast.error("Please fix all validation errors before submitting");
-      
-      // Optional: Scroll to first error field
+
       const firstErrorField = document.querySelector('[aria-invalid="true"]');
       if (firstErrorField) {
         firstErrorField.scrollIntoView({ 
@@ -264,12 +258,12 @@ export default function SelfAssessmentPage() {
                         watch(`dimensions.${index}.rating`) === 1 &&
                           "text-destructive",
                         watch(`dimensions.${index}.rating`) === 2 &&
-                          "text-orange-500",
+                          "text-orange",
                         watch(`dimensions.${index}.rating`) === 3 &&
-                          "text-yellow-500",
+                          "text-violet",
                         watch(`dimensions.${index}.rating`) === 4 &&
                           "text-primary",
-                        watch(`dimensions.${index}.rating`) === 5 && "text-teal-500"
+                        watch(`dimensions.${index}.rating`) === 5 && "text-teal"
                       )}
                     >
                       {getRatingTitle(watch(`dimensions.${index}.rating`) || 3)}
