@@ -1,14 +1,43 @@
-# Production image, copy all the files and run next
-FROM base AS runner
+# Install dependencies only when needed
+FROM node:18-alpine AS base
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Set NODE_ENV to production
-ENV NODE_ENV=production
+# Enable corepack and pnpm
+RUN corepack enable pnpm
 
-# Disable Next.js telemetry
+# Copy package files
+COPY package.json ./
+
+# Install dependencies using pnpm (without frozen-lockfile since lock file doesn't exist)
+RUN pnpm i
+
+# Rebuild the source code only when needed
+FROM node:18-alpine AS builder
+WORKDIR /app
+
+# Enable corepack and pnpm
+RUN corepack enable pnpm
+
+COPY --from=base /app/node_modules ./node_modules
+COPY . .
+
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/docs/getting-started
+# Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create a non-root user
+RUN pnpm run build
+
+# Production image, copy all the files and run next
+FROM node:18-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -26,15 +55,11 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Switch to non-root user
 USER nextjs
 
-# Expose the port the app runs on
 EXPOSE 3000
 
-# Set the port environment variable
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the application
 CMD ["node", "server.js"]
