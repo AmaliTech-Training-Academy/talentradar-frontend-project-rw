@@ -29,7 +29,7 @@ export const protectedRoutes: ProtectedRoute[] = [
   },
   {
     title: "AI Roadmap & Tests",
-    url: "/dashboard/ai-roadmap", // Changed to a concrete URL for middleware
+    url: "#",
     icon: Map,
     role: [RoleEnum.DEVELOPER],
   },
@@ -65,19 +65,19 @@ export const protectedRoutes: ProtectedRoute[] = [
   },
   {
     title: "Developer Flow",
-    url: "/dashboard/developer-flow",
+    url: "#",
     icon: GitBranch,
     role: [RoleEnum.DEVELOPER],
   },
   {
     title: "Micro services",
-    url: "/dashboard/microservices",
+    url: "#",
     icon: ChartBarBig,
     role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
   },
   {
     title: "Settings",
-    url: "/dashboard/settings",
+    url: "#",
     icon: Settings,
     role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
   },
