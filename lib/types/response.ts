@@ -24,3 +24,10 @@ export type PaginatedList<T> = {
   items: T[];
   pagination: Pagination;
 };
+
+export type NotificationsList<T> = {
+  data: {
+    items: T[];
+    pagination: Pagination;
+  }
+};

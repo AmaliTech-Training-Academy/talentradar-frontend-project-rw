@@ -26,11 +26,13 @@ export type DimensionScore = {
 
 export type User = {
   id: string;
-  name: string;
   email: string;
+  fullName: string;
+  role: string;
+  username: string | null;
+  name: string;
   joinDate: string;
   avatar: string;
-  role: string;
 };
 
 export type DimensionFeedback = {
@@ -51,7 +53,6 @@ export type FeedbackPayload = {
   comments: CommentFeedback[];
 };
 
-
 export interface UserCardProps {
   user: {
     id: string;
@@ -69,3 +70,24 @@ export type RichTextEditorProps = {
   value: string;
   onChange: (content: string) => void;
 };
+
+
+  export type InitialDimensions={
+  id: string;
+  }
+
+  export type GradingCriteria = {
+  id: string;
+  criteriaName: string;
+  }
+
+ export type Dimensions = {
+  id:string;
+  dimensionName: string;
+  description: string;
+  weight?: string;
+  gradingCriteria: {
+    id: string;
+    criteriaName: string;
+  }[];
+ }

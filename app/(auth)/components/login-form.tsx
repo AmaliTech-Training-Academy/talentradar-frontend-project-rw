@@ -1,6 +1,5 @@
 "use client";
 import { Loader, Lock, LogIn, Mail } from "lucide-react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { loginSchema, LoginSchemaProps } from "@/lib/schemas/login-schema";
@@ -8,23 +7,30 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CustomInput } from "./custom-input";
+import { loginUser } from "@/lib/api/auth";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { setUser } from "@/lib/features/authSlice";
 export const LoginForm = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-
+    reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchemaProps>({
     resolver: zodResolver(loginSchema),
   });
   const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
-    await new Promise((resolve) =>
-      setTimeout(() => {
-        resolve(data);
-      }, 1000)
-    ).then(() => {
+    const result = await loginUser(data);
+    if (!result.status) {
+      setError("root", {
+        message: result.errors[0].message || result.message || "Login failed",
+      });
       toast.error("Failure", {
-        description: `${errors.root?.message ?? ""}`,
+        description: `${result.errors[0].message || result.message || "Login failed"}`,
         position: "top-right",
         style: {
           color: "var(--destructive)",
@@ -40,7 +46,19 @@ export const LoginForm = () => {
           color: "var(--background)",
         },
       });
+      return;
+    }
+    toast.success("Login successful", {
+      position: "top-right",
+      style: {
+        color: "var(--green)",
+        border: "1px solid var(--green)",
+      },
+      duration: 3000,
     });
+    dispatch(setUser(result.data.user));
+    router.push("/dashboard");
+    reset();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

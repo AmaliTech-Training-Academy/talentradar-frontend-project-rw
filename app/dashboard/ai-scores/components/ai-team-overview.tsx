@@ -13,27 +13,21 @@ import { UserSummary } from "@/lib/types/ai-analysis";
 
 export const AITeamOverview = () => {
   const [showAll, setShowAll] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const { developersScores } = useAppSelector((state) => state.aiScores);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        setError(null);
         const data: UserSummary[] = await fetchAiTeamResults();
         if (Array.isArray(data)) {
           dispatch(setDevelopersScores(data));
         }
       } catch (err) {
         console.error("API error:", err);
-        setError("Failed to load team data");
-      } finally {
-        setLoading(false);
       }
     };
     fetchData();
+    //eslint-disable-next-line
   }, []);
 
   const displayedMembers = showAll

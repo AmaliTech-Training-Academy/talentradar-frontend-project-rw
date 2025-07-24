@@ -6,33 +6,40 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { dimensions } from "@/lib/dummyData";
 import RatingSelector from "@/app/dashboard/manager-feedback/components/rating-selector";
-import { CircleCheck, Save, SaveAll, TrendingUp } from "lucide-react";
+import { CircleCheck, Save,  TrendingUp } from "lucide-react";
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";
 import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
 import { getRatingTitle } from "@/lib/get-rating-tittle";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ConfirmationModal } from "../components/confirmation-modal";
 import { calculateOverallScore } from "@/lib/calculate-overall-score";
+import { InitialDimensions } from "@/lib/types";
+import { Dimensions } from "@/lib/types";
+import { GradingCriteria } from "@/lib/types";
+import { toast } from "sonner";
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
 
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const dimensionsEndpoint = 'dimensions';
+const dimensionsUrl = `${baseUrl}/${dimensionsEndpoint}`;
 
 export default function SelfAssessmentPage() {
   const [hasDraft, setHasDraft] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [dimensions, setDimensions] = useState<Dimensions[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(SelfAssessmentSchema),
     defaultValues: {
       reflection: "",
-      dimensions: dimensions.map((d) => ({
-        dimension_definition_id: d.id,
-        rating: 3,
-      })),
+      dimensions: [],
     },
   });
 
@@ -41,34 +48,170 @@ export default function SelfAssessmentPage() {
     watch,
     setValue,
     register,
-    formState: { errors, isDirty },
+    reset,
+    trigger,
+    formState: { errors,  },
   } = form;
 
-  const onSubmit = (data: FormValues, isDraft: boolean = false) => {
-    //eslint-disable-next-line
-    const payload = {
-      userId: "550e8400-e29b-41d4-a716-446655440000",
-      reflection: data.reflection,
-      status: isDraft ? "DRAFT" : "SUBMITTED",
-      dimensions: data.dimensions,
-      lastUpdated: new Date().toISOString(),
+ 
+  useEffect(() => {
+    const fetchDimensions = async () => {
+      try {
+        const res = await fetch(dimensionsUrl, {
+          method: "GET",
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        const fetchedDimensions = data.data || [];
+        setDimensions(fetchedDimensions);
+
+
+        const initialDimensions = fetchedDimensions.map((d: InitialDimensions) => ({
+          dimensionDefinitionId: d.id,
+          rating: 3,
+        }));
+
+        reset({
+          reflection: "",
+          dimensions: initialDimensions,
+        });
+
+      } catch (err) {
+        console.error("Failed to fetch dimensions:", err);
+        toast.error("Failed to load assessment dimensions");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (isDraft) {
-      setHasDraft(true);
-      setLastSaved(new Date().toLocaleTimeString());
-    } else {
-      setShowConfirmModal(false);
+    fetchDimensions();
+  }, [reset]);
+
+  const onSubmit = async (data: FormValues, isDraft: boolean = false) => {
+    try {
+      setSubmitting(true);
+      setSubmitError(null);
+      
+      const payload = {
+        reflection: data.reflection,
+        status: isDraft ? "DRAFT" : "SUBMITTED",
+        dimensions: data.dimensions.map(dim => ({
+          dimensionDefinitionId: dim.dimensionDefinitionId, 
+          rating: dim.rating,
+        })),
+      };
+
+      console.log("Submitting data:", payload);
+      
+      const assessmentUrl = `${baseUrl}/assessments`;
+      
+      const response = await fetch(assessmentUrl, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        if (errorData && errorData.errors) {
+          setSubmitError(errorData.errors[0] || "Failed to submit assessment");
+          toast.error(errorData.errors[0] || "Failed to submit assessment");
+          return;
+        }
+      }
+
+      const result = await response.json();
+      console.log("Submission successful:", result);
+
+      if (isDraft) {
+        setHasDraft(true);
+        setLastSaved(new Date().toLocaleTimeString());
+        toast.success("Draft saved successfully");
+      } else {
+        setShowConfirmModal(false);
+        toast.success("Assessment submitted successfully");
+        
+      }
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to submit assessment. Please try again.";
+      setSubmitError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setSubmitting(false);
     }
   };
+
+  // const handleSaveDraft = () => {
+  //   handleSubmit((data) => onSubmit(data, true))();
+  // };
+
+
+  const handleSubmitClick = async () => {
+    setSubmitError(null);
+    
+    const isFormValid = await trigger();
+    
+    if (isFormValid) {
+      setShowConfirmModal(true);
+    } else {
+      toast.error("Please fix all validation errors before submitting");
+
+      const firstErrorField = document.querySelector('[aria-invalid="true"]');
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }
+    }
+  };
+
+  const handleSubmitAssessment = () => {
+    handleSubmit((data) => onSubmit(data, false))();
+  };
+
   const getDimensionScores = () => {
     return dimensions.map((dim, index) => ({
-      name: dim.dimension_name,
-      rating: watch(`dimensions.${index}.rating`),
+      name: dim.dimensionName,
+      rating: watch(`dimensions.${index}.rating`) || 3,
     }));
   };
 
-  const overallScore = calculateOverallScore(getDimensionScores());
+  const overallScore = (() => {
+    try {
+      const score = calculateOverallScore(getDimensionScores());
+      return typeof score === 'number' && !isNaN(score) ? score : 3.0;
+    } catch (error) {
+      console.error('Error calculating overall score:', error);
+      return 3.0;
+    }
+  })();
+
+  if (loading) {
+    return (
+      <div className="px-5 p-8 space-y-8">
+        <div className="border rounded-xl overflow-hidden">
+          <div className="p-6 space-y-4 border-b bg-muted-foreground/10">
+            <h1 className="md:text-3xl text-xl font-bold">Loading...</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-5 p-8 space-y-8">
@@ -91,21 +234,23 @@ export default function SelfAssessmentPage() {
           <div>
             <div className="flex items-center gap-2 text-lg font-semibold text-primary">
               <TrendingUp />
-              <p>4.0</p>
+              <p>{typeof overallScore === 'number' ? overallScore.toFixed(1) : '3.0'}</p>
             </div>
-            <p className="text-primary text-xs">High Performance</p>
+            <p className="text-primary text-xs">
+              {getRatingTitle(typeof overallScore === 'number' ? Math.round(overallScore) : 3)}
+            </p>
           </div>
         </div>
 
-        <div className="px-5 space-y-6 pt-5">
+        <form className="px-5 space-y-6 pt-5">
           {dimensions.map((dim, index) => (
             <Card key={dim.id} className="bg-muted-foreground/10">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <h3>{dim.dimension_name}</h3>
+                  <h3>{dim.dimensionName}</h3>
                   <div className="flex items-center gap-2">
                     <p className="text-muted-foreground text-xs">
-                      Weight: {dim.Weight}%
+                      Weight: {dim.weight}%
                     </p>
                     <p
                       className={cn(
@@ -115,13 +260,13 @@ export default function SelfAssessmentPage() {
                         watch(`dimensions.${index}.rating`) === 2 &&
                           "text-orange",
                         watch(`dimensions.${index}.rating`) === 3 &&
-                          "text-chart-4",
+                          "text-violet",
                         watch(`dimensions.${index}.rating`) === 4 &&
                           "text-primary",
                         watch(`dimensions.${index}.rating`) === 5 && "text-teal"
                       )}
                     >
-                      {getRatingTitle(watch(`dimensions.${index}.rating`))}
+                      {getRatingTitle(watch(`dimensions.${index}.rating`) || 3)}
                     </p>
                   </div>
                 </CardTitle>
@@ -131,10 +276,10 @@ export default function SelfAssessmentPage() {
                 <ul className="list-inside text-sm text-muted-foreground bg-white dark:bg-background p-2 rounded-md mb-4 border">
                   <p className="font-semibold">Assessment Criteria:</p>
                   <div className="grid grid-cols-2">
-                    {dim.criteria.map((c) => (
+                    {dim.gradingCriteria?.map((c: GradingCriteria) => (
                       <li key={c.id} className="flex items-center gap-1">
-                        <CircleCheck size={12} className="text-teal" />
-                        <p>{c.criteria_name}</p>
+                        <CircleCheck size={12} className="text-teal-500" />
+                        <p>{c.criteriaName}</p>
                       </li>
                     ))}
                   </div>
@@ -142,11 +287,19 @@ export default function SelfAssessmentPage() {
 
                 <RatingSelector
                   options={RATING_OPTIONS}
-                  selected={watch(`dimensions.${index}.rating`)}
+                  selected={watch(`dimensions.${index}.rating`) || 3}
                   onSelectAction={(val) =>
-                    setValue(`dimensions.${index}.rating`, val)
+                    setValue(`dimensions.${index}.rating`, val, { shouldDirty: true })
                   }
                 />
+                
+                {/* Display validation error for this dimension if any */}
+                {errors.dimensions?.[index] && (
+                  <p className="text-sm text-destructive">
+                    {errors.dimensions[index]?.rating?.message || 
+                     errors.dimensions[index]?.dimensionDefinitionId?.message}
+                  </p>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -159,14 +312,16 @@ export default function SelfAssessmentPage() {
               <Textarea
                 placeholder="Write your reflection here..."
                 {...register("reflection")}
+                className={errors.reflection ? "border-destructive" : ""}
               />
               {errors.reflection && (
-                <p className="text-sm text-destructive">
+                <p className="text-sm text-destructive mt-2">
                   {errors.reflection.message}
                 </p>
               )}
             </CardContent>
           </Card>
+
           <div className="border rounded-xl bg-primary/20 p-4">
             <p className="font-semibold mb-2 text-primary">Assessment Summary</p>
             <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-2">
@@ -182,36 +337,47 @@ export default function SelfAssessmentPage() {
             </div>
             <hr className="border-primary my-2" />
             <div className="flex flex-col items-center justify-center text-primary">
-              <p className="text-lg font-semibold">{overallScore}</p>
+              <p className="text-lg font-semibold">
+                {typeof overallScore === 'number' ? overallScore.toFixed(1) : '3.0'}
+              </p>
               <p className="text-sm">Weighted Overall Score</p>
             </div>
           </div>
 
+          {submitError && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
+              <p className="text-destructive text-sm">{submitError}</p>
+            </div>
+          )}
+
           <div className="flex justify-end gap-4 mt-6 mb-10">
-            <Button
+            {/* <Button
+              type="button"
               variant="outline"
               className="flex items-center gap-2"
-              onClick={() => handleSubmit((data) => onSubmit(data, true))()}
-              disabled={!isDirty}
+              onClick={handleSaveDraft}
+              disabled={!isDirty || submitting}
             >
               <SaveAll size={16} />
-              Save Draft
-            </Button>
+              {submitting ? "Saving..." : "Save Draft"}
+            </Button> */}
             <Button
+              type="button"
               className="text-white flex items-center gap-2"
-              onClick={() => setShowConfirmModal(true)}
+              onClick={handleSubmitClick} 
+              disabled={submitting}
             >
               <Save size={16} />
               Submit Assessment
             </Button>
           </div>
-        </div>
+        </form>
       </div>
 
       <ConfirmationModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
-        onConfirm={() => handleSubmit((data) => onSubmit(data, false))()}
+        onConfirm={handleSubmitAssessment}
       />
     </div>
   );

@@ -23,6 +23,7 @@ export function SkillItem({ label, score, color, Icon }: SkillItemProps) {
             {camelCaseToWords(label)}
           </span>
         </div>
+
         <span className={`text-sm font-semibold ${textColorClass}`}>
           {score}
         </span>

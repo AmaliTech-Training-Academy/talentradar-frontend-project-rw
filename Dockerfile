@@ -1,49 +1,43 @@
-# Use the official Node.js 18 Alpine image as the base image
-FROM node:18-alpine AS base
-
 # Install dependencies only when needed
-FROM base AS deps
+FROM node:18-alpine AS base
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Enable corepack and pnpm
+RUN corepack enable pnpm
 
-# Copy package.json to leverage Docker cache
+# Copy package files
 COPY package.json ./
 
-# Install dependencies using pnpm
-RUN pnpm install
+# Install dependencies using pnpm (without frozen-lockfile since lock file doesn't exist)
+RUN pnpm i
 
 # Rebuild the source code only when needed
-FROM base AS builder
+FROM node:18-alpine AS builder
 WORKDIR /app
 
-# Install pnpm globally in builder stage
-RUN npm install -g pnpm
+# Enable corepack and pnpm
+RUN corepack enable pnpm
 
-# Copy dependencies from deps stage
-COPY --from=deps /app/node_modules ./node_modules
-
-# Copy all source files
+COPY --from=base /app/node_modules ./node_modules
 COPY . .
 
-# Disable Next.js telemetry during build
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/docs/getting-started
+# Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build the application
-RUN pnpm build
+RUN pnpm run build
 
 # Production image, copy all the files and run next
-FROM base AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 
-# Set NODE_ENV to production
 ENV NODE_ENV=production
-
-# Disable Next.js telemetry
+# Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create a non-root user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -61,15 +55,11 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Switch to non-root user
 USER nextjs
 
-# Expose the port the app runs on
 EXPOSE 3000
 
-# Set the port environment variable
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Start the application
 CMD ["node", "server.js"]

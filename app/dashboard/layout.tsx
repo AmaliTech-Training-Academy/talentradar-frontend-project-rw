@@ -7,6 +7,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 export default function Page({ children }: { children: ReactNode }) {
@@ -20,7 +21,7 @@ export default function Page({ children }: { children: ReactNode }) {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
-          <div className="flex gap-2 ">
+          <Link href={"/"} className="flex gap-2 ">
             <p className="p-2 bg-violet h-10 w-10 flex items-center justify-center text-xl aspect-square font-black rounded-sm text-white">
               TR
             </p>
@@ -30,7 +31,7 @@ export default function Page({ children }: { children: ReactNode }) {
                 Global talent readiness system
               </p>
             </div>
-          </div>
+          </Link>
           <div
             className="flex-1 gap-2
            flex justify-end items-center h-full"

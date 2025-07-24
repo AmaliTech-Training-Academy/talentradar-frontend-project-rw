@@ -5,10 +5,10 @@ export const loginSchema = z.object({
   password: z
     .string()
     .min(1, { error: "Password is required" })
-    .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{6,}$/, {
-      error:
-        "It must contain at least: 1 number, 1 letter, 1 special. character & be at least 6 chars",
-    }),
+    // .regex(/^(?=.*[0-9])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{6,}$/, {
+    //   error:
+    //     "It must contain at least: 1 number, 1 letter, 1 special. character & be at least 6 chars",
+    // }),
 });
 
 export type LoginSchemaProps = z.infer<typeof loginSchema>;

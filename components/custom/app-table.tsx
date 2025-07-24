@@ -54,28 +54,34 @@ const AppTable = <T extends WithId>({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((row, idx) => (
-            <TableRow
-              key={row.id}
-              className={`${idx % 2 === 0 ? "bg-muted-foreground/10" : ""}`}
-            >
-              {columns.map((col) => (
-                <TableCell
-                  key={String(col.key)}
-                  className={`${
-                    col.align === "right" ? "text-right" : ""
-                  } px-5 py-3`}
-                >
-                  {col.render ? col.render(row[col.key]) : String(row[col.key])}
-                </TableCell>
-              ))}
-              {renderActions && (
-                <TableCell className="text-center px-5 py-3">
-                  {renderActions(row)}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
+          {data.length > 0 ? (
+            data.map((row, idx) => (
+              <TableRow
+                key={row.id}
+                className={`${idx % 2 === 0 ? "bg-muted-foreground/10" : ""}`}
+              >
+                {columns.map((col) => (
+                  <TableCell
+                    key={String(col.key)}
+                    className={`${
+                      col.align === "right" ? "text-right" : ""
+                    } px-5 py-3`}
+                  >
+                    {col.render
+                      ? col.render(row[col.key])
+                      : String(row[col.key])}
+                  </TableCell>
+                ))}
+                {renderActions && (
+                  <TableCell className="text-center px-5 py-3">
+                    {renderActions(row)}
+                  </TableCell>
+                )}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow className="p-5"><TableCell colSpan={columns.length + 1} className="text-center p-5">No data available</TableCell></TableRow>
+          )}
         </TableBody>
       </Table>
     </div>

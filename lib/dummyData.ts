@@ -1,5 +1,5 @@
-import { Dimension, User } from "./types"
-export const dimensions: Dimension[]  = [
+import { Dimension, } from "./types";
+export const dimensions: Dimension[] = [
   {
     id: "550e8400-e29b-41d4-a716-446655440000",
     dimension_name: "Technical Skills",
@@ -80,14 +80,14 @@ export const dimensions: Dimension[]  = [
   },
 ];
 
-export const users: User[] = [
+export const users = [
   {
     id: "1",
     name: "Jane Doe",
     email: "jane.doe@company.com",
     joinDate: "15/01/2024",
     avatar: "/avatars/jane.png",
-    role: "Frontend Developer"
+    role: "Frontend Developer",
   },
   {
     id: "2",
@@ -95,7 +95,7 @@ export const users: User[] = [
     email: "alex.chen@company.com",
     joinDate: "01/02/2024",
     avatar: "/avatars/alex.png",
-    role: "Backend Developer"
+    role: "Backend Developer",
   },
   {
     id: "3",
@@ -103,7 +103,7 @@ export const users: User[] = [
     email: "david.park@company.com",
     joinDate: "01/03/2022",
     avatar: "/avatars/david.png",
-    role: "Full Stack Developer"
+    role: "Full Stack Developer",
   },
   {
     id: "4",
@@ -111,7 +111,7 @@ export const users: User[] = [
     email: "sarah.johnson@company.com",
     joinDate: "20/06/2023",
     avatar: "/avatars/sarah.png",
-    role: "UI/UX Designer"
+    role: "UI/UX Designer",
   },
   {
     id: "5",
@@ -119,7 +119,7 @@ export const users: User[] = [
     email: "michael.brown@company.com",
     joinDate: "10/04/2023",
     avatar: "/avatars/michael.png",
-    role: "DevOps Engineer"
+    role: "DevOps Engineer",
   },
   {
     id: "6",
@@ -127,7 +127,7 @@ export const users: User[] = [
     email: "emma.wilson@company.com",
     joinDate: "05/08/2023",
     avatar: "/avatars/emma.png",
-    role: "QA Engineer"
+    role: "QA Engineer",
   },
   {
     id: "7",
@@ -135,7 +135,7 @@ export const users: User[] = [
     email: "ryan.martinez@company.com",
     joinDate: "15/09/2023",
     avatar: "/avatars/ryan.png",
-    role: "Mobile Developer"
+    role: "Mobile Developer",
   },
   {
     id: "8",
@@ -143,7 +143,7 @@ export const users: User[] = [
     email: "lisa.taylor@company.com",
     joinDate: "03/11/2023",
     avatar: "/avatars/lisa.png",
-    role: "Data Engineer"
+    role: "Data Engineer",
   },
   {
     id: "9",
@@ -151,7 +151,7 @@ export const users: User[] = [
     email: "james.anderson@company.com",
     joinDate: "22/07/2023",
     avatar: "/avatars/james.png",
-    role: "Cloud Architect"
+    role: "Cloud Architect",
   },
   {
     id: "10",
@@ -159,26 +159,27 @@ export const users: User[] = [
     email: "sophie.garcia@company.com",
     joinDate: "12/12/2023",
     avatar: "/avatars/sophie.png",
-    role: "Security Engineer"
-  }
+    role: "Security Engineer",
+  },
 ];
 
 export const commentTypes = [
   {
     comment_id: "1",
     comment_title: "Key Strengths & Achievements",
-    placeholder: "Highlight specific strengths, achievements, and exceptional contributions. Include concrete examples and measurable impacts..."
+    placeholder:
+      "Highlight specific strengths, achievements, and exceptional contributions. Include concrete examples and measurable impacts...",
   },
   {
     comment_id: "2",
     comment_title: "Development Opportunities",
-    placeholder: "Identify specific areas for growth and development. Provide constructive feedback with actionable suggestions..."
+    placeholder:
+      "Identify specific areas for growth and development. Provide constructive feedback with actionable suggestions...",
   },
   {
     comment_id: "3",
     comment_title: "Development Goals & Action Plan",
-    placeholder: "Define specific, measurable development goals for the next quarter. Include recommended training, projects, or experiences that will support growth..."
+    placeholder:
+      "Define specific, measurable development goals for the next quarter. Include recommended training, projects, or experiences that will support growth...",
   },
-
 ];
-
