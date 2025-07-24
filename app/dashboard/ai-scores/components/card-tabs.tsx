@@ -1,16 +1,14 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { StatItem } from "./stat-item";
 import { SkillItem } from "./skill-item";
-import {MemberFeedback} from './member-feedback'
-import {
-  skillConfig,
-  statsConfig,
-  type TeamMember,
-} from "@/lib/data/team-data";
+import { MemberFeedback } from "./member-feedback";
+import { configColors, skillConfig } from "@/lib/types/ai-analysis";
+import type { UserSummary } from "@/lib/types/ai-analysis";
+// import { Brain } from "lucide-react";
+
 interface CardTabsProps {
-  member: TeamMember;
+  member: UserSummary;
 }
 
 export const CardTabs = ({ member }: CardTabsProps) => {
@@ -44,49 +42,45 @@ export const CardTabs = ({ member }: CardTabsProps) => {
       </TabsList>
 
       <TabsContent value="overview" className="space-y-4">
-        {Object.entries(member.skills).map(([skillKey, score]) => (
-          <SkillItem
-            key={skillKey}
-            label={skillConfig[skillKey as keyof typeof skillConfig].label}
-            score={score}
-            color={skillConfig[skillKey as keyof typeof skillConfig].color}
-            description={
-              skillConfig[skillKey as keyof typeof skillConfig].description
-            }
-            Icon={skillConfig[skillKey as keyof typeof skillConfig].Icon}
-          />
-        ))}
-
-        <div className="grid grid-cols-3 gap-4 pt-4 ">
-          {statsConfig.map((stat) => (
-            <StatItem
-              key={stat.key}
-              value={member.stats[stat.key as keyof typeof member.stats]}
-              label={stat.label}
-              color={stat.color}
-              suffix={stat.suffix}
+        {member.averageScores &&
+          Object.entries(member.averageScores).map(([skillKey, score], i) => (
+            <SkillItem
+              key={skillKey}
+              label={
+                skillConfig[skillKey as keyof typeof skillConfig]?.label ||
+                skillKey
+              }
+              score={Number(score)}
+              color={
+                skillConfig[skillKey as keyof typeof skillConfig]?.color ||
+                configColors[i].color
+              }
+              Icon={
+                skillConfig[skillKey as keyof typeof skillConfig]?.Icon ||
+                configColors[i].icon
+              }
             />
           ))}
-        </div>
 
-         <MemberFeedback feedback={member.overallFeedback} />
-
+        {member.overallFeedback && (
+          <MemberFeedback feedback={member.overallFeedback} />
+        )}
       </TabsContent>
 
       <TabsContent value="analytics" className="py-8">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-ring">
           <p>Analytics data coming soon...</p>
         </div>
       </TabsContent>
 
       <TabsContent value="data-sources" className="py-8">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-ring">
           <p>Data sources information coming soon...</p>
         </div>
       </TabsContent>
 
       <TabsContent value="ai-insights" className="py-8">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-ring">
           <p>AI insights coming soon...</p>
         </div>
       </TabsContent>

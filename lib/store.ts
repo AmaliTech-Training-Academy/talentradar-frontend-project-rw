@@ -5,12 +5,14 @@ import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
 import authReducer from "./features/authSlice";
 import notificationReducer from "./features/notificationSlice";
+import aiScoresReducer from "./features/ai-score-slice";
 import usersReducers from "./features/userSlice";
 
 const rootReducer = combineReducers({
   pagination: paginationReducer,
   auth: authReducer,
   notifications: notificationReducer,
+  aiScores: aiScoresReducer,
   users: usersReducers,
 });
 const persistConfig = {
