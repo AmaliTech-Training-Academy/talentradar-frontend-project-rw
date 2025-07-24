@@ -5,11 +5,13 @@ import storage from "redux-persist/lib/storage";
 import persistStore from "redux-persist/es/persistStore";
 import authReducer from "./features/authSlice";
 import notificationReducer from "./features/notificationSlice";
+import aiScoresReducer from "./features/ai-score-slice";
 
 const rootReducer = combineReducers({
   pagination: paginationReducer,
   auth: authReducer,
   notifications: notificationReducer,
+  aiScores: aiScoresReducer,
 });
 const persistConfig = {
   key: "root",
