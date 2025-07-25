@@ -35,7 +35,6 @@ function AppcomboBox({
     onUserSelect(userId);
     setOpen(false);
   }
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -46,7 +45,7 @@ function AppcomboBox({
           className="w-[200px] justify-between"
         >
           {value
-            ? users.find((users) => users.id === value)?.name
+            ? users.find((users) => users.id === value)?.fullName
             : "Select user..."}
           <ChevronsUpDown className="opacity-50" />
         </Button>
@@ -83,7 +82,7 @@ function AppcomboBox({
                   }}
                 >
                   <div className="flex flex-col">
-                    <span>{user.name}</span>
+                    <span>{user.fullName}</span>
                     <span className="text-muted-foreground text-xs">
                       {user.email}
                     </span>
