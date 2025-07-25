@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { dimensions, users, commentTypes } from "@/lib/dummyData";
 import RatingSelector from "./components/rating-selector";
 import { CircleCheck, Save } from "lucide-react";
@@ -25,6 +24,7 @@ const RichTextEditor = dynamic(() => import("./components/rich-text-editor"), {
   ssr: false,
 });
 import UserCarousel from "./components/user-carousel";
+import SelectedUser from "./components/selected-user";
 
 type FormValues = z.infer<typeof ManagerFeedbackSchema>;
 
@@ -115,53 +115,7 @@ export default function ManagerFeedBackPage() {
 
           {selectedUser && (
             <>
-              <div className="p-6 border-b bg-muted-foreground/5 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h1 className="md:text-3xl text-xl font-bold mb-4">
-                      Developer Performance Review
-                    </h1>
-                    {selectedUserData && (
-                      <div className="border-2 border-primary bg-primary/10 rounded-lg p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3 ">
-                          <Avatar className="h-12 w-12">
-                            <AvatarImage
-                              src={selectedUserData.avatar}
-                              alt={selectedUserData.name}
-                            />
-                            <AvatarFallback>
-                              {selectedUserData.name
-                                .substring(0, 2)
-                                .toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <h3 className="font-medium">
-                              {selectedUserData.name}
-                            </h3>
-                            <p className="text-sm text-muted-foreground">
-                              {selectedUserData.role}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Joined: {selectedUserData.joinDate}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="text-center">
-                          <div className="text-3xl font-bold text-primary">
-                            {calculateOverallScore()}
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Overall Rating
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-
+            <SelectedUser  selectedUserData={selectedUserData} calculateOverallScore={calculateOverallScore} />
               <div className=" space-y-6 pt-5">
                 {dimensions.map((dim, index) => (
                   <Card key={dim.id}>
