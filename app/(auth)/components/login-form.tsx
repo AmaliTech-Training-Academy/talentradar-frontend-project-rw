@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { CustomInput } from "./custom-input";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { loginUser } from "@/lib/api/auth";
 export const LoginForm = () => {
   const router = useRouter();
   const {

@@ -10,7 +10,7 @@ export const getAllNotifications = async (): Promise<
 > => {
   try {
     const res = await fetch(
-      `${API_BASE}/notifications?status=UNREAD&category=ALL`,
+      `${API_BASE}/notifications`,
       {
         credentials: "include",
       }
