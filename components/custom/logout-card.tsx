@@ -8,12 +8,11 @@ import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 import { useAppDispatch } from "@/lib/hooks";
 import { clearUser } from "@/lib/features/authSlice";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { signOut } from "next-auth/react";
 
 export const LogoutCard = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -24,8 +23,9 @@ export const LogoutCard = ({ className }: { className?: string }) => {
             "hidden lg:block text-destructive hover:text-destructive",
             className
           )}
-          onClick={() => {
-            router.push("/login");
+          onClick={async () => {
+            await signOut({ redirectTo: "/login" });
+            await fetch("/api/set-token", { method: "DELETE" });
             dispatch(clearUser());
           }}
         >

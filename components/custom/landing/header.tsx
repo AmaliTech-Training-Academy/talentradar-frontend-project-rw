@@ -5,10 +5,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const { data: sessionData } = useSession();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -65,7 +66,11 @@ export const Header = () => {
               asChild
               className="bg-violet  dark:bg-gradient-to-r from-primary/60 to-violet/80 text-white  transition-all duration-200 shadow-lg hover:shadow-violet/50/25"
             >
-              <Link href="/login">Get Started →</Link>
+                {!sessionData ? (
+                    <Link href="/login">Get Started →</Link>
+                  ) : (
+                    <Link href="/dashboard">Dashboard</Link>
+                  )}
             </Button>
             <ModeToggle />
           </nav>
@@ -120,7 +125,11 @@ export const Header = () => {
                   className="w-full bg-violet dark:from-violet/60 dark:to-violet/80 text-white hover:opacity-90 hover:shadow-violet/50/25  transition-all duration-200 shadow-lg"
                   onClick={closeMobileMenu}
                 >
-                  <Link href="/login">Get Started →</Link>
+                  {!sessionData ? (
+                    <Link href="/login">Get Started →</Link>
+                  ) : (
+                    <Link href="/dashboard">Dashboard</Link>
+                  )}
                 </Button>
 
                 {/* Mobile Theme Toggle (only show on small screens) */}

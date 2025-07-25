@@ -3,13 +3,12 @@
 import { User } from "lucide-react";
 import { NotificationDropdown } from "./notification-dropdown";
 import { LogoutCard } from "./logout-card";
-import { useAppSelector } from "@/lib/hooks";
-
+import { useSession } from "next-auth/react";
 export const AccountInfo = () => {
-  const user = useAppSelector((state) => state.auth);
+  const {data: sessionData} = useSession();
   return (
     <div className="flex gap-3 items-center justify-start">
-      {user.isAuthenticated && (
+      {sessionData && (
         <>
           <NotificationDropdown />
           <div className="hidden lg:flex gap-2 items-center">
@@ -19,8 +18,8 @@ export const AccountInfo = () => {
               className=" rounded-full border bg-secondary"
             />
             <div>
-              <p className="font-bold text-lg">{user.userName}</p>
-              <p className="text-xs">{user.role}</p>
+              <p className="font-bold text-lg">{sessionData.user.fullName}</p>
+              <p className="text-xs">{sessionData.user.role}</p>
             </div>
           </div>
           <LogoutCard />
