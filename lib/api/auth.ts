@@ -46,9 +46,9 @@ export async function loginUser(data: { email: string; password: string }) {
       },
     }
   );
-  const result = await res.json();
-  if (!res.ok) {
-    handleError(result.message);
-  }
-  return result;
+  // const result = await res.json();
+  // if (!res.ok) {
+  //   handleError(result.message);
+  // }
+  return res;
 }
