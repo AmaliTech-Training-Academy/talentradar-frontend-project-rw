@@ -4,18 +4,18 @@ import { welcomeData, filters } from "@/lib/data/welcome";
 import { Clock4 } from "lucide-react";
 import { AppSelect } from "@/components/custom/app-select";
 import { useState } from "react";
-import { useAppSelector } from "@/lib/hooks";
+import { useSession } from "next-auth/react";
 
 export const WelcomeMessageContainer = () => {
   const { last_updated } = welcomeData;
   // const { fullName, last_updated } = welcomeData;
   const [filter, setFilter] = useState("");
-  const user = useAppSelector((state) => state.auth);
+  const {data: sessionData} = useSession();
   return (
     <section className="p-6 bg-gradient-to-r from-primary/5 to-background rounded-md border-input border-[1px] shadow-xs flex flex-col lg:flex-row gap-6 justify-between">
       <article className="space-y-4">
         <h1 className="font-bold text-2xl sm:text-3xl">
-          Welcome back, {user.userName}! 👋
+          Welcome back, {sessionData?.user.fullName}! 👋
         </h1>
         <p className="text-foreground/70">
           Here&apos;s your comprehensive talent readiness overview

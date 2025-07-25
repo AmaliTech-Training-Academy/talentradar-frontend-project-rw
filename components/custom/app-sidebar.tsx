@@ -15,30 +15,19 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import {
-  Bell,
-  Brain,
-  ChartBarBig,
-  ChartColumn,
-  FileText,
-  GitBranch,
-  Home,
-  Map,
-  Settings,
-  MessageSquare,
-  UserCheck,
-} from "lucide-react";
 import { SidebarAccountInfo } from "./sidebar-account-info";
-import { RoleEnum } from "@/lib/types/user-slice";
-import { useAppSelector } from "@/lib/hooks";
+import { protectedRoutes as items } from "@/lib/constants/protected-routes";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
-        
+import { useSession } from "next-auth/react";
+import { Loader } from "lucide-react";
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const user = useAppSelector((state) => state.auth);
+  const { data: sessionData, status } = useSession();
   let userItems = items;
-  if (user.isAuthenticated) {
-    userItems = items.filter((item) => item.role.includes(user.role!));
+  if (sessionData) {
+    userItems = items.filter((item) =>
+      item.role.includes(sessionData.user.role)
+    );
   }
   const path = usePathname();
   return (
@@ -60,14 +49,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           {/* <SidebarGroupLabel>{item.title}</SidebarGroupLabel> */}
           <SidebarGroupContent>
-            {!user.isAuthenticated ? (
-              <Link
-                href={"/login"}
-                className="cursor-pointer inline-block underline italic"
-              >
-                <Button variant={"link"}>Login</Button>
-              </Link>
-            ) : (
+            {status === "loading" && (
+              <div className="w-full py-4 flex items-center justify-center">
+              <Loader size={24} strokeWidth={1.5} className="animate-spin" />
+              </div>
+            )}
+            {sessionData &&(
               <SidebarMenu className="space-y-3">
                 {userItems.map(({ title, url, icon: Icon }) => (
                   <SidebarMenuItem key={title}>
@@ -86,76 +73,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
       <SidebarFooter>
-        {user.isAuthenticated && <SidebarAccountInfo />}
+        {sessionData && <SidebarAccountInfo user={sessionData.user} />}
       </SidebarFooter>
     </Sidebar>
   );
 }
-const items = [
-  {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: Home,
-    role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
-  },
-  {
-    title: "Productivity Scorecard",
-    url: "/dashboard/productivity-scorecard",
-    icon: ChartColumn,
-    role: [RoleEnum.DEVELOPER],
-  },
-  {
-    title: "AI Roadmap & Tests",
-    url: "#",
-    icon: Map,
-    role: [RoleEnum.DEVELOPER],
-  },
-  {
-    title: "Security Dashboard",
-    url: "/dashboard/security",
-    icon: UserCheck,
-    role: [RoleEnum.ADMIN],
-  },
-  {
-    title: "Self-assessment",
-    url: "/dashboard/self-assessment",
-    icon: FileText,
-    role: [RoleEnum.DEVELOPER],
-  },
-  {
-    title: "AI Score",
-    url: "/dashboard/ai-scores",
-    icon: Brain,
-    role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER],
-  },
-  {
-    title: "Manager Feedback",
-    url: "/dashboard/manager-feedback",
-    icon: MessageSquare,
-    role: [RoleEnum.MANAGER],
-  },
-  {
-    title: "Notifications",
-    url: "/dashboard/notifications",
-    icon: Bell,
-    role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
-  },
-  {
-    title: "Developer Flow",
-    url: "#",
-    icon: GitBranch,
-    role: [RoleEnum.DEVELOPER],
-  },
-  {
-    title: "Micro services",
-    url: "#",
-    icon: ChartBarBig,
-    role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-    role: [RoleEnum.DEVELOPER, RoleEnum.MANAGER, RoleEnum.ADMIN],
-  },
-];

@@ -1,41 +1,50 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { verifyAuth } from "./lib/auth";
-import { protectedRoutes, publicPaths } from "./lib/constants/protected-routes";
+import { auth } from "./auth";
+import { publicPaths, protectedRoutes } from "./lib/constants/protected-routes";
 import { RoleEnum } from "./lib/types/user-slice";
-import { CustomJwtPayload } from "./lib/types/auth";
 
+// Authenticated middleware wrapper
+export default auth(async function middleware(request) {
+  const { pathname } = request.nextUrl;
 
-export async function middleware(request: NextRequest) {
-  // const cookie = await cookies();
-  // const { pathname } = request.nextUrl;
+  const isAuthenticated = !!request.auth;
+  const authenticatedRole = request.auth?.user.role as RoleEnum 
 
-  // if (publicPaths.includes(pathname)) {
-  //   return NextResponse.next();
-  // }
+  // 1. Allow public routes
+  if (publicPaths.includes(pathname)) {
+    // If user is logged in and tries to access login/register, redirect to dashboard
+    if (isAuthenticated && ["/login", "/register"].includes(pathname)) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+    return NextResponse.next();
+  }
 
-  // const token = cookie.get("token")?.value;
-  // const verifiedToken: CustomJwtPayload | null = token
-  //   ? await verifyAuth(token)
-  //   : null;
-  // if (!verifiedToken) {
-  //   const response = NextResponse.redirect(new URL("/login", request.url));
-  //   response.cookies.delete("token");
-  //   return response;
-  // }
+  // 2. Protected routes
+  const matchedRoute = protectedRoutes.find(({ url }) => url === pathname);
 
-  // const userRole = (verifiedToken.role.split("_")[1] as RoleEnum) || null;
-  // const matchedRoute = protectedRoutes.find((route) =>
-  //   pathname.startsWith(route.url)
-  // );
+  if (isAuthenticated) {
+    if (matchedRoute) {
+      // Check if user has the correct role
+      if (matchedRoute.role.includes(authenticatedRole!)) {
+        return NextResponse.next();
+      } else {
+        // Authenticated but unauthorized
+        const errorMessage = encodeURIComponent(
+          "You don't have permission to access this page"
+        );
+        return NextResponse.redirect(
+          new URL(`/unauthorized?error=${errorMessage}`, request.url)
+        );
+      }
+    } else {
+      // If no specific match, allow access (optional — can be restricted if you prefer)
+      return NextResponse.next();
+    }
+  }
 
-  // if (matchedRoute) {
-  //   if (!userRole || !matchedRoute.role.includes(userRole)) {
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
-  // }
-  return NextResponse.next();
-}
+  // 3. User is not authenticated
+  return NextResponse.redirect(new URL("/login", request.url));
+});
 
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\.png$).*)"],

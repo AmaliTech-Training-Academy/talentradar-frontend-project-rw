@@ -18,12 +18,13 @@ import { useEffect, useState } from "react";
 import { User } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setUsers } from "@/lib/features/userSlice";
+import { useSession } from "next-auth/react";
 
 export const UserManagementTab = () => {
-  // const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const logedInUser = useAppSelector((state) => state.auth);
+  const {data: session} = useSession();
+  const logedInUser =  session?.user;
   const users = useAppSelector((state) => state.users.users);
   useEffect(() => {
     if (users.length > 0) return; // If users are already loaded, skip fetching
@@ -70,7 +71,7 @@ export const UserManagementTab = () => {
           actionsLabel="Actions"
           renderActions={(user: User) => (
             <>
-              {user.id !== logedInUser.id && (
+              {user.id !== logedInUser?.id && (
                 <div className=" flex items-start gap-1">
                   <Button variant={"ghost"} size={"icon"} className="">
                     <FileEdit />

@@ -7,12 +7,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CustomInput } from "./custom-input";
-import { loginUser } from "@/lib/api/auth";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/hooks";
-import { setUser } from "@/lib/features/authSlice";
+import { signIn } from "next-auth/react";
 export const LoginForm = () => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const {
     register,
@@ -24,13 +21,17 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
   const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
-    const result = await loginUser(data);
-    if (!result.status) {
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+    if (res.error) {
       setError("root", {
-        message: result.errors[0].message || result.message || "Login failed",
+        message: res.error || "Login failed",
       });
       toast.error("Failure", {
-        description: `${result.errors[0].message || result.message || "Login failed"}`,
+        description: `${res.error || "Login failed"}`,
         position: "top-right",
         style: {
           color: "var(--destructive)",
@@ -56,7 +57,6 @@ export const LoginForm = () => {
       },
       duration: 3000,
     });
-    dispatch(setUser(result.data.user));
     router.push("/dashboard");
     reset();
   };
