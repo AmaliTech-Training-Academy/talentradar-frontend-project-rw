@@ -19,7 +19,10 @@ export default {
         },
       },
       authorize: async (credentials, req) => {
-        const { email, password } = credentials as { email: string; password: string };
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
         const demoData = setDemoData(email);
         if (demoData) return demoData;
         const res = await fetch(
@@ -36,11 +39,14 @@ export default {
         );
         if (!res.ok) return null;
         const response: LoginResponse = await res.json();
-        const token = res.headers.get("set-cookie")?.split("=")[1]?.split(";")[0];
+        const token = res.headers
+          .get("set-cookie")
+          ?.split("=")[1]
+          ?.split(";")[0];
         // Return only the user object as expected by NextAuth
-        return {...response.data.user, token}
+        return { ...response.data.user, token };
       },
     }),
   ],
+  trustHost: true,
 } satisfies NextAuthConfig;
-
