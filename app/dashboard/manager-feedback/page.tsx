@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
+
 import { Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -23,13 +24,7 @@ import dynamic from "next/dynamic";
 const RichTextEditor = dynamic(() => import("./components/rich-text-editor"), {
   ssr: false,
 });
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import UserCarousel from "./components/user-carousel";
 
 type FormValues = z.infer<typeof ManagerFeedbackSchema>;
 
@@ -114,54 +109,8 @@ export default function ManagerFeedBackPage() {
             <h2 className="text-2xl font-bold mb-4">
               Select Team Member for Evaluation
             </h2>
-            <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              className="max-w-screen-lg  mx-auto"
-            >
-              <CarouselContent>
-                {users.map((user) => (
-                  <CarouselItem
-                    key={user.id}
-                    className="md:basis-1/3 lg:basis-1/3 pl-4 "
-                  >
-                    <div
-                      onClick={() => setSelectedUser(user.id)}
-                      className={cn(
-                        "p-4 border rounded-lg cursor-pointer transition-all h-full",
-                        selectedUser === user.id
-                          ? "border-primary bg-primary/5 border-2"
-                          : "hover:border-gray-400"
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-12 w-12">
-                          <AvatarImage src={user.avatar} alt={user.name} />
-                          <AvatarFallback>
-                            {user.name.substring(0, 2).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <h3 className="font-medium">{user.name}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {user.email}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            Joined: {user.joinDate}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <div className="flex items-center justify-center gap-2 mt-4">
-                <CarouselPrevious />
-                <CarouselNext />
-              </div>
-            </Carousel>
+
+            <UserCarousel users={users} setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
           </div>
 
           {selectedUser && (
