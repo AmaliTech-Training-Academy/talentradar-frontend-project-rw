@@ -10,56 +10,76 @@ import { CustomInput } from "./custom-input";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { loginUser } from "@/lib/api/auth";
+import { LoginResponse } from "@/lib/types/auth";
+import {
+  toastErrorOptions,
+  toastSuccessOptions,
+} from "@/lib/constants/toast-options";
 export const LoginForm = () => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
-    reset,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchemaProps>({
     resolver: zodResolver(loginSchema),
   });
-  const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-    if (res.error) {
-      setError("root", {
-        message: res.error || "Login failed",
+  const onSubmit: SubmitHandler<LoginSchemaProps> = async ({
+    email,
+    password,
+  }) => {
+    try {
+      const loginRes = await loginUser({
+        email,
+        password,
       });
-      toast.error("Failure", {
-        description: `${res.error || "Login failed"}`,
+
+      const loginJson: LoginResponse = await loginRes.json();
+      const [loginStatus, nextAuth] = await Promise.allSettled([
+        Promise.resolve(loginJson),
+        signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        }),
+      ]);
+      const loginSuccess =
+        loginStatus.status === "fulfilled" && loginStatus.value.status;
+      const nextAuthSuccess =
+        nextAuth.status === "fulfilled" && !nextAuth.value?.error;
+      if (!loginSuccess || !nextAuthSuccess) {
+        const errorMsg =
+          (loginStatus.status === "fulfilled" &&
+            loginStatus.value.errors?.[0]?.message) ||
+          (nextAuth.status === "fulfilled" && nextAuth.value?.error) ||
+          "Login failed";
+        setError("root", {
+          message: errorMsg,
+        });
+        toast.error("Failure", {
+          description: `${errorMsg || "Login failed"}`,
+          position: "top-right",
+          ...toastErrorOptions,
+        });
+        return;
+      }
+      toast.success("Login successful", {
         position: "top-right",
-        style: {
-          color: "var(--destructive)",
-          border: "1px solid var(--destructive)",
-        },
-        duration: 3000,
-        cancel: {
-          label: "Cancel",
-          onClick: () => {},
-        },
-        cancelButtonStyle: {
-          backgroundColor: "var(--destructive)",
-          color: "var(--background)",
-        },
+        ...toastSuccessOptions,
       });
-      return;
+      router.push("/dashboard");
+    } catch (err) {
+      setError("root", {
+        message: "An unexpected error occurred. Please try again.",
+      });
+      console.error("Login error:", err);
+      toast.error("Failure", {
+        description: `${errors.root?.message || "Login failed"}`,
+        position: "top-right",
+        ...toastErrorOptions,
+      });
     }
-    toast.success("Login successful", {
-      position: "top-right",
-      style: {
-        color: "var(--green)",
-        border: "1px solid var(--green)",
-      },
-      duration: 3000,
-    });
-    router.push("/dashboard");
-    reset();
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
