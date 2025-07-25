@@ -1,6 +1,8 @@
 import { RegisterMock } from "../mock/invite";
 import { ApiResponse } from "../types/response";
 import { handleError, handleResponse } from "../utils";
+import { LoginResponse } from "../types/auth";
+import { signIn } from "next-auth/react";
 
 const useMock = false;
 export async function RegisterUser(data: {
@@ -16,7 +18,7 @@ export async function RegisterUser(data: {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/complete-registration?token=${data.token}`,
       {
-        method:"PATCH",
+        method: "PATCH",
         body: JSON.stringify({
           password: data.password,
           confirmPassword: data.confirmPassword,
@@ -33,22 +35,41 @@ export async function RegisterUser(data: {
     return handleError(error);
   }
 }
-export async function loginUser(data: { email: string; password: string }) {
+
+export const handleSignIn = async (
+  email: string,
+  password: string
+): Promise<{ success: boolean; error?: string }> => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
     {
       method: "POST",
-      body: JSON.stringify(data),
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         "X-Requested-With": "XMLHttpRequest",
       },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
     }
   );
-  const result = await res.json();
-  if (!res.ok) {
-    handleError(result.message);
+  const data: LoginResponse = await res.json();
+  if (!res.ok || !data.status || !data.data?.user) {
+    return {
+      success: false,
+      error: data.errors?.[0]?.message || "Login failed",
+    };
   }
-  return result;
-}
+  console.log("Response login data; ", data);
+
+  const nextAuthRes = await signIn("credentials", {
+    email,
+    user: JSON.stringify(data.data.user),
+    redirect: false,
+  });
+
+  if (nextAuthRes?.error) {
+    return { success: false, error: nextAuthRes.error };
+  }
+
+  return { success: true };
+};

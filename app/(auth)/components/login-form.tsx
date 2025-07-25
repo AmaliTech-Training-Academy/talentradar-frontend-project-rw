@@ -8,57 +8,43 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CustomInput } from "./custom-input";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { handleSignIn } from "@/lib/api/auth";
+
+import {
+  toastErrorOptions,
+  toastSuccessOptions,
+} from "@/lib/constants/toast-options";
 export const LoginForm = () => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
-    reset,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginSchemaProps>({
     resolver: zodResolver(loginSchema),
   });
-  const onSubmit: SubmitHandler<LoginSchemaProps> = async (data) => {
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-    if (res.error) {
-      setError("root", {
-        message: res.error || "Login failed",
-      });
-      toast.error("Failure", {
-        description: `${res.error || "Login failed"}`,
+  const onSubmit: SubmitHandler<LoginSchemaProps> = async ({
+    email,
+    password,
+  }) => {
+    const { success, error } = await handleSignIn(email, password);
+    if (success) {
+      toast.success("Login successful", {
         position: "top-right",
-        style: {
-          color: "var(--destructive)",
-          border: "1px solid var(--destructive)",
-        },
-        duration: 3000,
-        cancel: {
-          label: "Cancel",
-          onClick: () => {},
-        },
-        cancelButtonStyle: {
-          backgroundColor: "var(--destructive)",
-          color: "var(--background)",
-        },
+        ...toastSuccessOptions,
       });
+      router.push("/dashboard");
       return;
     }
-    toast.success("Login successful", {
-      position: "top-right",
-      style: {
-        color: "var(--green)",
-        border: "1px solid var(--green)",
-      },
-      duration: 3000,
+    setError("root", {
+      message: error || "Login failed",
     });
-    router.push("/dashboard");
-    reset();
+    toast.error("Failure", {
+      description: `${error || "Login failed"}`,
+      position: "top-right",
+      ...toastErrorOptions,
+    });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
