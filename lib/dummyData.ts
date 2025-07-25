@@ -80,7 +80,16 @@ export const dimensions: Dimension[] = [
   },
 ];
 
-export const users = [
+export type Developers = {
+  id: string;
+  name: string;
+  email: string;
+  joinDate: string;
+  avatar: string;
+  role: string;
+}
+
+export const users: Developers[] = [
   {
     id: "1",
     name: "Jane Doe",
