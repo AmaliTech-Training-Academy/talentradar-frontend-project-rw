@@ -18,7 +18,7 @@ export interface ProtectedRoute {
 export interface LoginResponse {
   status: boolean;
   message: string;
-  errors: string | null;
+  errors: { message: string }[] | null;
   data: {
     user: {
       id: string;
@@ -39,5 +39,5 @@ declare module "next-auth" {
       role: RoleEnum;
       token: string;
     } & DefaultSession["user"];
-    }
+  }
 }

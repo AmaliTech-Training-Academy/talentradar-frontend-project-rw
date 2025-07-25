@@ -1,6 +1,5 @@
 import { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { loginUser, RegisterUser } from "./lib/api/auth";
 import { LoginResponse } from "./lib/types/auth";
 import { setDemoData } from "./lib/auth";
 export default {
@@ -18,33 +17,17 @@ export default {
           placeholder: "Enter your password",
         },
       },
-      authorize: async (credentials, req) => {
-        const { email, password } = credentials as {
+      authorize: async (credentials) => {
+        const { email, user: receivedUser } = credentials as {
           email: string;
-          password: string;
+          user: string;
         };
         const demoData = setDemoData(email);
         if (demoData) return demoData;
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
-          {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-          }
+        const user: LoginResponse["data"]["user"] = JSON.parse(
+          receivedUser || "{}"
         );
-        if (!res.ok) return null;
-        const response: LoginResponse = await res.json();
-        const token = res.headers
-          .get("set-cookie")
-          ?.split("=")[1]
-          ?.split(";")[0];
-        // Return only the user object as expected by NextAuth
-        return { ...response.data.user, token };
+        return user;
       },
     }),
   ],

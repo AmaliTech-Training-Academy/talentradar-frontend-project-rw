@@ -25,7 +25,6 @@ export const LogoutCard = ({ className }: { className?: string }) => {
           )}
           onClick={async () => {
             await signOut({ redirectTo: "/login" });
-            await fetch("/api/set-token", { method: "DELETE" });
             dispatch(clearUser());
           }}
         >
