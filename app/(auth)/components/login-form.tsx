@@ -8,9 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CustomInput } from "./custom-input";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { loginUser } from "@/lib/api/auth";
-import { LoginResponse } from "@/lib/types/auth";
+import { handleSignIn } from "@/lib/api/auth";
+
 import {
   toastErrorOptions,
   toastSuccessOptions,
@@ -29,57 +28,23 @@ export const LoginForm = () => {
     email,
     password,
   }) => {
-    try {
-      const loginRes = await loginUser({
-        email,
-        password,
-      });
-
-      const loginJson: LoginResponse = await loginRes.json();
-      const [loginStatus, nextAuth] = await Promise.allSettled([
-        Promise.resolve(loginJson),
-        signIn("credentials", {
-          email,
-          password,
-          redirect: false,
-        }),
-      ]);
-      const loginSuccess =
-        loginStatus.status === "fulfilled" && loginStatus.value.status;
-      const nextAuthSuccess =
-        nextAuth.status === "fulfilled" && !nextAuth.value?.error;
-      if (!loginSuccess || !nextAuthSuccess) {
-        const errorMsg =
-          (loginStatus.status === "fulfilled" &&
-            loginStatus.value.errors?.[0]?.message) ||
-          (nextAuth.status === "fulfilled" && nextAuth.value?.error) ||
-          "Login failed";
-        setError("root", {
-          message: errorMsg,
-        });
-        toast.error("Failure", {
-          description: `${errorMsg || "Login failed"}`,
-          position: "top-right",
-          ...toastErrorOptions,
-        });
-        return;
-      }
+    const { success, error } = await handleSignIn(email, password);
+    if (success) {
       toast.success("Login successful", {
         position: "top-right",
         ...toastSuccessOptions,
       });
       router.push("/dashboard");
-    } catch (err) {
-      setError("root", {
-        message: "An unexpected error occurred. Please try again.",
-      });
-      console.error("Login error:", err);
-      toast.error("Failure", {
-        description: `${errors.root?.message || "Login failed"}`,
-        position: "top-right",
-        ...toastErrorOptions,
-      });
+      return;
     }
+    setError("root", {
+      message: error || "Login failed",
+    });
+    toast.error("Failure", {
+      description: `${error || "Login failed"}`,
+      position: "top-right",
+      ...toastErrorOptions,
+    });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
