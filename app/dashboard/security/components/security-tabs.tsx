@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { Activity, Clock3, Settings, Shield, Users } from "lucide-react";
 import { UserManagementTab } from "./user-management-tab";
@@ -6,14 +6,12 @@ import { SecurityAlerts } from "./overview/overview-recent-alerts";
 import { SessionsTable } from "./sessions/sessions";
 import { RecentActivity } from "../../components/recent-activity";
 import { activities } from "@/lib/data/welcome";
+import { TabComp } from "./tab";
 
 export const SecurityTabs = () => {
   return (
     <main className="w-full bg-sidebar rounded-xl">
-      <Tabs
-        defaultValue="overview"
-        className="rounded-lg w-full  overflow-hidden"
-      >
+      <TabComp>
         <TabsList className="h-fit p-0 pt-2 rounded-none px-3 border-b-2 border-muted bg-sidebar w-full">
           <TabsTrigger value="overview" className="security_tab_trigger">
             <Shield /> Security Overview
@@ -46,7 +44,7 @@ export const SecurityTabs = () => {
         <TabsContent value="settings" className="p-3 w-full">
           <p className="w-full p-3">Coming soon...</p>
         </TabsContent>
-      </Tabs>
+      </TabComp>
     </main>
   );
 };

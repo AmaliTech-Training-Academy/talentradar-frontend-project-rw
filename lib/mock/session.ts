@@ -14,76 +14,15 @@ export async function getSessionsMock(
       resolve({
         success: true,
         data: {
-          items: paginated,
-          pageable: {
-            pageNumber: page,
-            pageSize: 20,
-            sort: {
-              empty: true,
-              sorted: false,
-              unsorted: true,
-            },
-            offset: 0,
-            paged: true,
-            unpaged: false,
+          data: {
+            items: paginated,
+            page: page,
+            size: 20,
+            totalElements: 15,
+            totalPages: 3,
+            hasNext: true,
+            hasPrevious: false,
           },
-          last: false,
-          totalElements: 15,
-          totalPages: 3,
-          size: 20,
-          number: 0,
-          first: true,
-          numberOfElements: 15,
-          sort: {
-            empty: true,
-            sorted: false,
-            unsorted: true,
-          },
-          empty: false,
-        },
-      });
-    }, 300);
-  });
-}
-export async function getUSerSessionsMock(
-  page: number = 0,
-  user: string = "1"
-): Promise<ApiResponse<SessionPagination<Session>>> {
-  const pageSize = 10;
-  console.log(page,pageSize)
-  let paginated = sessions.slice(0, 1);
-  if (user === "1") paginated = [];
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        data: {
-          items: paginated,
-          pageable: {
-            pageNumber: 0,
-            pageSize: 20,
-            sort: {
-              empty: true,
-              sorted: false,
-              unsorted: true,
-            },
-            offset: 0,
-            paged: true,
-            unpaged: false,
-          },
-          last: true,
-          totalElements: 15,
-          totalPages: 1,
-          size: 20,
-          number: 0,
-          first: true,
-          numberOfElements: 15,
-          sort: {
-            empty: true,
-            sorted: false,
-            unsorted: true,
-          },
-          empty: false,
         },
       });
     }, 300);

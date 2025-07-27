@@ -1,19 +1,16 @@
 import { Session, SessionPagination } from "../types/sessions";
 import { ApiResponse } from "../types/response";
 import { handleError, handleResponse } from "../utils";
-import { getSessionsMock, getUSerSessionsMock } from "../mock/session";
 
-const useMock = true;
 export async function getSessions(
   page: number = 0
 ): Promise<ApiResponse<SessionPagination<Session>>> {
-  if (useMock) {
-    return getSessionsMock(page);
-  }
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions?page=${page}`,
-      { credentials: "include" }
+      {
+        credentials: "include",
+      }
     );
     return await handleResponse<SessionPagination<Session>>(res);
   } catch (error) {
@@ -28,6 +25,7 @@ export async function revokeSessions(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/${id}`,
       {
         method: "DELETE",
+        credentials: "include",
       }
     );
     return handleResponse<{ success: boolean; message: string; data: null }>(
@@ -40,14 +38,13 @@ export async function revokeSessions(
 
 export async function getUSerSessions(
   userId?: string,
-  date?: string
+  date?: string,
+  page: number = 0
 ): Promise<ApiResponse<SessionPagination<Session>>> {
-  if (useMock) {
-    return getUSerSessionsMock(0, userId);
-  }
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/filter?userId=${userId}&date=${date}`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sessions/filter?userId=${userId}&date=${date}&page=${page}`,
+      { credentials: "include" }
     );
     return await handleResponse<SessionPagination<Session>>(res);
   } catch (error) {

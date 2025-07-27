@@ -1,7 +1,8 @@
-import { NextAuthConfig } from "next-auth";
+import {  NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { LoginResponse } from "./lib/types/auth";
 import { setDemoData } from "./lib/auth";
+
 export default {
   providers: [
     Credentials({

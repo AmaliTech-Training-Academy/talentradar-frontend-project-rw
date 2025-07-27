@@ -1,12 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { MoveRight } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 
 const AuthAction = () => {
-  const router = useRouter();
   const { data: sessionData } = useSession();
 
   const signInDemo = async (email: string) => {
@@ -18,7 +16,7 @@ const AuthAction = () => {
   };
   return (
     <>
-      {!sessionData ? (
+      {!sessionData && (
         <div className="flex flex-col gap-2 justify-center my-2">
           <Button
             variant="outline"
@@ -51,17 +49,8 @@ const AuthAction = () => {
             Admin <MoveRight />
           </Button>
         </div>
-      ) : (
-        <Button
-          variant="destructive"
-          className="w-full py-3 my-2 h-fit"
-          onClick={() => {
-            router.push("/login");
-          }}
-        >
-          Logout Demo Account
-        </Button>
-      )}
+      ) 
+      }
     </>
   );
 };

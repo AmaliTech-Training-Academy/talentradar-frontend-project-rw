@@ -8,7 +8,7 @@ export default auth(async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   const isAuthenticated = !!request.auth;
-  const authenticatedRole = request.auth?.user.role as RoleEnum 
+  const authenticatedRole = request.auth?.user?.role 
 
   // 1. Allow public routes
   if (publicPaths.includes(pathname)) {
