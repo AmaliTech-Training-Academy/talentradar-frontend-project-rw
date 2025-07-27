@@ -8,24 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AppTableProps, WithId } from "@/lib/types/app-table";
 
-export type Column<T> = {
-  key: keyof T;
-  label: string;
-  align?: "left" | "right";
-  render?: (value: T[keyof T]) => React.ReactNode;
-};
-
-type AppTableProps<T> = {
-  caption?: string;
-  columns: Column<T>[];
-  data: T[];
-  renderActions?: (row: T) => React.ReactNode;
-  actionsLabel?: string;
-};
-type WithId = {
-  id: string | number;
-};
 
 const AppTable = <T extends WithId>({
   caption,
@@ -80,7 +64,14 @@ const AppTable = <T extends WithId>({
               </TableRow>
             ))
           ) : (
-            <TableRow className="p-5"><TableCell colSpan={columns.length + 1} className="text-center p-5">No data available</TableCell></TableRow>
+            <TableRow className="p-5">
+              <TableCell
+                colSpan={columns.length + 1}
+                className="text-center p-5"
+              >
+                No data available
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

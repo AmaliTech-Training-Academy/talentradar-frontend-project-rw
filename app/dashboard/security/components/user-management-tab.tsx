@@ -1,5 +1,5 @@
 "use client";
-import AppTable, { Column } from "@/components/custom/app-table";
+import AppTable from "@/components/custom/app-table";
 import {
   SelectTrigger,
   Select,
@@ -19,6 +19,7 @@ import { User } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setUsers } from "@/lib/features/userSlice";
 import { useSession } from "next-auth/react";
+import { Column } from "@/lib/types/app-table";
 
 export const UserManagementTab = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,10 +33,7 @@ export const UserManagementTab = () => {
     const fetchUsers = async () => {
       const newData = await getAllUsers();
       if (newData.success) {
-        //@ts-expect-error - The api response structure was not as it was supposed to be
-        // This is a temporary fix, ideally the API should return the correct structure
         dispatch(setUsers(newData.data.data.users));
-        // setUsers(newData.data.data.users);
       }
       setIsLoading(false);
     };

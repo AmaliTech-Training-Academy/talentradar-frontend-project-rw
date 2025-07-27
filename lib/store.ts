@@ -7,13 +7,14 @@ import authReducer from "./features/authSlice";
 import notificationReducer from "./features/notificationSlice";
 import aiScoresReducer from "./features/ai-score-slice";
 import usersReducers from "./features/userSlice";
-
+import sessionsReducer from "./features/sessionSlice";
 const rootReducer = combineReducers({
   pagination: paginationReducer,
   auth: authReducer,
   notifications: notificationReducer,
   aiScores: aiScoresReducer,
   users: usersReducers,
+  sessions:sessionsReducer
 });
 const persistConfig = {
   key: "root",

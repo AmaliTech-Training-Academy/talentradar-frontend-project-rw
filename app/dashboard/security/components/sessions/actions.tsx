@@ -10,14 +10,22 @@ import {
 import { Loader, MoreVertical } from "lucide-react";
 import { revokeSessions } from "@/lib/api/session";
 import { toast } from "sonner";
+import { useSessionContext } from "@/components/providers/session-context-provider";
 
 const SessionActions = ({ session }: { session: Session }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const {setValue} = useSessionContext();
   async function revokeSession() {
     setLoading(true);
-    const response = await revokeSessions(session.id);
+    const response = await revokeSessions(session.sessionId);
     if (response.success) {
       toast.success(response.message || "Session revoked successfully");
+      setValue((prev) => ({
+        ...prev,
+        sessions: prev.sessions.filter((s) => s.sessionId !== session.sessionId),
+        totalElements: prev.totalElements - 1,
+        totalPages: Math.ceil((prev.totalElements - 1) / prev.size),
+      }));
     } else {
       toast.error(response.message || "Failed to revoke session");
     }

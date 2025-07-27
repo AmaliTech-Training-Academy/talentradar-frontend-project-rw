@@ -20,14 +20,12 @@ export interface PaginationObj {
 
 
 export interface PageInfo {
-  page: number;
-  totalPages: number;
-  // hasNext: boolean;
-  // hasPrevious: boolean;
-  isFirst: boolean;
-  isLast: boolean;
-  size: number;
-  totalItems: number;
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
 }
 
 export interface PaginationControlsProps {

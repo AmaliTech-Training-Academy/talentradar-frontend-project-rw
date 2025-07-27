@@ -23,20 +23,20 @@ const SelectedUser: React.FC<SelectedUserProps> = ({
               <div className="flex items-center gap-3 ">
                 <Avatar className="h-12 w-12">
                   <AvatarImage
-                    src={selectedUserData.avatar}
-                    alt={selectedUserData.name}
+                    src={selectedUserData.username}
+                    alt={selectedUserData.username}
                   />
                   <AvatarFallback>
-                    {selectedUserData.name.substring(0, 2).toUpperCase()}
+                    {selectedUserData.username.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-medium">{selectedUserData.name}</h3>
+                  <h3 className="font-medium">{selectedUserData.username}</h3>
                   <p className="text-sm text-muted-foreground">
                     {selectedUserData.role}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Joined: {selectedUserData.joinDate}
+                    {/* Joined: {selectedUserData.joinDate} */}
                   </p>
                 </div>
               </div>
