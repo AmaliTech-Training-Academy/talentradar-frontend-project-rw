@@ -19,18 +19,18 @@ export const NotificationDropdown = () => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="cursor-pointer relative">
+            <DropdownMenuTrigger data-testid="dropdown-menu-trigger" className="cursor-pointer relative">
                 <Bell size={25} />
                 <p className="absolute -top-2 -right-1 bg-destructive text-xs text-white rounded-full flex items-center justify-center gap-2 h-5 w-5">
                     {unreadNotifications.length}
                 </p>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[300px]" align="end">
+            <DropdownMenuContent data-testid="dropdown-menu" className="w-[300px]" align="end">
                 <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                 <DropdownMenuGroup className="space-y-2 p-2">
                     {
                         loading ? (
-                            <DropdownMenuItem disabled><Loader className="animate-spin" /> Loading...</DropdownMenuItem>
+                            <DropdownMenuItem disabled><Loader data-testid="loader-icon" className="animate-spin" /> Loading...</DropdownMenuItem>
                         ) : unreadNotifications.length === 0 ? (
                             <DropdownMenuItem disabled>
                                 0 notifications

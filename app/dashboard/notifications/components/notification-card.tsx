@@ -31,15 +31,15 @@ export const NotificationCard = ({
                 />
                 <div className="flex gap-2 sm:gap-4">
                     {
-                        category === 'SUCCESS' ? <CircleCheckBig className="text-teal" /> :
-                            category === 'WARNING' ? <AlertCircle className="text-orange" /> :
-                                category === 'ERROR' ? <XCircle className="text-destructive" /> :
-                                    <Info className="text-primary" />
+                        category === 'SUCCESS' ? <CircleCheckBig className="text-teal" data-testid="icon-success" /> :
+                            category === 'WARNING' ? <AlertCircle className="text-orange" data-testid="icon-warning" /> :
+                                category === 'ERROR' ? <XCircle className="text-destructive" data-testid="icon-error" /> :
+                                    <Info className="text-primary" data-testid="icon-info" />
                     }
                     <div className="space-y-2">
                         <p className="font-semibold flex space-x-2">
                             {title}
-                            {!notification.readAt && <Dot size={40} className="text-primary -mt-2" />}
+                            {!notification.readAt && <Dot size={40} className="text-primary -mt-2" data-testid="unread-dot" />}
                         </p>
                         <p className="text-sm text-foreground/80">
                             {content}
@@ -62,8 +62,8 @@ export const NotificationCard = ({
                 </div>
             </div>
             <div className="flex gap-4">
-                <Check size={18} className="cursor-pointer" onClick={onMarkRead} />
-                <X size={18} className="cursor-pointer" onClick={onDismiss} />
+                <Check size={18} className="cursor-pointer" onClick={onMarkRead} data-testid="mark-read-button" />
+                <X size={18} className="cursor-pointer" onClick={onDismiss} data-testid="dismiss-button" />
             </div>
         </div>
     );

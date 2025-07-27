@@ -1,8 +1,13 @@
 export const getRelativeTime = (dateString: string): string => {
     const now = new Date();
     const date = new Date(dateString);
-    const diff = now.getTime() - date.getTime();
 
+    // Validate the date
+    if (isNaN(date.getTime())) {
+        return 'Invalid date';
+    }
+
+    const diff = now.getTime() - date.getTime();
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
     const seconds = Math.floor(diff / 1000);
