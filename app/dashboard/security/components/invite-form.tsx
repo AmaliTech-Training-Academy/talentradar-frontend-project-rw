@@ -20,7 +20,7 @@ type InviteFormProps = React.ComponentProps<"div"> & { isOpen: boolean };
 
 export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
   const [roles, setRoles] =
-    useState<{ id: string; roleName: string }[]>(userRoles);
+    useState<{ id: string; roleName: string }[]>([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function fetchRoles() {
@@ -71,7 +71,7 @@ export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
           <Loader className="animate-spin" size={16} />
         </div>
       )}
-      {loading && roles.length === 0 && (
+      {!loading && roles.length === 0 && (
         <div className="flex items-center justify-center py-3">
           <p className="text-xs text-muted-foreground">
             No roles available. Please create a role first.
