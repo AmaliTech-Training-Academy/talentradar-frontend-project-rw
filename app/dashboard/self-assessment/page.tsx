@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import RatingSelector from "@/app/dashboard/manager-feedback/components/rating-selector";
-import { CircleCheck, Save,  TrendingUp } from "lucide-react";
+import { CircleCheck, Loader, Save,  TrendingUp } from "lucide-react";
 import { SelfAssessmentSchema } from "@/lib/schemas/self-assessment";
 import { cn } from "@/lib/utils";
 import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
@@ -19,6 +19,7 @@ import { InitialDimensions } from "@/lib/types";
 import { Dimensions } from "@/lib/types";
 import { GradingCriteria } from "@/lib/types";
 import { toast } from "sonner";
+
 
 type FormValues = z.infer<typeof SelfAssessmentSchema>;
 
@@ -206,7 +207,7 @@ export default function SelfAssessmentPage() {
       <div className="px-5 p-8 space-y-8">
         <div className="border rounded-xl overflow-hidden">
           <div className="p-6 space-y-4 border-b bg-muted-foreground/10">
-            <h1 className="md:text-3xl text-xl font-bold">Loading...</h1>
+            <Loader className="animate-spin h-6 w-6 mx-auto text-primary" />
           </div>
         </div>
       </div>

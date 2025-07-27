@@ -82,95 +82,14 @@ export const dimensions: Dimension[] = [
 
 export type Developers = {
   id: string;
-  name: string;
+  userId: string;
+  managerId: string;
+  FullName: string;
+  username: string;
   email: string;
-  joinDate: string;
-  avatar: string;
   role: string;
 }
 
-export const users: Developers[] = [
-  {
-    id: "1",
-    name: "Jane Doe",
-    email: "jane.doe@company.com",
-    joinDate: "15/01/2024",
-    avatar: "/avatars/jane.png",
-    role: "Frontend Developer",
-  },
-  {
-    id: "2",
-    name: "Alex Chen",
-    email: "alex.chen@company.com",
-    joinDate: "01/02/2024",
-    avatar: "/avatars/alex.png",
-    role: "Backend Developer",
-  },
-  {
-    id: "3",
-    name: "David Park",
-    email: "david.park@company.com",
-    joinDate: "01/03/2022",
-    avatar: "/avatars/david.png",
-    role: "Full Stack Developer",
-  },
-  {
-    id: "4",
-    name: "Sarah Johnson",
-    email: "sarah.johnson@company.com",
-    joinDate: "20/06/2023",
-    avatar: "/avatars/sarah.png",
-    role: "UI/UX Designer",
-  },
-  {
-    id: "5",
-    name: "Michael Brown",
-    email: "michael.brown@company.com",
-    joinDate: "10/04/2023",
-    avatar: "/avatars/michael.png",
-    role: "DevOps Engineer",
-  },
-  {
-    id: "6",
-    name: "Emma Wilson",
-    email: "emma.wilson@company.com",
-    joinDate: "05/08/2023",
-    avatar: "/avatars/emma.png",
-    role: "QA Engineer",
-  },
-  {
-    id: "7",
-    name: "Ryan Martinez",
-    email: "ryan.martinez@company.com",
-    joinDate: "15/09/2023",
-    avatar: "/avatars/ryan.png",
-    role: "Mobile Developer",
-  },
-  {
-    id: "8",
-    name: "Lisa Taylor",
-    email: "lisa.taylor@company.com",
-    joinDate: "03/11/2023",
-    avatar: "/avatars/lisa.png",
-    role: "Data Engineer",
-  },
-  {
-    id: "9",
-    name: "James Anderson",
-    email: "james.anderson@company.com",
-    joinDate: "22/07/2023",
-    avatar: "/avatars/james.png",
-    role: "Cloud Architect",
-  },
-  {
-    id: "10",
-    name: "Sophie Garcia",
-    email: "sophie.garcia@company.com",
-    joinDate: "12/12/2023",
-    avatar: "/avatars/sophie.png",
-    role: "Security Engineer",
-  },
-];
 
 export const commentTypes = [
   {

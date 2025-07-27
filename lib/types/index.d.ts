@@ -17,6 +17,7 @@ export type Dimension = {
   Weight: string;
   criteria: Criterion[];
   rating?: string;
+  comment_content?: string;
 };
 
 export type DimensionScore = {
@@ -43,8 +44,8 @@ export type DimensionFeedback = {
 
 export type CommentFeedback = {
   id: string;
-  comment_title: string;
-  comment_content: string;
+  commentTitle: string;
+  commentContent?: string;
 };
 
 export type FeedbackPayload = {

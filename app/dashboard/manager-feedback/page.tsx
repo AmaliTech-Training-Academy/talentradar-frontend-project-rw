@@ -2,15 +2,14 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-
 import { Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { dimensions, users, commentTypes } from "@/lib/dummyData";
+import {  Developers } from "@/lib/dummyData";
 import RatingSelector from "./components/rating-selector";
-import { CircleCheck, Save } from "lucide-react";
+import { CircleCheck, Loader, Save } from "lucide-react";
 import { ManagerFeedbackSchema } from "@/lib/schemas/manager-feedback-schema";
 import { cn } from "@/lib/utils";
 import { RATING_OPTIONS } from "@/lib/get-rating-tittle";
@@ -19,32 +18,33 @@ import { useState } from "react";
 import ConfirmationModal from "../components/manager-confirmation-modal";
 import { toast } from "sonner";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 const RichTextEditor = dynamic(() => import("./components/rich-text-editor"), {
   ssr: false,
 });
 import UserCarousel from "./components/user-carousel";
 import SelectedUser from "./components/selected-user";
+import { CommentFeedback, Dimensions, InitialDimensions } from "@/lib/types";
 
 type FormValues = z.infer<typeof ManagerFeedbackSchema>;
 
 export default function ManagerFeedBackPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [developers, setDevelopers] = useState<Developers[]>([]);
+  const [dimensions, setDimensions] = useState<Dimensions[]>([]);
+  const [commentTypes, setCommentTypes] = useState<CommentFeedback[]>([]);
+  //eslint-disable-next-line
+  const [loading, setLoading] = useState(true);
+  const [fetchDevelopersLoading, setFetchDevelopersLoading] = useState(true);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(ManagerFeedbackSchema),
     defaultValues: {
-      dimensions: dimensions.map((d) => ({
-        dimension_definition_id: d.id,
-        rating: 3,
-        comment: "",
-      })),
-      comments: commentTypes.map((c) => ({
-        id: c.comment_id,
-        comment_title: c.comment_title,
-        comment_content: "",
-      })),
+      dimensions: [],
+      feedbackComments: [], 
     },
   });
 
@@ -53,8 +53,111 @@ export default function ManagerFeedBackPage() {
     watch,
     setValue,
     register,
+    reset,
+    trigger,
     formState: { errors },
   } = form;
+
+
+  useEffect(() => {
+    const fetchDimensions = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/dimensions`, {
+          method: "GET",
+          credentials: 'include',
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+        const fetchedDimensions = data.data || [];
+        setDimensions(fetchedDimensions);
+
+      } catch (err) {
+        console.error("Failed to fetch dimensions:", err);
+        toast.error("Failed to load assessment dimensions");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDimensions();
+  }, []);
+
+
+  useEffect(() => {
+    if (dimensions.length > 0 && commentTypes.length > 0) {
+      const initialDimensions = dimensions.map((d: InitialDimensions) => ({
+        dimensionDefinitionId: d.id,
+        rating: 3,
+        comment: "", 
+      }));
+
+      const initialComments = commentTypes.map((c) => ({
+        commentId: c.id,
+        feedbackCommentBody: "",
+      }));
+
+      reset({
+        dimensions: initialDimensions,
+        feedbackComments: initialComments,
+      });
+    }
+  }, [dimensions, commentTypes, reset]);
+
+  useEffect(() => {
+    const fetchDevelopers = async () => {
+      try {
+        setFetchDevelopersLoading(true);
+        const response = await fetch(`${baseUrl}/user-assign/developers`, {
+          method: "GET",
+          credentials: 'include',
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+        const data = await response.json();
+        setDevelopers(data.data);
+        console.log(data.data);
+      } catch (error) {
+        console.error("Error fetching developers:", error);
+        toast.error("Failed to fetch developers data");
+      } finally{
+        setFetchDevelopersLoading(false);
+      }
+    };
+
+    fetchDevelopers();
+  }, []);
+
+  useEffect(() => {
+    const fetchCommentTypes = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/feedbacks/comments/templates`, {
+          method: "GET",
+          credentials: 'include',
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+        const data = await response.json();
+        if (Array.isArray(data.data)) {
+          console.log(data.data);
+          setCommentTypes(data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching comment types:", error);
+        toast.error("Failed to fetch comment types");
+      }
+    };
+    fetchCommentTypes();
+  }, []);
 
   const calculateOverallScore = () => {
     const scores = dimensions.map((_, index) =>
@@ -64,37 +167,79 @@ export default function ManagerFeedBackPage() {
     return average.toFixed(1);
   };
 
-  const handleSubmitClick = form.handleSubmit(() => {
+
+  const handleSubmitClick = async () => {
     if (!selectedUser) {
       toast.error("Please select a team member to evaluate");
       return;
     }
+
+    if (!selectedUserData) {
+      toast.error("Selected user data not found");
+      return;
+    }
+
+    // Trigger validation manually
+    const isValid = await trigger();
+    if (!isValid) {
+      toast.error("Please fill in all required fields");
+      console.log("Form errors:", errors);
+      return;
+    }
+
     setShowConfirmModal(true);
-  });
-
-
-  const onSubmit = (data: FormValues) => {
-    if (!selectedUser) return;
-    //eslint-disable-next-line
-    const payload = {
-      developer_id: selectedUser,
-      dimensions: data.dimensions,
-      comments: data.comments.map((comment) => ({
-        id: comment.id,
-        comment_title: comment.comment_title,
-        comment_content: comment.comment_content,
-      })),
-    };
-
-    setShowConfirmModal(false);
-    toast.success("Evaluation submitted successfully");
   };
 
-  const selectedUserData = users.find((u) => u.id === selectedUser);
+  const onSubmit = async (data: FormValues) => {
+    if (!selectedUser || !selectedUserData) return;
+    
+    try {
+     
+      const payload = {
+        managerId: selectedUserData.managerId,
+        developerId: selectedUser,
+        dimensions: data.dimensions,
+        feedbackComments: data.feedbackComments,
+      };
+      
+      
+      const response = await fetch(`${baseUrl}/feedbacks`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to submit feedback: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      setShowConfirmModal(false);
+      toast.success("Evaluation submitted successfully");
+      console.log("Submission result:", result);
+      
+      
+      reset();
+      setSelectedUser(null);
+      
+    } catch (error) {
+      console.error("Submission error:", error);
+      setShowConfirmModal(false);
+      toast.error(error instanceof Error ? error.message : "Failed to submit evaluation");
+    }
+  };
+
+  const selectedUserData = developers.find((u) => u.id === selectedUser);
 
   return (
-    <div className="  px-5 p-8 space-y-8">
-      <div className="  border rounded-xl pb-5  overflow-hidden">
+    <div className="px-5 p-8 space-y-8">
+      <div className="border rounded-xl pb-5 overflow-hidden">
         <div className="mb-5 p-5 border-b bg-foreground/5 space-y-1">
           <h3 className="md:text-3xl text-xl font-bold mb-2">
             Manager Performance Evaluation
@@ -110,21 +255,27 @@ export default function ManagerFeedBackPage() {
               Select Team Member for Evaluation
             </h2>
 
-            <UserCarousel users={users} setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
+            {fetchDevelopersLoading ? (
+              <div className="flex items-center justify-center h-10">
+                <Loader className="animate-spin h-6 w-6 mx-auto text-primary" />
+              </div>
+            ) : (
+              <UserCarousel users={developers} setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
+            )}
           </div>
 
           {selectedUser && (
             <>
-            <SelectedUser  selectedUserData={selectedUserData} calculateOverallScore={calculateOverallScore} />
-              <div className=" space-y-6 pt-5">
+              <SelectedUser selectedUserData={selectedUserData} calculateOverallScore={calculateOverallScore} />
+              <div className="space-y-6 pt-5">
                 {dimensions.map((dim, index) => (
                   <Card key={dim.id}>
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">
-                        <h3>{dim.dimension_name}</h3>
+                        <h3>{dim.dimensionName}</h3>
                         <div className="flex items-center gap-2">
                           <p className="text-muted-foreground text-xs">
-                            Weight: {dim.Weight}%
+                            Weight: {dim.weight}%
                           </p>
                           <p
                             className={cn(
@@ -153,10 +304,10 @@ export default function ManagerFeedBackPage() {
                       <ul className="list-inside text-sm text-muted-foreground bg-white dark:bg-background p-2 rounded-md mb-4 border">
                         <p className="font-semibold">Evaluation Criteria:</p>
                         <div className="grid grid-cols-2">
-                          {dim.criteria.map((c) => (
+                          {dim.gradingCriteria.map((c) => (
                             <li key={c.id} className="flex items-center gap-1">
                               <CircleCheck size={12} className="text-teal" />
-                              <p>{c.criteria_name}</p>
+                              <p>{c.criteriaName}</p>
                             </li>
                           ))}
                         </div>
@@ -175,7 +326,7 @@ export default function ManagerFeedBackPage() {
                           Dimension-specific feedback
                         </label>
                         <Textarea
-                          placeholder={`Provide specific feedback for ${dim.dimension_name}...`}
+                          placeholder={`Provide specific feedback for ${dim.dimensionName}...`}
                           {...register(`dimensions.${index}.comment`)}
                           rows={4}
                         />
@@ -191,16 +342,16 @@ export default function ManagerFeedBackPage() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {commentTypes.map((type, index) => (
-                    <Card key={type.comment_id}>
+                    <Card key={type.id}>
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          {type.comment_title}
+                          {type.commentTitle}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
                         <Controller
                           control={form.control}
-                          name={`comments.${index}.comment_content`}
+                          name={`feedbackComments.${index}.feedbackCommentBody`}
                           render={({ field, fieldState }) => (
                             <>
                               <RichTextEditor
@@ -215,7 +366,6 @@ export default function ManagerFeedBackPage() {
                             </>
                           )}
                         />
-
                       </CardContent>
                     </Card>
                   ))}
@@ -225,6 +375,7 @@ export default function ManagerFeedBackPage() {
                   <Button
                     className="text-white flex items-center gap-2"
                     onClick={handleSubmitClick}
+                    type="button"
                   >
                     <Save size={16} />
                     Submit Evaluation
@@ -239,7 +390,7 @@ export default function ManagerFeedBackPage() {
       <ConfirmationModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
-        onConfirm={() => handleSubmit(onSubmit)()}
+        onConfirm={handleSubmit(onSubmit)} 
       />
     </div>
   );
