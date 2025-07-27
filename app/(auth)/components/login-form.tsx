@@ -51,7 +51,7 @@ export const LoginForm = () => {
       <div className="flex flex-col gap-6">
         <div className="grid gap-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Email</Label>
+            <Label htmlFor="loginEmail">Email</Label>
             <p className="text-xs text-destructive ">
               {errors.email && errors.email.message}
             </p>
@@ -66,7 +66,7 @@ export const LoginForm = () => {
         </div>
         <div className="grid gap-2">
           <div className="flex items-center gap-1 justify-between">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="loginPassword">Password</Label>
             <p className="text-xs text-destructive text-end">
               {errors.password && errors.password.message}
             </p>

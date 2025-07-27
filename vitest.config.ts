@@ -1,11 +1,11 @@
-import { defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
 import path from 'path';
 
 export default defineConfig({
-  plugins: [
+  plugins: [tsconfigPaths(),
     react({
-      // use the new automatic runtime so you don't have to import React
       jsxRuntime: 'automatic',
     }),
   ],
@@ -35,7 +35,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./"), // Change to "./" if your root is not /src
+      "@": path.resolve(__dirname, "./"),
     },
   }
 });
