@@ -54,11 +54,10 @@ describe("notification API utilities", () => {
 
         (fetch as any).mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve(mockData),
+            json: () => Promise.resolve(mockData.data),
         });
 
         const result = await getAllNotifications();
-        console.log(result);
 
         expect(result.success).toBe(true);
         if (result.success) {
@@ -98,7 +97,7 @@ describe("notification API utilities", () => {
 
         (fetch as any).mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve(mockData),
+            json: () => Promise.resolve(mockData.data),
         });
 
         const result = await markNotificationAsRead(mockId);
@@ -121,7 +120,7 @@ describe("notification API utilities", () => {
 
         (fetch as any).mockResolvedValueOnce({
             ok: true,
-            json: () => Promise.resolve(mockData),
+            json: () => Promise.resolve(mockData.data),
         });
 
         const result = await dismissNotificationById(mockId);
