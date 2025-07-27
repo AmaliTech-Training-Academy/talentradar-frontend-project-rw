@@ -9,7 +9,7 @@ export default defineConfig({
     ],
     include: ['**/*.{test,spec}.{ts,tsx}'],
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
       reporter: ['text', 'lcov'],
       reportsDirectory: 'coverage',
       include: [
