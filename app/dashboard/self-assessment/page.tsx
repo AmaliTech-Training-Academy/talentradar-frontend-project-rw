@@ -204,7 +204,7 @@ export default function SelfAssessmentPage() {
 
   if (loading) {
     return (
-      <div className="px-5 p-8 space-y-8">
+      <div data-testid="loading-spinner" className="px-5 p-8 space-y-8">
         <div className="border rounded-xl overflow-hidden">
           <div className="p-6 space-y-4 border-b bg-muted-foreground/10">
             <Loader className="animate-spin h-6 w-6 mx-auto text-primary" />
@@ -311,6 +311,7 @@ export default function SelfAssessmentPage() {
             </CardHeader>
             <CardContent>
               <Textarea
+                data-testid="comment"
                 placeholder="Write your reflection here..."
                 {...register("reflection")}
                 className={errors.reflection ? "border-destructive" : ""}
@@ -364,6 +365,7 @@ export default function SelfAssessmentPage() {
             </Button> */}
             <Button
               type="button"
+              data-testid="submit-assessment-button"
               className="text-white flex items-center gap-2"
               onClick={handleSubmitClick} 
               disabled={submitting}

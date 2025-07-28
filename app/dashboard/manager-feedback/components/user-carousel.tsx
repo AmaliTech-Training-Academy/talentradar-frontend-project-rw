@@ -33,11 +33,11 @@ const UserCarousel = ({
       <CarouselContent>
         {users.map((user) => (
           <CarouselItem
-            key={user.id}
+            key={user?.id}
             className="md:basis-1/3 lg:basis-1/3 pl-4 "
           >
             <div
-              onClick={() => setSelectedUser(user.id)}
+              onClick={() => setSelectedUser(user?.id)}
               className={cn(
                 "p-4 border rounded-lg cursor-pointer transition-all h-full",
                 selectedUser === user.id
@@ -47,14 +47,14 @@ const UserCarousel = ({
             >
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src={user.username} alt={user.username} />
+                  <AvatarImage src={user?.username} alt={user?.username} />
                   <AvatarFallback>
-                    {user.username.substring(0, 2).toUpperCase()}
+                    {user?.username.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-medium">{user.username}</h3>
-                  <p className="text-sm text-muted-foreground">{user.email}</p>
+                  <h3 className="font-medium">{user?.username}</h3>
+                  <p className="text-sm text-muted-foreground">{user?.email}</p>
                   <p className="text-xs text-muted-foreground">
                     {/* Joined: {user.joinDate} */}
                   </p>

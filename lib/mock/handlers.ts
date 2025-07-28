@@ -38,4 +38,32 @@ export const handlers = [
   http.get(new RegExp("/ws-notifications/.*"), () => {
     return HttpResponse.json({});
   }),
+  http.get(`${API_URL}/dimensions`, async () => {
+    return HttpResponse.json(
+      {
+        success: true,
+        message: `dimensions retrieved`,
+        data: [
+          {
+            id: "550e8400-e29b-41d4-a716-446655440001",
+            dimensionName: "Technical Excellence",
+            description:
+              "Mastery of programming languages, frameworks, architecture patterns",
+            weight: 25.0,
+            gradingCriteria: [
+              {
+                id: "550e8400-e29b-41d4-a716-446655440010",
+                criteriaName: "Code quality and maintainability",
+              },
+              {
+                id: "550e8400-e29b-41d4-a716-446655440011",
+                criteriaName: "Technology stack proficiency",
+              },
+            ],
+          },
+        ],
+      },
+      { status: 200 }
+    );
+  }),
 ];

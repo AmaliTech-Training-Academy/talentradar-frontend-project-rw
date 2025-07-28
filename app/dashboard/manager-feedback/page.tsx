@@ -123,7 +123,7 @@ export default function ManagerFeedBackPage() {
           },
         });
         const data = await response.json();
-        setDevelopers(data.data);
+setDevelopers(data.data);
         console.log(data.data);
       } catch (error) {
         console.error("Error fetching developers:", error);
@@ -235,7 +235,7 @@ export default function ManagerFeedBackPage() {
     }
   };
 
-  const selectedUserData = developers.find((u) => u.id === selectedUser);
+  const selectedUserData = developers?.find((u) => u.id === selectedUser);
 
   return (
     <div className="px-5 p-8 space-y-8">
@@ -268,7 +268,7 @@ export default function ManagerFeedBackPage() {
             <>
               <SelectedUser selectedUserData={selectedUserData} calculateOverallScore={calculateOverallScore} />
               <div className="space-y-6 pt-5">
-                {dimensions.map((dim, index) => (
+                {dimensions?.map((dim, index) => (
                   <Card key={dim.id}>
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">
