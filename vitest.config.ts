@@ -20,7 +20,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "lcov"],
       reportsDirectory: "coverage",
-      include: ["app/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
+      include: ["app/**/*.{ts,tsx}", "components/custom/landing/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
       exclude: [
         "lib/constants/**/*",
         "lib/data/**/*",
@@ -33,6 +33,7 @@ export default defineConfig({
         "app/(auth)/layout.tsx",
         "components/ui/**/*.{ts,tsx}",
         "lib/dummyData.ts",
+        "app/dashboard/ai-scores/page.tsx"
       ],
     },
   },
