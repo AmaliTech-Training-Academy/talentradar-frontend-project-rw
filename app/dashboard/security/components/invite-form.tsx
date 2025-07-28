@@ -113,7 +113,7 @@ export function InviteForm({ isOpen, className, ...props }: InviteFormProps) {
                       value: role.id,
                       label: role.roleName,
                     }))}
-                    value={watch("roleId")}
+                    value={watch("roleId") ?? ""}
                     onChangeAction={(value) => setValue("roleId", value)}
                     placeholder="Select role"
                     className="w-full"
