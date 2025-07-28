@@ -30,13 +30,12 @@ export const handlers = [
     );
   }),
   http.patch(`${API_URL}/auth/complete-registration`, async () => {
-    console.log("Complete registration called");
     return HttpResponse.json(
       { success: true, message: `Registration completed!` },
       { status: 200 }
     );
   }),
-  http.get("/ws-notifications/info", () => {
-    return HttpResponse.json({}); // mock response
+  http.get(new RegExp("/ws-notifications/.*"), () => {
+    return HttpResponse.json({});
   }),
 ];
