@@ -55,10 +55,14 @@ export default function ManagerFeedBackPage() {
     register,
     reset,
     trigger,
-    formState: { errors },
+    formState: { errors,isLoading },
   } = form;
 
-
+async function handleSubmitConfirm() {
+  console.log("object");
+  setShowConfirmModal((prev) => !prev);
+  handleSubmit(onSubmit)
+}
   useEffect(() => {
     const fetchDimensions = async () => {
       try {
@@ -376,9 +380,14 @@ setDevelopers(data.data);
                     className="text-white flex items-center gap-2"
                     onClick={handleSubmitClick}
                     type="button"
+                    disabled={isLoading}
                   >
                     <Save size={16} />
-                    Submit Evaluation
+                    {isLoading ? (
+                      <Loader className="animate-spin h-4 w-4" />
+                    ) : (
+                      "Submit Evaluation"
+                    )}
                   </Button>
                 </div>
               </div>
@@ -389,8 +398,8 @@ setDevelopers(data.data);
 
       <ConfirmationModal
         isOpen={showConfirmModal}
-        onClose={() => setShowConfirmModal(false)}
-        onConfirm={handleSubmit(onSubmit)} 
+        onClose={() => {console.log("object");}}
+        onConfirm={() => setShowConfirmModal(false)}
       />
     </div>
   );
