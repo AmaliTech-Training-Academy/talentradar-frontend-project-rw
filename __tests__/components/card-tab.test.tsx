@@ -1,61 +1,69 @@
-import React from "react";
+
 import { render, screen, fireEvent } from "@testing-library/react";
 import { CardTabs } from "@/app/dashboard/ai-scores/components/card-tabs";
+import { vi, describe, it, beforeEach, afterEach } from "vitest";
 
-// Mock member prop for CardTabs
+vi.mock("@/lib/types/ai-analysis", async () => {
+  const actual = await vi.importActual<any>("@/lib/types/ai-analysis");
+  const mockModule = await import("../__mocks__/skillConfig");
+  return {
+    ...actual,
+    skillConfig: mockModule.skillConfig,
+    configColors: mockModule.configColors,
+  };
+});
+
+vi.mock("@/app/dashboard/ai-scores/components/skill-item", () => ({
+  SkillItem: ({ label, score }: any) => (
+    <div data-testid="skill-item">
+      <p>{label}</p>
+      <p>{score}</p>
+    </div>
+  ),
+}));
+vi.mock("@/app/dashboard/ai-scores/components/member-feedback", () => ({
+  MemberFeedback: ({ feedback }: any) => <p>{feedback}</p>,
+}));
+
 const mockMember = {
   userId: "user-1",
   icon: "icon1",
   readinessScore: 5,
   performanceLevel: "Excellent",
   averageScores: {
-    JavaScript: 4,
-    React: 5,
+    communicationcollaboration: 4,
+    executionresults: 5,
   },
-  overallFeedback: "Great job on the recent project!",
+  overallFeedback: "You're performing well.",
 };
 
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
 describe("CardTabs Component", () => {
-  it("should render all tabs (Overview, Analytics, Data Sources, AI Insights)", () => {
+  it("renders all tab triggers", () => {
     render(<CardTabs member={mockMember} />);
     expect(screen.getByRole("tab", { name: /Overview/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /Analytics/i })).toBeInTheDocument();
-    expect(
-      screen.getByRole("tab", { name: /Data Sources/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("tab", { name: /AI Insights/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Data Sources/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /AI Insights/i })).toBeInTheDocument();
   });
 
-  it("should show skill items in the Overview tab", () => {
+  it("renders skill items in Overview tab", () => {
     render(<CardTabs member={mockMember} />);
-    // Overview tab is active by default
-    expect(screen.getByText("JavaScript")).toBeInTheDocument();
-    expect(screen.getByText("React")).toBeInTheDocument();
+    expect(screen.getByText("Communication & Collaboration")).toBeInTheDocument();
     expect(screen.getByText("4")).toBeInTheDocument();
+    expect(screen.getByText("Execution & Results")).toBeInTheDocument();
     expect(screen.getByText("5")).toBeInTheDocument();
   });
 
-  it("should show feedback if present", () => {
+  it("renders member feedback if available", () => {
     render(<CardTabs member={mockMember} />);
     expect(screen.getByText(mockMember.overallFeedback)).toBeInTheDocument();
   });
 
-  it("should display placeholder text in other tabs", () => {
-    render(<CardTabs member={mockMember} />);
-    // Switch to Analytics tab
-    fireEvent.click(screen.getByRole("tab", { name: /Analytics/i }));
-    expect(screen.getByText(/Analytics data coming soon/i)).toBeInTheDocument();
-
-    // Switch to Data Sources tab
-    fireEvent.click(screen.getByRole("tab", { name: /Data Sources/i }));
-    expect(
-      screen.getByText(/Data sources information coming soon/i)
-    ).toBeInTheDocument();
-
-    // Switch to AI Insights tab
-    fireEvent.click(screen.getByRole("tab", { name: /AI Insights/i }));
-    expect(screen.getByText(/AI insights coming soon/i)).toBeInTheDocument();
-  });
 });

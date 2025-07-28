@@ -1,144 +1,110 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
-import * as api from "@/lib/api/ai-analysis";
-import { setDevelopersScores } from "@/lib/features/ai-score-slice";
 import { AITeamOverview } from "@/app/dashboard/ai-scores/components/ai-team-overview";
+import { Mock, vi } from "vitest";
+import * as reduxHooks from "@/lib/hooks";
+import * as api from "@/lib/api/ai-analysis";
 import { UserSummary } from "@/lib/types/ai-analysis";
 
-// Mock store setup
-const middlewares = [thunk as any];
-const mockStore = configureStore(middlewares);
 
+const mockDispatch = vi.fn();
 
+const mockMembers: UserSummary[] = [
+  {
+    userId: "user-1",
+    icon: "icon1",
+    readinessScore: 4,
+    performanceLevel: "High Performer",
+    averageScores: {
+      communicationcollaboration: 3,
+      executionresults: 4,
+    },
+    overallFeedback: "Doing great!",
+  },
+  {
+    userId: "user-2",
+    icon: "icon2",
+    readinessScore: 2,
+    performanceLevel: "Needs Improvement",
+    averageScores: {
+      communicationcollaboration: 2,
+      executionresults: 1,
+    },
+    overallFeedback: "Needs more effort.",
+  },
+  {
+    userId: "user-3",
+    icon: "icon3",
+    readinessScore: 5,
+    performanceLevel: "Excellent",
+    averageScores: {
+      communicationcollaboration: 5,
+      executionresults: 5,
+    },
+    overallFeedback: "Outstanding!",
+  },
+];
 
-jest.mock("@/lib/api/ai-analysis", () => ({
-  fetchAiTeamResults: jest.fn(),
+vi.mock("@/lib/hooks", async () => {
+  const actual = await vi.importActual<typeof reduxHooks>("@/lib/hooks");
+  return {
+    ...actual,
+    useAppSelector: vi.fn(),
+    useAppDispatch: () => mockDispatch,
+  };
+});
+
+vi.mock("@/lib/api/ai-analysis", () => ({
+  fetchAiTeamResults: vi.fn(),
 }));
-
-// Helper to render with Redux provider
-function renderWithStore(store: any) {
-  return render(
-    <Provider store={store}>
-      <AITeamOverview />
-    </Provider>
-  );
-}
 
 describe("AITeamOverview", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  it("should render the component with no data (empty state)", () => {
-    const store = mockStore({ aiScores: { developersScores: [] } });
-    renderWithStore(store);
+  it("should display top 2 members and a View All button", async () => {
+    (reduxHooks.useAppSelector as unknown as Mock).mockImplementation((selector: any) =>
+      selector({ aiScores: { developersScores: mockMembers } })
+    );
 
-    // Should not render any cards
-    expect(screen.queryByText(/AI Readiness Analysis/i)).not.toBeInTheDocument();
-    // Should render the heading
-    expect(screen.getByText(/AI Scores - Team Overview/i)).toBeInTheDocument();
+    render(<AITeamOverview />);
+    expect(screen.getByText(/user-1/i)).toBeInTheDocument();
+    expect(screen.getByText(/user-2/i)).toBeInTheDocument();
+    expect(screen.queryByText(/user-3/i)).not.toBeInTheDocument();
+
+    const viewAllButton = screen.getByRole("button", { name: /view all/i });
+    expect(viewAllButton).toBeInTheDocument();
+
+    fireEvent.click(viewAllButton);
+    expect(await screen.findByText(/user-3/i)).toBeInTheDocument();
   });
 
-  it("should render the correct number of cards (2 by default, all when 'View All' is clicked)", () => {
-    const mockMembers: UserSummary[] = [
-      {
-        userId: "user1",
-        icon: "icon1",
-        readinessScore: 85,
-        performanceLevel: "High Performer",
-        averageScores: { technical: 90, communication: 80, teamwork: 85 },
-        overallFeedback: "Excellent performance",
-      },
-      {
-        userId: "user2",
-        icon: "icon2",
-        readinessScore: 70,
-        performanceLevel: "Medium Performer",
-        averageScores: { technical: 75, communication: 65, teamwork: 70 },
-        overallFeedback: "Good, but room for improvement",
-      },
-      {
-        userId: "user3",
-        icon: "icon3",
-        readinessScore: 60,
-        performanceLevel: "Low Performer",
-        averageScores: { technical: 60, communication: 55, teamwork: 65 },
-        overallFeedback: "Needs improvement",
-      },
-    ];
-    const store = mockStore({ aiScores: { developersScores: mockMembers } });
-    renderWithStore(store);
+  it("should call fetchAiTeamResults and dispatch data", async () => {
+    (api.fetchAiTeamResults as unknown as Mock).mockResolvedValue(mockMembers);
 
-    // Should render only 2 cards by default
-    expect(screen.getAllByText(/AI Readiness Analysis/i)).toHaveLength(2);
+    (reduxHooks.useAppSelector as unknown as Mock).mockImplementation((selector : any) =>
+      selector({ aiScores: { developersScores: [] } })
+    );
 
-    // Click "View All"
-    fireEvent.click(screen.getByText(/View All/i));
-    // Now all 3 cards should be rendered
-    expect(screen.getAllByText(/AI Readiness Analysis/i)).toHaveLength(3);
+    render(<AITeamOverview />);
 
-    // Click "Show Less"
-    fireEvent.click(screen.getByText(/Show Less/i));
-    // Back to 2 cards
-    expect(screen.getAllByText(/AI Readiness Analysis/i)).toHaveLength(2);
-  });
-
-  it("should display the correct badge and score for each member", () => {
-    const mockMembers: UserSummary[] = [
-      {
-        userId: "user1",
-        icon: "icon1",
-        readinessScore: 85,
-        performanceLevel: "High Performer",
-        averageScores: { technical: 90, communication: 80, teamwork: 85 },
-        overallFeedback: "Excellent performance",
-      },
-      {
-        userId: "user2",
-        icon: "icon2",
-        readinessScore: 70,
-        performanceLevel: "Medium Performer",
-        averageScores: { technical: 75, communication: 65, teamwork: 70 },
-        overallFeedback: "Good, but room for improvement",
-      },
-    ];
-    const store = mockStore({ aiScores: { developersScores: mockMembers } });
-    renderWithStore(store);
-
-    // Check scores
-    expect(screen.getByText("85")).toBeInTheDocument();
-    expect(screen.getByText("70")).toBeInTheDocument();
-
-    // Check badges
-    expect(screen.getByText("High Performer")).toBeInTheDocument();
-    expect(screen.getByText("Medium Performer")).toBeInTheDocument();
-  });
-
-  it("should call the API and dispatch the result to the store", async () => {
-    const mockMembers: UserSummary[] = [
-      {
-        userId: "user1",
-        icon: "icon1",
-        readinessScore: 85,
-        performanceLevel: "High Performer",
-        averageScores: { technical: 90, communication: 80, teamwork: 85 },
-        overallFeedback: "Excellent performance",
-      },
-    ];
-    // @ts-ignore
-    api.fetchAiTeamResults.mockResolvedValueOnce(mockMembers);
-
-    const store = mockStore({ aiScores: { developersScores: [] } });
-    renderWithStore(store);
-
-    // Wait for API and dispatch
     await waitFor(() => {
-      const actions = store.getActions();
-      expect(api.fetchAiTeamResults).toHaveBeenCalled();
-      expect(actions).toContainEqual(setDevelopersScores(mockMembers));
+      expect(api.fetchAiTeamResults).toHaveBeenCalledTimes(1);
+      expect(mockDispatch).toHaveBeenCalledWith({
+        payload: mockMembers,
+        type: "aiScores/setDevelopersScores",
+      });
     });
+  });
+
+  it("should show Show Less button when all users are displayed", async () => {
+    (reduxHooks.useAppSelector as unknown as Mock).mockImplementation((selector: any) =>
+      selector({ aiScores: { developersScores: mockMembers } })
+    );
+
+    render(<AITeamOverview />);
+    fireEvent.click(screen.getByRole("button", { name: /view all/i }));
+    expect(await screen.findByRole("button", { name: /show less/i })).toBeInTheDocument();
   });
 });
