@@ -1,19 +1,14 @@
-import { RegisterMock } from "../mock/invite";
 import { ApiResponse } from "../types/response";
 import { handleError, handleResponse } from "../utils";
 import { LoginResponse } from "../types/auth";
 import { signIn } from "next-auth/react";
 
-const useMock = false;
 export async function RegisterUser(data: {
   password: string;
   confirmPassword?: string;
   token: string;
   fullName: string;
 }): Promise<ApiResponse<null>> {
-  if (useMock) {
-    return RegisterMock();
-  }
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/complete-registration?token=${data.token}`,
