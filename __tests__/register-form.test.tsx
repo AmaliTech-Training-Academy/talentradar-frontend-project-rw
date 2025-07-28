@@ -28,19 +28,6 @@ describe("RegisterForm", () => {
     vi.clearAllMocks();
   });
   it("renders form with email pre-filled", async () => {
-    vi.mock("next/navigation", async () => {
-      const mockSearchParams = new URLSearchParams({
-        token: "abc123",
-        email: "test@example.com",
-      });
-      const actual = await vi.importActual("next/navigation");
-      return {
-        ...actual,
-        useSearchParams: () => mockSearchParams,
-        useRouter: () => ({ push: vi.fn() }),
-      };
-    });
-
     render(<RegisterForm />);
 
     expect(screen.getByPlaceholderText("email")).toHaveValue(
