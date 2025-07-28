@@ -32,6 +32,7 @@ type FormValues = z.infer<typeof ManagerFeedbackSchema>;
 
 export default function ManagerFeedBackPage() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [developers, setDevelopers] = useState<Developers[]>([]);
   const [dimensions, setDimensions] = useState<Dimensions[]>([]);
@@ -55,13 +56,12 @@ export default function ManagerFeedBackPage() {
     register,
     reset,
     trigger,
-    formState: { errors,isLoading },
+    formState: { errors },
   } = form;
 
 async function handleSubmitConfirm() {
-  console.log("object");
-  setShowConfirmModal((prev) => !prev);
-  handleSubmit(onSubmit)
+  setShowConfirmModal(false);
+  handleSubmit(onSubmit)();
 }
   useEffect(() => {
     const fetchDimensions = async () => {
@@ -198,6 +198,7 @@ setDevelopers(data.data);
     if (!selectedUser || !selectedUserData) return;
     
     try {
+      setIsLoading(true);
      
       const payload = {
         managerId: selectedUserData.managerId,
@@ -236,6 +237,9 @@ setDevelopers(data.data);
       console.error("Submission error:", error);
       setShowConfirmModal(false);
       toast.error(error instanceof Error ? error.message : "Failed to submit evaluation");
+    }
+    finally {
+      setIsLoading(false);
     }
   };
 
@@ -398,8 +402,8 @@ setDevelopers(data.data);
 
       <ConfirmationModal
         isOpen={showConfirmModal}
-        onClose={() => {console.log("object");}}
-        onConfirm={() => setShowConfirmModal(false)}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={handleSubmitConfirm}
       />
     </div>
   );

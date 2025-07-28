@@ -153,6 +153,7 @@ export default function SelfAssessmentPage() {
       toast.error(errorMessage);
     } finally {
       setSubmitting(false);
+      reset()
     }
   };
 
@@ -371,7 +372,11 @@ export default function SelfAssessmentPage() {
               disabled={submitting}
             >
               <Save size={16} />
-              Submit Assessment
+              {submitting ? (
+                      <Loader className="animate-spin h-4 w-4" />
+                    ) : (
+                      "Submit assessment"
+                    )}
             </Button>
           </div>
         </form>
