@@ -36,4 +36,7 @@ export const handlers = [
       { status: 200 }
     );
   }),
+  http.get("/ws-notifications/info", () => {
+    return HttpResponse.json({}); // mock response
+  }),
 ];
