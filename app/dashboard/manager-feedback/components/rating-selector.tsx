@@ -25,6 +25,7 @@ export default function RatingSelector({
       <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 gap-4">
         {options.map((option) => (
           <Card
+            data-testid={`rating-${option.value}`}
             key={option.value}
             onClick={() => onSelectAction(option.value)}
             className={cn(
