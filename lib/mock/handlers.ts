@@ -29,4 +29,11 @@ export const handlers = [
       { status: 200 }
     );
   }),
+  http.patch(`${API_URL}/auth/complete-registration?token=abc123`, async () => {
+    console.log("Complete registration called");
+    return HttpResponse.json(
+      { success: true, message: `Registration completed!` },
+      { status: 200 }
+    );
+  }),
 ];

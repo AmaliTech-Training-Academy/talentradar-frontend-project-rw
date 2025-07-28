@@ -91,6 +91,7 @@ export function RegisterForm() {
               Icon={Lock}
               id="password"
               type="password"
+              data-testid="password"
               placeholder="********"
               {...register("password")}
             />
@@ -108,12 +109,14 @@ export function RegisterForm() {
               Icon={Lock}
               id="conf-password"
               type="password"
+              data-testid="conf-password"
               placeholder="********"
               {...register("confirmPassword")}
             />
           </div>
           <Button
             type="submit"
+            data-testid="register-button"
             className="w-full text-white py-3 h-fit"
             disabled={isSubmitting}
           >
