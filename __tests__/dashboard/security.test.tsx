@@ -1,28 +1,36 @@
-// import { render, screen } from "@testing-library/react";
-// import { vi } from "vitest";
+import { WelcomeCard } from "@/app/dashboard/security/components/welcome-card";
+import Page from "@/app/dashboard/security/page";
+import { render, screen, act } from "@testing-library/react";
 
-// vi.mock("@/app/dashboard/components/stat-card", () => ({
-//   StatCard: () => <div data-testid="stat-card" />,
-// }));
-// vi.mock("@/app/dashboard/security/components/security-tabs", () => ({
-//   SecurityTabs: () => <div data-testid="security-tabs" />,
-// }));
-// vi.mock("@/app/dashboard/security/components/welcome-card", () => ({
-//   WelcomeCard: () => <div data-testid="welcome-card" />,
-// }));
+let mockSearchParams = new URLSearchParams({
+  tabs: "overview",
+});
 
-// import Page from "@/app/dashboard/security/page";
-
-// describe("Security Dashboard Page", () => {
-//   it("should render all the components", () => {
-//     render(<Page />);
-//     expect(screen.getAllByTestId("stat-card").length).toBe(4);
-//     expect(screen.getByTestId("security-tabs")).toBeInTheDocument();
-//   });
-// });
+vitest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
+  useSearchParams: () => mockSearchParams,
+}));
 
 describe("Security Dashboard Page", () => {
-  it("Should test the security dashboard page", () => {
-    expect(true).toBe(true);
+  it("Should display the security dashboard page and add user button", () => {
+    render(<Page />);
+    expect(screen.getByText("Security Dashboard")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Add user/i })
+    ).toBeInTheDocument();
+  });
+  it("shouuld display the add user form when the add user button is clicked", () => {
+    render(<WelcomeCard />);
+    const addUserButton = screen.getByRole("button", { name: /Add user/i });
+    act(() => {
+      addUserButton.click();
+    });
+    expect(screen.getByText(/hide/i)).toBeInTheDocument();
   });
 });

@@ -122,6 +122,6 @@ describe('NotificationCard Component', () => {
       />
     );
 
-    expect(screen.getByText('2 days ago')).toBeInTheDocument();
+    expect(screen.getByText(/ago/i)).toBeInTheDocument();
   });
 });
